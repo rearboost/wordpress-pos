@@ -125,7 +125,7 @@
                 $_SESSION['username'] = $user;
                 session_write_close();
         
-                 echo "<script type='text/javascript'>window.location = \"content/dashboard.php\"</script>";
+                 echo "<script type='text/javascript'>window.location = \"content/home.php\"</script>";
          }
          else
          {

@@ -8,13 +8,14 @@
     if(isset($_GET['edit_id'])){
 
         $edit_id = $_GET['edit_id'];
-        $sql=mysqli_query($conn,"SELECT * FROM wise_sizes WHERE id='$edit_id'");  
+        $sql=mysqli_query($conn,"SELECT * FROM customer WHERE id='$edit_id'");  
         $numRows = mysqli_num_rows($sql); 
         if($numRows > 0) {
           while($row = mysqli_fetch_assoc($sql)) {
-            $buyerName  = $row['buyerName'];
-            $sizeReference   = $row['sizeReference'];
-            $size = $row['size'];
+            $edit_name  = $row['name'];
+            $edit_address   = $row['address'];
+            $edit_contact = $row['contact'];
+            $edit_email = $row['email'];
           }
         }
     }
@@ -35,55 +36,40 @@
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
+            <!-- Page Title Header Starts-->
+            <div class="row page-title-header">
+              <div class="col-12">
+                <div class="page-header">
+                  <h4 class="page-title">Dashboard</h4>
+                  <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
+                    <ul class="quick-links">
+                      <li><a href="#"> | CUSTOMER</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Page Title Header Ends-->
            <div class="col-6 stretch-card">
                 <div class="card">
                     <div class="card-body">
-                    <h4 class="card-title">Wise Sizes</h4>
-                    <!-- <p class="card-description"> Horizontal form layout </p> -->
-                        <form class="forms-sample" id="wiseSizes">
+                    <h4 class="card-title">Customer Info</h4>
+                        <form class="forms-sample" id="customerForm">
                           <div class="form-group">
-                          <label for="exampleInputName1">Buyer</label>
-                              <select class="form-control" name = "buyerName" id="buyerName" required>
-                                <?php
-                                    $custom = "SELECT * FROM buyer";
-                                    $result = mysqli_query($conn,$custom);
-                                    $numRows = mysqli_num_rows($result); 
-
-                                    if(isset($_GET['edit_id'])){
-                                      echo "<option value = ".$buyerName.">" . $buyerName . "</option>";
-                                    }
-                                    echo "<option value=''>--Select Buyer--</option>";
-                                    if($numRows > 0) {
-                                      while($row = mysqli_fetch_assoc($result)) {
-                                         if(isset($_GET['edit_id'])){
-
-                                           if($buyerName != $row['buyer']){
-                                              echo "<option value = ".$row['buyer'].">" . $row['buyer'] . "</option>";
-                                           }
-
-                                         }else{
-                                          echo "<option value = ".$row['buyer'].">" . $row['buyer'] . "</option>";
-                                         }
-                                      }
-                                    }
-                                ?>
-                             </select>
+                          <label for="exampleInputName">Name</label>
+                              <input type="text" class="form-control" value="<?php if(isset($_GET['edit_id'])){ echo $edit_name;} ?>" name="name" placeholder="customer name here.." required>
                           </div>
                           <div class="form-group">
-                          <label for="exampleInputEmail3">Size Reference</label>
-                            <select name="sizeReference" id="sizeReference" class="form-control" >
-                                    <?php
-                                        if(isset($_GET['edit_id'])){
-                                            echo "<option value = ".$sizeReference.">" . $sizeReference . "</option>";
-                                        }else{
-                                            echo '<option selected="" disabled="">--Select Reference--</option>';
-                                        }
-                                    ?>
-                            </select>
+                          <label for="exampleInputAddress">Address</label>
+                              <input type="text" class="form-control" value="<?php if(isset($_GET['edit_id'])){ echo $edit_address;} ?>" name="address" placeholder="customer address here.." required>
                           </div>
                           <div class="form-group">
-                          <label for="exampleTextarea1">Size</label>
-                          <input type="text" class="form-control" value="<?php if(isset($_GET['edit_id'])){ echo $size;} ?>" name="size" placeholder="Name">
+                          <label for="exampleInputContact">Contact</label>
+                              <input type="text" class="form-control" value="<?php if(isset($_GET['edit_id'])){ echo $edit_contact;} ?>" name="contact" placeholder="+94 00-0000-000" required>
+                          </div>
+                          <div class="form-group">
+                          <label for="exampleInputEmail">Email</label>
+                              <input type="text" class="form-control" value="<?php if(isset($_GET['edit_id'])){ echo $edit_email;} ?>" name="email" placeholder="sample@gmail.com" required>
                           </div>
                            <?php if (isset($_GET['edit_id'])): ?>
                               <input type="hidden" class="form-control" name="edit_id" value="<?php if(isset($_GET['edit_id'])){ echo $edit_id;} ?>" />
@@ -105,22 +91,24 @@
               <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Wise Sizes table</h4>
-                    <p class="card-description fl">Dashboard >> <code>Wise Sizes</code> </p>         
+                    <h4 class="card-title">Customer Data</h4>
+                             
                     <table class="table table-bordered">
                       <thead>
                         <tr>
                           <th> # </th>
-                          <th>Buyer</th>
-                          <th>Size Reference </th>
-                          <th>Size</th>
+                          <th>Customer name </th>
+                          <th>Address </th>
+                          <th>Contact </th>
+                          <!-- <th>Email </th> -->
                           <th>Edit</th>
+                          <th>SMS</th>
                           <th>Delete</th>
                         </tr>
                       </thead>
                       <tbody>
                         <?php
-                          $sql=mysqli_query($conn,"SELECT * FROM wise_sizes");
+                          $sql=mysqli_query($conn,"SELECT * FROM customer");
                           
                           $numRows = mysqli_num_rows($sql); 
                     
@@ -128,15 +116,19 @@
                             $i = 1;
                             while($row = mysqli_fetch_assoc($sql)) {
 
-                              $buyerName  = $row['buyerName'];
-                              $sizeReference   = $row['sizeReference'];
-                              $size = $row['size'];
+                              $name    = $row['name'];
+                              $address = $row['address'];
+                              $contact = $row['contact'];
+                              //$email   = $row['email'];
+
                               echo ' <tr>';
                               echo ' <td>'.$i.' </td>';
-                              echo ' <td>'.$buyerName.' </td>';
-                              echo ' <td>'.$sizeReference.' </td>';
-                              echo ' <td>'.$size.' </td>';
+                              echo ' <td>'.$name.' </td>';
+                              echo ' <td>'.$address.' </td>';
+                              echo ' <td>'.$contact.' </td>';
+                              //echo ' <td>'.$email.' </td>';
                               echo '<td class="td-center"><button type="button" onclick="editForm('.$row["id"].')" class="btn btn-info btn-fw">Edit</button></td>';
+                              echo '<td class="td-center"><button type="button" onclick="msgForm('.$row["id"].')" class="btn btn-primary btn-fw">Send SMS</button></td>';
                               echo '<td class="td-center"><button type="button" onclick="confirmation(event,'.$row["id"].')" class="btn btn-secondary btn-fw">Delete</button></td>';
                               echo ' </tr>';
                               $i++;
@@ -175,14 +167,14 @@
 
     $(function () {
 
-        $('#wiseSizes').on('submit', function (e) {
+        $('#customerForm').on('submit', function (e) {
 
           e.preventDefault();
 
           $.ajax({
             type: 'post',
-            url: '../controller/b_wise_sizes.php',
-            data: $('#wiseSizes').serialize(),
+            url: '../controller/customer_controller.php',
+            data: $('#customerForm').serialize(),
             success: function (data) {
 
                   if(data==0){
@@ -203,6 +195,7 @@
                     button: "Ok !",
                     });
                     setTimeout(function(){ location.reload(); }, 2500);
+
                     
                   }
                }
@@ -215,7 +208,7 @@
    /////////////////////////////////////////////////// Form Submit Add  
 
     function confirmation(e,id) {
-        var answer = confirm("Are you sure you want to permanently delete this record?")
+        var answer = confirm("Are you sure, you want to permanently delete this record?")
       if (!answer){
         e.preventDefault();
         return false;
@@ -227,7 +220,7 @@
     function myFunDelete(id){
 
       $.ajax({
-            url:"../controller/b_wise_sizes.php",
+            url:"../controller/customer_controller.php",
             method:"POST",
             data:{removeID:id},
             success:function(data){
@@ -238,41 +231,19 @@
                 button: "Ok !",
                 });
                 setTimeout(function(){ location.reload(); }, 2500);
+                window.location.href = "customer.php";
             }
       });
     }
 
     function editForm(id){
-
-        window.location.href = "b_wise_sizes.php?edit_id=" + id;
+        window.location.href = "customer.php?edit_id=" + id;
+        window.location.href = "customer.php";
     }
 
     function cancelForm(){
 
-        window.location.href = "b_wise_sizes.php";
+        window.location.href = "customer.php";
     }
 
-
-    ////////////// Buyer - Select Reference ///////////////////////
-      $("#buyerName").on('change',function(){
-
-        var buyerName = $(this).val();
-        if(buyerName){
-          $.get(
-            "../functions/get_pre_costing.php",
-            {buyerName_SR:buyerName},
-            function (data) { 
-              $('#sizeReference').html(data);
-          
-            }
-          );
-            
-        }else{
-          $('#sizeReference').html('<option>Select Select Reference</option>');
-
-        }
-    });
-
-
-  
   </script>

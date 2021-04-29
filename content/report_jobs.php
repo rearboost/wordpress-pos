@@ -19,32 +19,51 @@
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
+            <!-- Page Title Header Starts-->
+            <div class="row page-title-header">
+              <div class="col-12">
+                <div class="page-header">
+                  <h4 class="page-title">Dashboard</h4>
+                  <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
+                    <ul class="quick-links">
+                      <li><a href="#"> | REPORT</a></li>
+                      <li><a href="#"> | JOB STATUS REPORT</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Page Title Header Ends-->
             <div class="col-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
-                    <h4 class="card-title">BOM report</h4>
+                    <h4 class="card-title">Job Status report</h4>
                     <!-- <p class="card-description"> Horizontal form layout </p> -->
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">PO Number</label>
-                                    <div class="col-sm-8">
-                                        <select class="form-control" name = "po_number" id="po_number" required>
-                                            <option value="">--Select PO Number--</option>
+                                <!-- <label class="col-sm-4 col-form-label">PO Number</label> -->
+                                    <!-- <div class="col-sm-8">
+                                        <select class="form-control" name="po_number" id="po_number" required>
+                                            <option value="">--Select PO Number--</option> -->
                                             <?php
-                                                $custom = "SELECT * FROM po_entering";
-                                                $result = mysqli_query($conn,$custom);
-                                                $numRows = mysqli_num_rows($result); 
+                                                // $custom = "SELECT * FROM po_entering";
+                                                // $result = mysqli_query($conn,$custom);
+                                                // $numRows = mysqli_num_rows($result); 
                                 
-                                                if($numRows > 0) {
-                                                    while($row = mysqli_fetch_assoc($result)) {
-                                                    echo "<option value = ".$row['po_number'].">" . $row['po_number'] . "</option>";
+                                                // if($numRows > 0) {
+                                                //     while($row = mysqli_fetch_assoc($result)) {
+                                                //     echo "<option value = ".$row['po_number'].">" . $row['po_number'] . "</option>";
                                                     
-                                                    }
-                                                }
+                                                //     }
+                                                // }
                                             ?>
-                                        </select>
-                                    </div>  
+                                        <!-- </select>
+                                    </div> -->
+                                    <label class="col-sm-4 col-form-label">Select Date</label>
+                                    <div class="col-sm-8">
+                                        <input type="date" class="form-control" name="pdate" id="date">
+                                    </div>    
                                 </div>
                                 <button type="button" onclick="cancelForm()" class="btn btn-warning btn-fw">Cancel</button>                        
                             </div>
@@ -56,7 +75,7 @@
 
             <?php if (isset($_GET['view_id'])): ?>
             
-            <form class="forms-sample" id="bom_form">
+            <form class="forms-sample" id="profit_form">
 
                 <input type="hidden" value ='<?php echo $_GET['view_id']; ?>' name="po_number">
 
@@ -197,13 +216,13 @@
 
       var bpo_no = $(this).val();
       if(bpo_no){     
-        window.location.href = "bb_bom_report.php?view_id=" + bpo_no;
+        window.location.href = "report_jobs.php?view_id=" + bpo_no;
       }
     });
 
     function cancelForm(){
 
-        window.location.href = "bb_bom_report.php";
+        window.location.href = "report_jobs.php";
     }
 
     function printDiv(divID)

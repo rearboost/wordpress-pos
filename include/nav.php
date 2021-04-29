@@ -1,9 +1,10 @@
  <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
           <a class="navbar-brand brand-logo" href="home.php">
-            <img src="../assets/images/logo.svg" alt="logo" /> </a>
+            <img src="../assets/images/light_logo.png" alt="logo" /> </a>
           <a class="navbar-brand brand-logo-mini" href="home.php">
-            <img src="../assets/images/logo-mini.svg" alt="logo" /> </a>
+            <img src="../assets/images/light_logo.png" alt="logo" /> </a>
+            <!-- <h3 style="color: #fff; font-weight: 800; padding-top: 15px; border-bottom: 2px solid #fff;">Mobile Shop</h3> -->
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-center">
           <ul class="navbar-nav">
@@ -132,13 +133,23 @@
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
                 <div class="dropdown-header text-center">
                   <img class="img-md rounded-circle" src="../assets/images/faces/face8.jpg" alt="Profile image">
-                  <p class="mb-1 mt-3 font-weight-semibold">Allen Moreno</p>
-                  <!-- <p class="font-weight-light text-muted mb-0">allenmoreno@gmail.com</p> -->
+                  <?php 
+                  if(isset($_SESSION['username'])){
+                      $user= $_SESSION['username'];
+                      $sql=mysqli_query($conn,"SELECT * FROM user U, user_role R WHERE username='$user' AND R.id=U.user_role");
+                      $row = mysqli_fetch_assoc($sql);
+                      $name = $row['username'];
+                      $designation = $row['role'];
+                  }
+                  ?>
+                  <p class="mb-1 mt-3 font-weight-semibold"><?php echo $name; ?></p>
+                  <p class="font-weight-light text-muted mb-0">Designation : <?php echo $designation; ?></p>
                 <!-- </div>
                 <a class="dropdown-item">My Profile <span class="badge badge-pill badge-danger">1</span><i class="dropdown-item-icon ti-dashboard"></i></a>
                 <a class="dropdown-item">Messages<i class="dropdown-item-icon ti-comment-alt"></i></a>
                 <a class="dropdown-item">Activity<i class="dropdown-item-icon ti-location-arrow"></i></a>
                 <a class="dropdown-item">FAQ<i class="dropdown-item-icon ti-help-alt"></i></a> -->
+                <p></p>
                 <a class="dropdown-item" href="../logout.php">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
               </div>
             </li>

@@ -1,15 +1,11 @@
+<?php
+include('../include/config.php');
+?>
 <!DOCTYPE html>
-<html lang="en">
-  <!-- include head code here -->
-  <?php  
-  
-     include('../include/head.php'); 
-    // Database Connection
-    require '../include/config.php' 
-  
-  ?>
-  <body>
-    <div class="container-scroller">
+<html>
+    <?php include('../include/head.php'); ?>
+<body>
+<div class="container-scroller">
       <!-- partial:partials/_navbar.html -->
       <!-- include nav code here -->
       <?php  include('../include/nav.php');   ?>
@@ -83,13 +79,16 @@
                         <div class="d-flex">
                           <div class="wrapper">
                             <?php 
+                           
 
-                                $query_buyer= "SELECT * FROM  buyer";
-                                $result_buyer = mysqli_query($conn ,$query_buyer);
-                                $count_buyer =mysqli_num_rows($result_buyer);
+                                // $query_buyer= "SELECT * FROM  buyer";
+                                // $result_buyer = mysqli_query($conn ,$query_buyer);
+                                // $count_buyer =mysqli_num_rows($result_buyer);
 
                             ?>
-                            <h3 class="mb-0 font-weight-semibold"><?php if(isset($count_buyer)){ echo $count_buyer;} ?></h3>
+                            <h3 class="mb-0 font-weight-semibold"><?php 
+                            //if(isset($count_buyer)){ echo $count_buyer;} 
+                            ?></h3>
                             <h5 class="mb-0 font-weight-medium text-primary"></h5>
                             
                             <p class="mb-0 text-muted">Buyer</p>
@@ -104,12 +103,14 @@
                           <div class="wrapper">
                            <?php 
 
-                                $query_item= "SELECT * FROM  item";
-                                $result_item = mysqli_query($conn ,$query_item);
-                                $count_item =mysqli_num_rows($result_item);
+                                // $query_item= "SELECT * FROM  item";
+                                // $result_item = mysqli_query($conn ,$query_item);
+                                // $count_item =mysqli_num_rows($result_item);
 
                             ?>
-                            <h3 class="mb-0 font-weight-semibold"><?php if(isset($count_item)){ echo $count_item;} ?></h3>
+                            <h3 class="mb-0 font-weight-semibold"><?php 
+                            //if(isset($count_item)){ echo $count_item;} 
+                            ?></h3>
                             <h5 class="mb-0 font-weight-medium text-primary">Items</h5>
                             <!-- <p class="mb-0 text-muted">+138.97(+0.54%)</p> -->
                           </div>
@@ -123,12 +124,13 @@
                           <div class="wrapper">
                            <?php 
 
-                                $query_costing_approvals= "SELECT * FROM  pre_order_costing WHERE costing_approvals=1";
-                                $result_costing_approvals = mysqli_query($conn ,$query_costing_approvals);
-                                $count_costing_approvals =mysqli_num_rows($result_costing_approvals);
+                                // $query_costing_approvals= "SELECT * FROM  pre_order_costing WHERE costing_approvals=1";
+                                // $result_costing_approvals = mysqli_query($conn ,$query_costing_approvals);
+                                // $count_costing_approvals =mysqli_num_rows($result_costing_approvals);
 
                             ?>
-                            <h3 class="mb-0 font-weight-semibold"><?php if(isset($count_costing_approvals)){ echo $count_costing_approvals;} ?></h3>
+                            <h3 class="mb-0 font-weight-semibold"><?php 
+                            //if(isset($count_costing_approvals)){ echo $count_costing_approvals;} ?></h3>
                             <h5 class="mb-0 font-weight-medium text-primary">Costing Approve</h5>
                             <!-- <p class="mb-0 text-muted">+57.62(+0.76%)</p> -->
                           </div>
@@ -142,12 +144,14 @@
                           <div class="wrapper">
                            <?php 
 
-                                $query_confirmation_allocation= "SELECT * FROM  pre_order_costing WHERE confirmation_allocation=1";
-                                $result_confirmation_allocation = mysqli_query($conn ,$query_confirmation_allocation);
-                                $count_confirmation_allocation =mysqli_num_rows($result_confirmation_allocation);
+                                // $query_confirmation_allocation= "SELECT * FROM  pre_order_costing WHERE confirmation_allocation=1";
+                                // $result_confirmation_allocation = mysqli_query($conn ,$query_confirmation_allocation);
+                                // $count_confirmation_allocation =mysqli_num_rows($result_confirmation_allocation);
 
                             ?>
-                            <h3 class="mb-0 font-weight-semibold"><?php if(isset($count_confirmation_allocation)){ echo $count_confirmation_allocation;} ?></h3>
+                            <h3 class="mb-0 font-weight-semibold"><?php 
+                            // if(isset($count_confirmation_allocation)){ echo $count_confirmation_allocation;} 
+                            ?></h3>
                             <h5 class="mb-0 font-weight-medium text-primary">Costing Confirmation And Allocation</h5>
                             <!-- <p class="mb-0 text-muted">+138.97(+0.54%)</p> -->
                           </div>
@@ -634,6 +638,5 @@
     
     <!-- include footer coe here -->
     <?php include('../include/footer-js.php');   ?>
-
-  </body>
+</body>
 </html>
