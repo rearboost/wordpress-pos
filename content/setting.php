@@ -113,16 +113,16 @@ include('../include/config.php');
                           <div class="card">
                             <div class="card-body">
                             <form class="form-sample">
-                              <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">Old Password</label>
+                              <div class="form-group">
+                              <label class="col-sm-4 col-form-label">Old Password</label>
                               <div class="col-sm-9">
                                   <input type="password" class="form-control" name="oldpassword" id="oldpassword" required="">
                                   <label id="oldpassword_error" class="error" for="oldpassword" style="display: none;  color: red; padding-top:5px;">This field is required.</label>
                               </div>
                               </div>
 
-                              <div class="form-group row">
-                              <label class="col-sm-3 col-form-label">New Password</label>
+                              <div class="form-group">
+                              <label class="col-sm-4 col-form-label">New Password</label>
                               <div class="col-sm-9">
                                   <input type="password" class="form-control" name="newpassword" id="newpassword" required="">
                                   <label id="newpassword_error" class="error" for="newpassword" style="display: none;  color: red; padding-top:5px;">This field is required.</label>

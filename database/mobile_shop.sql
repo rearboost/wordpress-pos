@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2021 at 01:58 AM
+-- Generation Time: Apr 30, 2021 at 02:07 AM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 5.5.30
 
@@ -39,7 +39,35 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`id`, `name`, `address`, `contact`, `email`) VALUES
-(1, 'Dimashi Liyanage', 'Hikkaduwa', '94771234457', 'dimashi@gmail.com');
+(1, 'Dimashi Liyanage', 'Hikkaduwa', '94771234458', 'dimashi123@gmail.com'),
+(2, 'Indunil Dissanayaka', 'matale', '94771234567', 'indunil@gmail.com'),
+(3, 'Sandamali ', 'Hanwella', '94712589574', 'sri123Sanda@gmail.com');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jobs`
+--
+
+CREATE TABLE `jobs` (
+  `jobId` int(11) NOT NULL,
+  `accessory` text NOT NULL,
+  `request_date` varchar(50) NOT NULL,
+  `delivery_date` varchar(50) NOT NULL,
+  `job_desc` varchar(500) NOT NULL,
+  `user_desc` varchar(500) NOT NULL,
+  `status` enum('request','reject','technician','complete','dispatch','finish') NOT NULL,
+  `service_cost` double(10,2) NOT NULL,
+  `acessories_cost` double(10,2) NOT NULL,
+  `customerId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `jobs`
+--
+
+INSERT INTO `jobs` (`jobId`, `accessory`, `request_date`, `delivery_date`, `job_desc`, `user_desc`, `status`, `service_cost`, `acessories_cost`, `customerId`) VALUES
+(1, 'Huawei GR3 Phone', '2021-04-28', '2021-05-03', 'Need to repair', 'cant operate', 'technician', 0.00, 0.00, 2);
 
 -- --------------------------------------------------------
 
@@ -424,6 +452,12 @@ ALTER TABLE `customer`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `jobs`
+--
+ALTER TABLE `jobs`
+  ADD PRIMARY KEY (`jobId`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -496,6 +530,11 @@ ALTER TABLE `wp_wc_product_meta_lookup`
 ALTER TABLE `customer`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
+-- AUTO_INCREMENT for table `jobs`
+--
+ALTER TABLE `jobs`
+  MODIFY `jobId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
@@ -509,17 +548,17 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `wp_posts`
 --
 ALTER TABLE `wp_posts`
-  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1356;
+  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 --
 -- AUTO_INCREMENT for table `wp_termmeta`
 --
 ALTER TABLE `wp_termmeta`
-  MODIFY `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=348;
+  MODIFY `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT for table `wp_terms`
 --
 ALTER TABLE `wp_terms`
-  MODIFY `term_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=248;
+  MODIFY `term_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

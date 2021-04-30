@@ -42,28 +42,28 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                <!-- <label class="col-sm-4 col-form-label">PO Number</label> -->
-                                    <!-- <div class="col-sm-8">
-                                        <select class="form-control" name="po_number" id="po_number" required>
-                                            <option value="">--Select PO Number--</option> -->
+                                <label class="col-sm-4 col-form-label">Status</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" name="status" id="status" required>
+                                            <option value="">--Select Status--</option>
                                             <?php
-                                                // $custom = "SELECT * FROM po_entering";
-                                                // $result = mysqli_query($conn,$custom);
-                                                // $numRows = mysqli_num_rows($result); 
+                                                $custom = "SELECT DISTINCT(status) FROM jobs";
+                                                $result = mysqli_query($conn,$custom);
+                                                $numRows = mysqli_num_rows($result); 
                                 
-                                                // if($numRows > 0) {
-                                                //     while($row = mysqli_fetch_assoc($result)) {
-                                                //     echo "<option value = ".$row['po_number'].">" . $row['po_number'] . "</option>";
+                                                if($numRows > 0) {
+                                                    while($row = mysqli_fetch_assoc($result)) {
+                                                    echo "<option value = ".$row['status'].">" . $row['status'] . "</option>";
                                                     
-                                                //     }
-                                                // }
+                                                    }
+                                                }
                                             ?>
-                                        <!-- </select>
-                                    </div> -->
-                                    <label class="col-sm-4 col-form-label">Select Date</label>
+                                        </select>
+                                    </div>
+                                    <!-- <label class="col-sm-4 col-form-label">Select Date</label>
                                     <div class="col-sm-8">
                                         <input type="date" class="form-control" name="pdate" id="date">
-                                    </div>    
+                                    </div>   -->  
                                 </div>
                                 <button type="button" onclick="cancelForm()" class="btn btn-warning btn-fw">Cancel</button>                        
                             </div>
@@ -75,27 +75,25 @@
 
             <?php if (isset($_GET['view_id'])): ?>
             
-            <form class="forms-sample" id="profit_form">
+            <form class="forms-sample" id="report_form">
 
-                <input type="hidden" value ='<?php echo $_GET['view_id']; ?>' name="po_number">
+                <input type="hidden" value ='<?php echo $_GET['view_id']; ?>' name="status">
 
                 <div class="col-lg-12 grid-margin stretch-card">
                   <div class="card">
                     <div class="card-body">
-                        <center><b><h5>PO Number - <?php echo $_GET['view_id']; ?></h5></b></center>
+                        <center><b><h5>Status - <?php echo $_GET['view_id']; ?></h5></b></center>
                         <br>
-                    
-                    
                         <div class="row">
                     
                         <?php 
 
-                          $poNo = $_GET['view_id'];
-                        //   $sql_buyerName=mysqli_query($conn,"SELECT * FROM po_entering WHERE po_number='$poNo'");
+                          $state = $_GET['view_id'];
+                        //   $sql_buyerName=mysqli_query($conn,"SELECT * FROM po_entering WHERE status='$poNo'");
                         //   $row_buyerName= mysqli_fetch_assoc($sql_buyerName);
                         //   $bpo_no = $row_buyerName['bpo_no'];
 
-                          $sql=mysqli_query($conn,"SELECT * FROM bom WHERE po_number='$poNo'"); 
+                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE J.status='$state'"); 
                     
                         ?>
 
@@ -106,22 +104,15 @@
                                 <thead>
                                     <tr>
                                     <th> # </th>
-                                    <th>Master Cat</th>
-                                    <th>Main Cat </th>
-                                    <th>Sub Cat</th>
-                                    <th>Item </th>
-                                    <th>Color </th>
-                                    <th>Size </th>
-                                    <th>Reference </th>
-                                    <th>Dimension </th>
-                                    <th>Unit</th>
-                                    <th>Fab Type </th>
-                                    <th>Booking Consumption </th>
-                                    <th>Wastage%</th>
-                                    <th>Excess%</th>
-                                    <th>Required Qty</th>
-                                    <th>Unit Price</th>
-                                    <th>Value</th>
+                                    <th>Name </th>
+                                    <th>accessory</th>
+                                    <th>job_desc </th>
+                                    <th>request_date</th>
+                                    <th>delivery_date </th>
+                                    <th>user_desc </th>
+                                    <th>service_cost </th>
+                                    <th>acessories_cost </th>
+                                    <th>Amount </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -135,39 +126,25 @@
                                         while($row = mysqli_fetch_assoc($sql)) {
 
                                         $value = 0;
-                                        $masterName  = $row['masterName'];
-                                        $main   = $row['main'];
-                                        $subCategory = $row['subCategory'];
-                                        $itemName = $row['itemName'];
-                                        $color = $row['color'];
-                                        $size = $row['size'];
-                                        $reference = $row['reference'];
-                                        $dimension = $row['dimension'];
-                                        $unit = $row['unit'];
-                                        $fabType = $row['fabType'];
-                                        $consumption = $row['consumption'];
-                                        $wastage = $row['wastage'];
-                                        $excess = $row['excess'];
-                                        $req_qty = $row['req_qty'];
-                                        $unit_price = $row['unit_price'];
-                                        $value =number_format(($unit_price* $req_qty), 2, '.', '');
+                                        $name  = $row['name'];
+                                        $accessory   = $row['accessory'];
+                                        $job_desc = $row['job_desc'];
+                                        $request_date = $row['request_date'];
+                                        $delivery_date = $row['delivery_date'];
+                                        $user_desc = $row['user_desc'];
+                                        $service_cost = $row['service_cost'];
+                                        $acessories_cost = $row['acessories_cost'];
+                                        $value =number_format(($service_cost+$acessories_cost), 2, '.', '');
                                         echo ' <tr>';
                                         echo ' <td>'.$i.' </td>';
-                                        echo ' <td>'.$masterName.' </td>';
-                                        echo ' <td>'.$main.' </td>';
-                                        echo ' <td>'.$subCategory.' </td>';
-                                        echo ' <td>'.$itemName.' </td>';
-                                        echo ' <td>'.$color.' </td>';
-                                        echo ' <td>'.$size.' </td>';
-                                        echo ' <td>'.$reference.' </td>';
-                                        echo ' <td>'.$dimension.' </td>';
-                                        echo ' <td>'.$unit.' </td>';
-                                        echo ' <td>'.$fabType.' </td>';
-                                        echo ' <td>'.$consumption.' </td>';
-                                        echo ' <td>'.$wastage.' </td>';
-                                        echo ' <td>'.$excess.' </td>';
-                                        echo ' <td>'.$req_qty.' </td>';
-                                        echo ' <td>'.$unit_price.' </td>';
+                                        echo ' <td>'.$name.' </td>';
+                                        echo ' <td>'.$accessory.' </td>';
+                                        echo ' <td>'.$job_desc.' </td>';
+                                        echo ' <td>'.$request_date.' </td>';
+                                        echo ' <td>'.$delivery_date.' </td>';
+                                        echo ' <td>'.$user_desc.' </td>';
+                                        echo ' <td>'.$service_cost.' </td>';
+                                        echo ' <td>'.$acessories_cost.' </td>';
                                         echo ' <td>'.$value.' </td>';
                                         echo ' </tr>';
                                         $i++;
@@ -180,7 +157,9 @@
                             </div>
                             <br>
                              
-                            <button type="button"  onclick="javascript:printDiv('printablediv');" class="btn btn-info btn-fw" >PRINT</button>                          
+                            <button type="button"  onclick="javascript:printDiv('printablediv');" class="btn btn-info btn-fw" >PRINT</button>   
+                            <br>
+                            <br>                       
                         </div> 
                    </div>
                  </div>
@@ -211,12 +190,12 @@
 
 <script>
    
-    ////////////// bpo_no get  ///////////////////////
-    $("#po_number").on('change',function(){
+    ////////////// status get  ///////////////////////
+    $("#status").on('change',function(){
 
-      var bpo_no = $(this).val();
-      if(bpo_no){     
-        window.location.href = "report_jobs.php?view_id=" + bpo_no;
+      var status = $(this).val();
+      if(status){     
+        window.location.href = "report_jobs.php?view_id=" + status;
       }
     });
 

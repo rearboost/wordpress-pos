@@ -3,7 +3,20 @@
         // Database Connection
         require '../include/config.php';
 
-        // wise_sizes Add Function 
+
+        // view all
+        if(isset($_POST['view_id']))
+       {
+         $val =$_POST['view_id'];
+         $query_obj ="SELECT * FROM customer WHERE id='".$val."'";
+         $result_obj =mysqli_query($conn,$query_obj);
+
+         $object_obj =mysqli_fetch_object($result_obj);
+         echo json_encode($object_obj);
+
+       }
+
+        //  Add Function 
         if(isset($_POST['add'])){
 
             $name      = $_POST['name'];
@@ -28,7 +41,7 @@
             }
         }
 
-        // wise_sizes Update Function 
+        //  Update Function 
         if(isset($_POST['update'])){
 
             $id      = $_POST['edit_id'];
@@ -61,7 +74,7 @@
             }
         }
 
-        // wise_sizes Delete Function 
+        //  Delete Function 
         if(isset($_POST['removeID'])){
 
             $id       = $_POST['removeID'];

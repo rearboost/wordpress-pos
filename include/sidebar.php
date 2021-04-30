@@ -53,7 +53,7 @@
             <?php else: ?>
             <?php endif ?>
 
-            <?php if ($_SESSION['user_role']== 1 || $_SESSION['user_role']==  2 || $_SESSION['user_role']==  3 || $_SESSION['user_role']== 4 || $_SESSION['user_role']==  5): ?>
+            <?php if ($_SESSION['user_role']== 1 || $_SESSION['user_role']==  2): ?>
 
             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#ui-buyer" aria-expanded="false" aria-controls="ui-buyer">
@@ -65,10 +65,19 @@
                 <ul class="nav flex-column sub-menu">
                   <?php if ($_SESSION['user_role']== 1 || $_SESSION['user_role']==  2 ): ?>
                     <li class="nav-item">
-                      <a class="nav-link" href="requests.php">Inbound Requests</a>
+                      <a class="nav-link" href="request.php">Inbound Requests</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="progress.php">Jobs In Progress</a>
+                      <a class="nav-link" href="progress.php">Jobs In Process</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="completed.php">Complete Jobs</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                      <a class="nav-link" href="dispatch.php">Dispatch Jobs</a>
+                    </li> -->
+                    <li class="nav-item">
+                      <a class="nav-link" href="rejected.php">Rejected Jobs</a>
                     </li>
                   <?php else: ?>
                   <?php endif ?>

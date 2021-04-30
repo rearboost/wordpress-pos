@@ -128,7 +128,9 @@
                               echo ' <td>'.$contact.' </td>';
                               //echo ' <td>'.$email.' </td>';
                               echo '<td class="td-center"><button type="button" onclick="editForm('.$row["id"].')" class="btn btn-info btn-fw">Edit</button></td>';
-                              echo '<td class="td-center"><button type="button" onclick="msgForm('.$row["id"].')" class="btn btn-primary btn-fw">Send SMS</button></td>';
+
+                              echo '<td class="td-center"><button type="button" id="'.$row["id"].'" name="'.$row["id"].'" class="btn btn-primary btn-fw view_data" data-toggle="modal" data-target="#myModal" >Send SMS</button></td>';
+
                               echo '<td class="td-center"><button type="button" onclick="confirmation(event,'.$row["id"].')" class="btn btn-secondary btn-fw">Delete</button></td>';
                               echo ' </tr>';
                               $i++;
@@ -181,7 +183,7 @@
 
                     swal({
                       title: "Can't Duplication !",
-                      text: "Size , Size reference and  Buyer.",
+                      text: "Customer",
                       icon: "error",
                       button: "Ok !",
                     });
@@ -195,7 +197,7 @@
                     button: "Ok !",
                     });
                     setTimeout(function(){ location.reload(); }, 2500);
-
+                    //window.location.href = "customer.php";
                     
                   }
                }
@@ -238,12 +240,77 @@
 
     function editForm(id){
         window.location.href = "customer.php?edit_id=" + id;
-        window.location.href = "customer.php";
     }
 
     function cancelForm(){
-
         window.location.href = "customer.php";
     }
 
+    /////// Message Form ////////////
+
+    $(document).on('click', '.view_data', function(){
+
+    var view_id = $(this).attr("name");
+
+    $.ajax({
+         url:"../controller/customer_controller.php",
+         method:"POST",
+         data:{view_id:view_id},
+         success:function(data){
+           //alert(data)
+
+           var data =JSON.parse(data);
+
+           $('#id').val(data['id']);
+           $('#name').val(data['name']);
+           $('#contact').val(data['contact']);
+         }
+      });
+    });
+
   </script>
+
+
+   <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Message Form</h4>
+        </div>
+        <div class="modal-body">
+          <div class="card">
+            <div class="card-body">
+            <h4 class="card-title">Send SMS</h4>
+            <form class="forms-sample" id="msgForm">
+                <input type="hidden" class="form-control" name="id" id="id">
+
+                <div class="form-group row">
+                <label class="col-sm-2 col-form-label">To</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" name="contact" id="contact">
+                </div>
+                <label class="col-sm-2 col-form-label">Name</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" name="name" id="name">
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label for="exampleInputName1">Message</label>
+                <textarea class="form-control" name="msg" placeholder="Text in here.." rows="6"  required></textarea>
+                </div>
+                <input type="hidden" class="form-control" name="add" value="add" />
+                <button type="submit" class="btn btn-success mr-2">Submit</button>
+            </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
