@@ -21,6 +21,7 @@
             $delivery_date  = $row['delivery_date'];
             $job_desc   = $row['job_desc'];
             $user_desc = $row['user_desc'];
+            $progress = $row['progress'];
           }
         }
     }
@@ -84,7 +85,7 @@
                                                 while($row = mysqli_fetch_assoc($result)) {
                                                     if(isset($_GET['view_id'])){
 
-                                                    if($buyerName != $row['name']){
+                                                    if($customerName != $row['name']){
                                                         echo "<option value = ".$row['id'].">" . $row['name'] . "</option>";
                                                     }
 
@@ -144,6 +145,37 @@
                         </div>
                         </div>
 
+                        <?php if (isset($_GET['view_id'])): ?>
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                            <label class="col-sm-6 col-form-label">Update Job Progress (%)</label>
+                                <div class="col-sm-9">
+                                    <select  class="form-control" name="progress" id="progress" required>
+                                      <?php
+                                      if(isset($_GET['view_id'])){
+                                        echo "<option value = ".$progress.">" . $progress . "</option>";
+                                      }
+                                      ?>
+                                      <option value="0">-- Update Progress --</option>
+                                      <option value="10">10%</option>
+                                      <option value="20">20%</option>
+                                      <option value="30">30%</option>
+                                      <option value="40">40%</option>
+                                      <option value="50">50%</option>
+                                      <option value="60">60%</option>
+                                      <option value="70">70%</option>
+                                      <option value="80">80%</option>
+                                      <option value="90">90%</option>
+                                      <option value="100">100%</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <?php else: ?>
+                        <?php endif ?>
+
 
                        <?php if (isset($_GET['view_id'])): ?>
                           <input type="hidden" class="form-control" name="view_id" value="<?php if(isset($_GET['view_id'])){ echo $view_id;} ?>" />
@@ -164,20 +196,20 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">Inprogress Job Data</h4>
-                             
+                    
+                    <div class="table-responsive">         
                     <table id="example" class="table table-bordered">
                       <thead>
                         <tr>
                           <th> # </th>
                           <th>Customer</th>
+                          <th>Order</th>
                           <th>Accessory </th>
                           <th>Request Date</th>
                           <th>Delivery Date</th>
                           <th>Job Desc</th>
-                          <!-- <th>User Desc</th> -->
                           <th>Edit</th>
                           <th>Status</th>
-                          <!-- <th>Delete</th> -->
                         </tr>
                       </thead>
                       <tbody>
@@ -190,29 +222,30 @@
                             $i = 1;
                             while($row = mysqli_fetch_assoc($sql)) {
 
-                            $name    = $row['name'];   
+                            $name    = $row['name']; 
+                            $order    = $row['jobNo'];  
                             $accessory   = $row['accessory'];
                             $request_date = $row['request_date'];
                             $delivery_date  = $row['delivery_date'];
                             $job_desc   = $row['job_desc'];
                             $user_desc = $row['user_desc'];
+                            $progress = $row['progress'];
 
                               echo ' <tr>';
                               echo ' <td>'.$i.' </td>';
                               echo ' <td>'.$name.' </td>';
+                              echo ' <td>'.$order.' </td>';
                               echo ' <td>'.$accessory.' </td>';
                               echo ' <td>'.$request_date.' </td>';
                               echo ' <td>'.$delivery_date.' </td>';
                               echo ' <td>'.$job_desc.' </td>';
-                              // echo ' <td>'.$user_desc.' </td>';
                               echo '<td class="td-center"><button type="button" onclick="editForm('.$row["jobId"].')" class="btn btn-info btn-fw">Edit</button></td>';
-                              if(!empty($user_desc)){
+                              if($progress==100){
                                 echo '<td class="td-center"><button type="button" onclick="pushForm('.$row["jobId"].')" class="btn btn-success btn-fw">Completed</button></td>';
                               }else{
                                 echo '<td class="td-center"><button type="button" onclick="pushForm('.$row["jobId"].')" class="btn btn-success btn-fw" disabled>Completed</button></td>';
                               }
                               
-                              //echo '<td class="td-center"><button type="button" onclick="confirmation(event,'.$row["jobId"].')" class="btn btn-secondary btn-fw">Delete</button></td>';
                               echo ' </tr>';
                               $i++;
                             }
@@ -220,6 +253,7 @@
                         ?>
                       </tbody>
                     </table>
+                    </div>
                   </div>
                 </div>
               </div>

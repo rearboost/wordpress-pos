@@ -119,13 +119,21 @@
          $count =mysqli_num_rows($result); // if uname/pass correct it returns must be 1 ro
          
          if($count == 1 )
-          {
-                session_regenerate_id();
-                $_SESSION['user_role'] = $row['user_role'];
-                $_SESSION['username'] = $user;
-                session_write_close();
+         {
+            session_regenerate_id();
+            $_SESSION['user_role'] = $row['user_role'];
+            $_SESSION['username'] = $user;
+            session_write_close();
+
+            if($row['user_role']==2){
+              //header('Location: content/progress.php');
+              echo "<script type='text/javascript'>window.location = \"content/progress.php\"</script>";
+             }else{
+              //header('Location: content/home.php');
+              echo "<script type='text/javascript'>window.location = \"content/home.php\"</script>";
+             }
         
-                 echo "<script type='text/javascript'>window.location = \"content/home.php\"</script>";
+                 
          }
          else
          {

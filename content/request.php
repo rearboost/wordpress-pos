@@ -191,13 +191,15 @@
               <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Inbounnd Request Data</h4>
-                             
+                    <h4 class="card-title">Inbound Request Data</h4>
+                    
+                    <div class="table-responsive">          
                     <table id="example" class="table table-bordered">
                       <thead>
                         <tr>
                           <th> # </th>
                           <th>Customer</th>
+                          <th>Order</th>
                           <th>Accessory </th>
                           <th>Request Date</th>
                           <th>Delivery Date</th>
@@ -217,6 +219,7 @@
                             $i = 1;
                             while($row = mysqli_fetch_assoc($sql)) {
 
+                            $order    = $row['jobNo'];   
                             $name    = $row['name'];   
                             $accessory   = $row['accessory'];
                             $request_date = $row['request_date'];
@@ -227,6 +230,7 @@
                               echo ' <tr>';
                               echo ' <td>'.$i.' </td>';
                               echo ' <td>'.$name.' </td>';
+                              echo ' <td>'.$order.' </td>';
                               echo ' <td>'.$accessory.' </td>';
                               echo ' <td>'.$request_date.' </td>';
                               echo ' <td>'.$delivery_date.' </td>';
@@ -241,6 +245,7 @@
                         ?>
                       </tbody>
                     </table>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -280,6 +285,8 @@
             url: '../controller/request_controller.php',
             data: $('#requestAdd').serialize(),
             success: function (data) {
+
+              alert(data)
 
                 if(data==0){
 

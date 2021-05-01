@@ -184,12 +184,14 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">Completed Job Data</h4>
-                             
+                    
+                    <div class="table-responsive">          
                     <table id="example" class="table table-bordered">
                       <thead>
                         <tr>
                           <th> # </th>
                           <th>Customer</th>
+                          <th>Order</th>
                           <th>Accessory </th>
                           <th>Request Date</th>
                           <th>Delivery Date</th>
@@ -208,7 +210,8 @@
                             $i = 1;
                             while($row = mysqli_fetch_assoc($sql)) {
 
-                            $name    = $row['name'];   
+                            $name    = $row['name'];
+                            $order    = $row['jobNo'];   
                             $accessory   = $row['accessory'];
                             $request_date = $row['request_date'];
                             $delivery_date  = $row['delivery_date'];
@@ -220,6 +223,7 @@
                               echo ' <tr>';
                               echo ' <td>'.$i.' </td>';
                               echo ' <td>'.$name.' </td>';
+                              echo ' <td>'.$order.' </td>';
                               echo ' <td>'.$accessory.' </td>';
                               echo ' <td>'.$request_date.' </td>';
                               echo ' <td>'.$delivery_date.' </td>';
@@ -238,6 +242,7 @@
                         ?>
                       </tbody>
                     </table>
+                    </div>
                   </div>
                 </div>
               </div>

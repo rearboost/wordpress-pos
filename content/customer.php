@@ -69,7 +69,7 @@
                           </div>
                           <div class="form-group">
                           <label for="exampleInputEmail">Email</label>
-                              <input type="text" class="form-control" value="<?php if(isset($_GET['edit_id'])){ echo $edit_email;} ?>" name="email" placeholder="sample@gmail.com" required>
+                              <input type="email" class="form-control" value="<?php if(isset($_GET['edit_id'])){ echo $edit_email;} ?>" name="email" placeholder="sample@gmail.com" required>
                           </div>
                            <?php if (isset($_GET['edit_id'])): ?>
                               <input type="hidden" class="form-control" name="edit_id" value="<?php if(isset($_GET['edit_id'])){ echo $edit_id;} ?>" />
@@ -92,7 +92,8 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">Customer Data</h4>
-                             
+                     
+                    <div class="table-responsive">         
                     <table class="table table-bordered">
                       <thead>
                         <tr>
@@ -100,7 +101,7 @@
                           <th>Customer name </th>
                           <th>Address </th>
                           <th>Contact </th>
-                          <!-- <th>Email </th> -->
+                          <th>Email </th>
                           <th>Edit</th>
                           <th>SMS</th>
                           <th>Delete</th>
@@ -119,14 +120,14 @@
                               $name    = $row['name'];
                               $address = $row['address'];
                               $contact = $row['contact'];
-                              //$email   = $row['email'];
+                              $email   = $row['email'];
 
                               echo ' <tr>';
                               echo ' <td>'.$i.' </td>';
                               echo ' <td>'.$name.' </td>';
                               echo ' <td>'.$address.' </td>';
                               echo ' <td>'.$contact.' </td>';
-                              //echo ' <td>'.$email.' </td>';
+                              echo ' <td>'.$email.' </td>';
                               echo '<td class="td-center"><button type="button" onclick="editForm('.$row["id"].')" class="btn btn-info btn-fw">Edit</button></td>';
 
                               echo '<td class="td-center"><button type="button" id="'.$row["id"].'" name="'.$row["id"].'" class="btn btn-primary btn-fw view_data" data-toggle="modal" data-target="#myModal" >Send SMS</button></td>';
@@ -139,6 +140,7 @@
                         ?>
                       </tbody>
                     </table>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -268,6 +270,32 @@
       });
     });
 
+
+    //// submitting sms /////
+    $(function () {
+
+        $('#msgForm').on('submit', function (e) {
+
+          e.preventDefault();
+
+          $.ajax({
+            type: 'post',
+            url: '../controller/customer_controller.php',
+            data: $('#msgForm').serialize(),
+            success: function (data) {
+                    swal({
+                    title: "Good job !",
+                    text: "Successfully Send",
+                    icon: "success",
+                    button: "Ok !",
+                    });
+                    setTimeout(function(){ location.reload(); }, 2500);
+                                      
+               }
+          });
+        });
+      });
+
   </script>
 
 
@@ -302,7 +330,7 @@
                 <label for="exampleInputName1">Message</label>
                 <textarea class="form-control" name="msg" placeholder="Text in here.." rows="6"  required></textarea>
                 </div>
-                <input type="hidden" class="form-control" name="add" value="add" />
+                <input type="hidden" class="form-control" name="send" value="send" />
                 <button type="submit" class="btn btn-success mr-2">Submit</button>
             </form>
             </div>

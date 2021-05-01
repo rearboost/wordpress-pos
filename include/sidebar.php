@@ -37,12 +37,15 @@
             ?>
               
             <!-- </li> -->
+            <?php if ($_SESSION['user_role']==1): ?>
             <li class="nav-item">
               <a class="nav-link" href="home.php">
                 <i class="menu-icon typcn typcn-document-text"></i>
                 <span class="menu-title">Dashboard</span>
               </a>
             </li>
+            <?php else: ?>
+            <?php endif ?>
              <?php if ($_SESSION['user_role']==1): ?>
               <li class="nav-item">
                 <a class="nav-link" href="customer.php">
@@ -63,19 +66,28 @@
               </a>
               <div class="collapse" id="ui-buyer">
                 <ul class="nav flex-column sub-menu">
-                  <?php if ($_SESSION['user_role']== 1 || $_SESSION['user_role']==  2 ): ?>
+                    <?php if ($_SESSION['user_role']== 1): ?>
                     <li class="nav-item">
                       <a class="nav-link" href="request.php">Inbound Requests</a>
                     </li>
+                    <?php else: ?>
+                    <?php endif ?>
+                    <?php if ($_SESSION['user_role']== 1 || $_SESSION['user_role']==  2 ): ?>
                     <li class="nav-item">
                       <a class="nav-link" href="progress.php">Jobs In Process</a>
                     </li>
+                    <?php else: ?>
+                    <?php endif ?>
+                    <?php if ($_SESSION['user_role']== 1): ?>
                     <li class="nav-item">
                       <a class="nav-link" href="completed.php">Complete Jobs</a>
                     </li>
                     <!-- <li class="nav-item">
                       <a class="nav-link" href="dispatch.php">Dispatch Jobs</a>
                     </li> -->
+                    <?php else: ?>
+                    <?php endif ?>
+                    <?php if ($_SESSION['user_role']== 1): ?>
                     <li class="nav-item">
                       <a class="nav-link" href="rejected.php">Rejected Jobs</a>
                     </li>
@@ -98,7 +110,7 @@
             <?php else: ?>
             <?php endif ?>
             
-            <?php if ($_SESSION['user_role']==1 || $_SESSION['user_role']==  2): ?>
+            <?php if ($_SESSION['user_role']==1): ?>
 
             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#ui-style" aria-expanded="false" aria-controls="ui-style">

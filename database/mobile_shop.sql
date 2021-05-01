@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 30, 2021 at 02:07 AM
+-- Generation Time: May 01, 2021 at 03:12 AM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 5.5.30
 
@@ -41,7 +41,9 @@ CREATE TABLE `customer` (
 INSERT INTO `customer` (`id`, `name`, `address`, `contact`, `email`) VALUES
 (1, 'Dimashi Liyanage', 'Hikkaduwa', '94771234458', 'dimashi123@gmail.com'),
 (2, 'Indunil Dissanayaka', 'matale', '94771234567', 'indunil@gmail.com'),
-(3, 'Sandamali ', 'Hanwella', '94712589574', 'sri123Sanda@gmail.com');
+(3, 'Sandamali ', 'Hanwella', '94712589574', 'sri123Sanda@gmail.com'),
+(4, 'Rashini Amanda', 'Bentara', '077 8956234', 'Rashiniamd@gmail.com'),
+(5, 'Rashmika', 'Kaduwela', '94773697894', 'rashmi191@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -51,12 +53,14 @@ INSERT INTO `customer` (`id`, `name`, `address`, `contact`, `email`) VALUES
 
 CREATE TABLE `jobs` (
   `jobId` int(11) NOT NULL,
+  `jobNo` int(11) NOT NULL,
   `accessory` text NOT NULL,
   `request_date` varchar(50) NOT NULL,
   `delivery_date` varchar(50) NOT NULL,
   `job_desc` varchar(500) NOT NULL,
   `user_desc` varchar(500) NOT NULL,
   `status` enum('request','reject','technician','complete','dispatch','finish') NOT NULL,
+  `progress` int(11) NOT NULL DEFAULT '0',
   `service_cost` double(10,2) NOT NULL,
   `acessories_cost` double(10,2) NOT NULL,
   `customerId` int(11) NOT NULL
@@ -66,8 +70,12 @@ CREATE TABLE `jobs` (
 -- Dumping data for table `jobs`
 --
 
-INSERT INTO `jobs` (`jobId`, `accessory`, `request_date`, `delivery_date`, `job_desc`, `user_desc`, `status`, `service_cost`, `acessories_cost`, `customerId`) VALUES
-(1, 'Huawei GR3 Phone', '2021-04-28', '2021-05-03', 'Need to repair', 'cant operate', 'technician', 0.00, 0.00, 2);
+INSERT INTO `jobs` (`jobId`, `jobNo`, `accessory`, `request_date`, `delivery_date`, `job_desc`, `user_desc`, `status`, `progress`, `service_cost`, `acessories_cost`, `customerId`) VALUES
+(1, 0, 'Huawei GR3 Phone', '2021-04-28', '2021-05-03', 'Need to repair', 'cant operate', 'technician', 50, 0.00, 0.00, 2),
+(2, 0, 'DELL I3 LAPTOP', '2021-04-01', '2021-04-30', 'Lorem ipsum', 'aaaaaaa', 'complete', 100, 0.00, 0.00, 1),
+(3, 0, 'HP pavilion X360', '2021-04-17', '2021-05-01', 'xxxxxxxxxxxxxxxxxxxxxx', '', 'request', 0, 0.00, 0.00, 4),
+(4, 0, 'HP I5 LAPTOP', '2021-04-28', '2021-05-04', 'To change the battery', '', 'reject', 0, 0.00, 0.00, 3),
+(5, 20215, 'DELL I3 LAPTOP', '2021-04-29', '2021-05-05', 'For repairing', '', 'request', 0, 0.00, 0.00, 5);
 
 -- --------------------------------------------------------
 
@@ -88,7 +96,10 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `username`, `password`, `user_role`) VALUES
 (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1),
-(2, 'Emma Watson', '4535367f2f39b5a2ebaee0092f184a79', 1);
+(2, 'Emma Watson', '4535367f2f39b5a2ebaee0092f184a79', 1),
+(3, 'Pubudu 123', 'c0006afd13ecc89b914b10fb7c51b4fb', 2),
+(4, 'Kaviska', '202cb962ac59075b964b07152d234b70', 2),
+(5, 'Amaya', 'b6a9aa2d969ff39152525950a9bcc621', 2);
 
 -- --------------------------------------------------------
 
@@ -106,7 +117,8 @@ CREATE TABLE `user_role` (
 --
 
 INSERT INTO `user_role` (`id`, `role`) VALUES
-(1, 'Admin');
+(1, 'Admin'),
+(2, 'Technician');
 
 -- --------------------------------------------------------
 
@@ -528,22 +540,22 @@ ALTER TABLE `wp_wc_product_meta_lookup`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `jobs`
 --
 ALTER TABLE `jobs`
-  MODIFY `jobId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `jobId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `user_role`
 --
 ALTER TABLE `user_role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `wp_posts`
 --

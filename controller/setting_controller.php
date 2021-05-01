@@ -34,12 +34,12 @@
           mysqli_stmt_bind_param($stmt,"ss",$newpassword,$_SESSION['username']);
           $result =  mysqli_stmt_execute($stmt);
           if($result){
-              echo "<script type='text/javascript'>alert('Successfully Change Password!');window.location = \"setting.php\"</script>";
+              echo 1;
           }
       }
     }
     else {
-       echo "<script type='text/javascript'>alert('Old password does not match!');window.location = \"setting.php\"</script>";
+       echo 0;
     }
 
    }
@@ -54,13 +54,13 @@
     $emailcount = mysqli_num_rows($check_query);
 
     if($emailcount>0){
-      echo "<script type='text/javascript'>alert('Username is already exists.Try Again');window.location = \"setting.php\"</script>";
+      echo 0;
     }else{
         $new_signup = mysqli_query($conn, "INSERT INTO user(username,password,user_role) VALUES ('$username','$password', '$level')");
         if($new_signup){
-            echo "<script type='text/javascript'>alert('Successfully created new user account!');window.location = \"setting.php\"</script>";
+            echo 1;
         }else{
-            echo "<script type='text/javascript'>alert('Failed!');window.location = \"setting.php\"</script>";
+            echo 0;
         }
     }
 

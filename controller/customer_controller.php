@@ -87,4 +87,55 @@
             }
         }
 
+        if(isset($_POST['send'])){
+
+            $contact    = $_POST['contact'];
+            $msg        = $_POST['msg'];
+            //// Installation
+            //composer require shoutoutlabs/shoutout-sdk
+            //// Usage
+            //require __DIR__ .'/vendor/autoload';
+
+            useSwagger\Client\Client;
+
+            $apiKey = 'xxxxx.xx.xx.xxxx';
+
+            $client = new ShoutoutClient ($apiKey,true, false);
+
+            // (apikey, debugmode, ssl)
+
+            // Set message
+
+            $message = array (
+
+            //'source' => 'ShoutDEMO',
+            'source' => 'ShadComputers',
+
+            //'destinations' => ['94771234567'],
+            'destinations' => $_POST['contact'],
+
+            'content' => array (
+
+            'sms' => 'Sent via ShoutOUT Lite'
+
+            ),
+
+            //'transports' => ['SMS']
+            'transports' => $_POST['msg']
+
+            );
+
+            try {
+
+            $result = $client -> sendMessage($message);
+
+            print_r($result);
+
+            } catch (Exception $e) {
+
+            echo 'Exception when sending message:' , $e -> getMessage(), PHP_EOL;
+
+            }
+        }
+
     ?>

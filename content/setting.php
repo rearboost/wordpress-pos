@@ -136,7 +136,6 @@ include('../include/config.php');
                         </div>
                       </div>
                       </div><!-- end 2nd column-->
-                      
                     </div><!-- end row-->
                   </div>
                 </div>
@@ -287,13 +286,31 @@ include('../include/config.php');
         data:{oldpassword:oldpassword,newpassword:newpassword,cp_btn:cp_btn},
         success:function(data){
 
-        // Message success call function
-           myformcp();
+            if(data==0){
+
+              swal({
+                title: "Can't Change the Password !",
+                text: "Old Password doesn't match.",
+                icon: "error",
+                button: "Ok !",
+              });
+
+            }else{
+              swal({
+              title: "Good job !",
+              text: "Successfully change your password",
+              icon: "success",
+              button: "Ok !",
+              });
+              setTimeout(function(){ location.reload(); }, 2500);
+              
+            }
         }
      });
     }
 
   }
+
 
 
   function new_user() {
@@ -341,12 +358,33 @@ include('../include/config.php');
         success:function(data){
 
         // Message success call function
-           new_usercp();
+           //new_usercp();
+           if(data==0){
+
+              swal({
+                title: "Can't signin!",
+                text: "Username has already exist",
+                icon: "error",
+                button: "Ok !",
+              });
+
+            }else{
+              swal({
+              title: "Good job !",
+              text: "Successfully Signin",
+              icon: "success",
+              button: "Ok !",
+              });
+              setTimeout(function(){ location.reload(); }, 2500);
+              
+            }
         }
      });
 
   }
   }
+
+
 
 </script>
 

@@ -14,15 +14,17 @@
             $delivery_date  = $_POST['delivery_date'];
             $job_desc       = $_POST['job_desc'];
             $user_desc      = $_POST['user_desc'];
+            $progress       = $_POST['progress'];
 
-            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE accessory='$accessory' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND user_desc='$user_desc' AND customerId='$customer'");
+            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE accessory='$accessory' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND user_desc='$user_desc' AND progress='$progress' AND customerId='$customer'");
 		    $count = mysqli_num_rows($check);
 
             if($count==0){
 
                 $edit = "UPDATE jobs 
-                                    SET user_desc='$user_desc'
-                                    WHERE jobId=$id";
+                            SET user_desc='$user_desc',
+                                progress='$progress'
+                            WHERE jobId=$id";
 
                 $result = mysqli_query($conn,$edit);
                 if($result){
@@ -54,6 +56,15 @@
         {
             $addC_id = $_POST['addcomplete_job_edit'];
             $newstatus ="complete";
+
+
+            $msg_data = mysqli_query($conn, "SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE jobId='$addC_id'");
+            $mdata = mysqli_fetch_assoc($msg_data);
+
+            $to = $mdata['contact'];
+            $no = $mdata['jobNo'];
+            $job = $mdata['accessory'];
+            $msg = 'Dear customer, Your' .$job. '(order - ' .$job_no. ' ) is ready. Please visit our place at your convenience.';
 
             $query ="UPDATE  jobs  SET status=?  WHERE jobId=?;";
 

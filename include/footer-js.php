@@ -5,7 +5,7 @@
     <!-- Plugin js for this page-->
     <!-- End plugin js for this page-->
     <!-- inject:js -->
-    <script src="../assets/js/shared/off-canvas.js"></script>
+    <script src="../assets/js/shared/off-canvas.js"></script> 
     <script src="../assets/js/shared/misc.js"></script>
     <!-- endinject -->
     <!-- Custom js for this page-->
@@ -15,4 +15,8 @@
     <!-- sweetalert message -->
     <script src="../assets/js/sweetalert.min.js"></script>
     <!-- dataTables -->
-   <script src="../assets/js/jquery.dataTables.js"></script>
+    <script src="../assets/js/jquery.dataTables.js"></script>
+
+    <script src="../assets/js/shared/chart.js"></script>
+    <!-- End custom js for this page-->
+    <!-- <script src="../assets/js/shared/jquery.cookie.js" type="text/javascript"></script> -->
