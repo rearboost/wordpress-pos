@@ -10,16 +10,18 @@
             $id             = $_POST['view_id'];
             $customer       = $_POST['customer'];
             $accessory      = $_POST['accessory'];
+            $brand          = $_POST['brand'];
+            $model          = $_POST['model'];
             $request_date   = $_POST['request_date'];
             $delivery_date  = $_POST['delivery_date'];
             $job_desc       = $_POST['job_desc'];
             $user_desc      = $_POST['user_desc'];
             $progress       = $_POST['progress'];
 
-            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE accessory='$accessory' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND user_desc='$user_desc' AND progress='$progress' AND customerId='$customer'");
-		    $count = mysqli_num_rows($check);
+            //$check= mysqli_query($conn, "SELECT * FROM jobs WHERE accessory='$accessory' AND brand='$brand' AND model='$model' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND user_desc='$user_desc' AND progress='$progress' AND customerId='$customer'");
+		    //$count = mysqli_num_rows($check);
 
-            if($count==0){
+            //if($count==0){
 
                 $edit = "UPDATE jobs 
                             SET user_desc='$user_desc',
@@ -33,23 +35,11 @@
                     echo  mysqli_error($conn);		
                 }
 
-            }else{
+            //}else{
                 echo 0;
-            }
+            //}
+
         }
-
-        // //  Delete Function 
-        // if(isset($_POST['removeID'])){
-
-        //     $id    = $_POST['removeID'];
-        //     $query ="DELETE FROM jobs WHERE jobId='$id'";
-        //     $result = mysqli_query($conn,$query);
-        //     if($result){
-        //         echo  1;
-        //     }else{
-        //         echo  mysqli_error($conn);		
-        //     }
-        // }
 
         // Push to complete
         if (isset($_POST['addcomplete_job_edit']))
@@ -84,6 +74,62 @@
                 }
              }
 
+            ////////////// parts values /////////////////
+
+            $sql_temp=mysqli_query($conn,"SELECT * FROM temp");
+
+            $numRows = mysqli_num_rows($sql_temp); 
+
+            if($numRows > 0) {
+
+                while($row = mysqli_fetch_assoc($sql_temp)) {
+
+                    $jobID= $row['jobID'];
+                    $parts=$row['parts'];
+                    $imei=$row['imei'];
+
+                    $insert_item = mysqli_query($conn,"INSERT INTO parts (jobID,parts,imei) VALUES ('$jobID','$parts','$imei')");
+
+                }
+                $insert_temp = "TRUNCATE TABLE temp;";
+                mysqli_query($conn,$insert_temp);
+
+            }
+
         }
+
+        // Row Add Function 
+        if(isset($_POST['addrow'])){
+
+            $job_id = $_POST['job_id'];
+            $parts = $_POST['parts'];
+            $imei = $_POST['imei'];
+
+            $insert_temp = "INSERT INTO  temp (jobID,parts,imei) VALUES ('$job_id','$parts','$imei')";
+            $result_temp = mysqli_query($conn,$insert_temp);
+            
+            if($result_temp){
+                echo  1;
+            }else{
+                echo  mysqli_error($conn);       
+            }
+         }
+
+         // Remove  Function 
+         if(isset($_POST['removeRow'])){
+            
+            $id = $_POST['id'];
+            $insert_temp = "DELETE FROM temp WHERE id='$id'";
+            mysqli_query($conn,$insert_temp);
+            
+         }
+
+        // Table Empty Function 
+        if(isset($_POST['tmpEmpty'])){
+            
+            $insert_temp = "TRUNCATE TABLE temp;";
+            mysqli_query($conn,$insert_temp);
+            
+        }   
 
     ?>

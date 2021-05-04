@@ -26,8 +26,8 @@
                   <h4 class="page-title">Dashboard</h4>
                   <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
                     <ul class="quick-links">
-                      <li><a href="#"> | REPORT</a></li>
-                      <li><a href="#"> | JOB STATUS REPORT</a></li>
+                      <li><a href="#"> REPORT</a></li>
+                      <li><a href="#"> JOB STATUS REPORT</a></li>
                     </ul>
                   </div>
                 </div>

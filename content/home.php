@@ -7,52 +7,6 @@ include('../include/config.php');
     $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE jobId='$msg_id'");  
     $row = mysqli_fetch_assoc($sql);
     $status = $row['status'];
-
-    //// Installation
-    //composer require shoutoutlabs/shoutout-sdk
-    //// Usage
-    //require __DIR__ .'/vendor/autoload';
-
-    //useSwagger\Client\Client;
-
-    // $apiKey = 'xxxxx.xx.xx.xxxx';
-
-    // $client = new ShoutoutClient ($apiKey,true, false);
-
-    // (apikey, debugmode, ssl)
-
-    // Set message
-
-    // $message = array (
-
-    // //'source' => 'ShoutDEMO',
-    // 'source' => 'ShadComputers',
-
-    // //'destinations' => ['94771234567'],
-    // 'destinations' => $row['contact'],
-
-    // 'content' => array (
-
-    // 'sms' => 'Sent via ShoutOUT Lite'
-
-    // ),
-
-    // //'transports' => ['SMS']
-    // 'transports' => ['Dear customer, Your Device is now in'. $status .'. For more details dial: xxx xxx xxxx']
-
-    // );
-
-    // try {
-
-    // $result = $client -> sendMessage($message);
-
-    // print_r($result);
-
-    // } catch (Exception $e) {
-
-    // echo 'Exception when sending message:' , $e -> getMessage(), PHP_EOL;
-
-    // }
   }
 ?>
 <!DOCTYPE html>

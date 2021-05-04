@@ -17,6 +17,8 @@
             $id  = $row['id'];
             $customerName  = $row['name'];
             $accessory   = $row['accessory'];
+            $brand   = $row['brand'];
+            $model   = $row['model'];
             $request_date = $row['request_date'];
             $delivery_date  = $row['delivery_date'];
             $job_desc   = $row['job_desc'];
@@ -56,8 +58,8 @@
                   <h4 class="page-title">Dashboard</h4>
                   <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
                     <ul class="quick-links">
-                      <li><a href="#"> | JOBS</a></li>
-                      <li><a href="#"> | INBOUND REQUESTS</a></li>
+                      <li><a href="#"> JOBS</a></li>
+                      <li><a href="#"> INBOUND REQUESTS</a></li>
                     </ul>
                   </div>
                 </div>
@@ -115,6 +117,24 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Brand </label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name ="brand" value="<?php if(isset($_GET['view_id'])){ echo $brand;} ?>" placeholder="brand" required/>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Model </label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name ="model" value="<?php if(isset($_GET['view_id'])){ echo $model;} ?>" placeholder="model" required/>
+                            </div>
+                            </div>
+                        </div>
                         </div>
                         <div class="row">
                         <div class="col-md-6">
@@ -222,6 +242,8 @@
                             $order    = $row['jobNo'];   
                             $name    = $row['name'];   
                             $accessory   = $row['accessory'];
+                            $brand   = $row['brand'];
+                            $model   = $row['model'];
                             $request_date = $row['request_date'];
                             $delivery_date  = $row['delivery_date'];
                             $job_desc   = $row['job_desc'];
@@ -232,6 +254,8 @@
                               echo ' <td>'.$name.' </td>';
                               echo ' <td>'.$order.' </td>';
                               echo ' <td>'.$accessory.' </td>';
+                              echo ' <td>'.$brand.' </td>';
+                              echo ' <td>'.$model.' </td>';
                               echo ' <td>'.$request_date.' </td>';
                               echo ' <td>'.$delivery_date.' </td>';
                               echo ' <td>'.$job_desc.' </td>';
@@ -286,7 +310,7 @@
             data: $('#requestAdd').serialize(),
             success: function (data) {
 
-              alert(data)
+              //alert(data)
 
                 if(data==0){
 

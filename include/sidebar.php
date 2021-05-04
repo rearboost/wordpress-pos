@@ -80,11 +80,11 @@
                     <?php endif ?>
                     <?php if ($_SESSION['user_role']== 1): ?>
                     <li class="nav-item">
-                      <a class="nav-link" href="completed.php">Complete Jobs</a>
+                      <a class="nav-link" href="completed.php">Completed Jobs</a>
                     </li>
-                    <!-- <li class="nav-item">
-                      <a class="nav-link" href="dispatch.php">Dispatch Jobs</a>
-                    </li> -->
+                    <li class="nav-item">
+                      <a class="nav-link" href="finished.php">Finished Jobs</a>
+                    </li>
                     <?php else: ?>
                     <?php endif ?>
                     <?php if ($_SESSION['user_role']== 1): ?>
@@ -121,10 +121,10 @@
               <div class="collapse" id="ui-style">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item">
-                    <a class="nav-link" href="s_creation.php">Billing Items</a>
+                    <a class="nav-link" href="billing_item.php">Billing Items</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="s_size_reference.php">Billing Services</a>
+                    <a class="nav-link" href="billing_service.php">Billing Services</a>
                   </li>
                 </ul>
               </div>

@@ -17,11 +17,21 @@
             $id  = $row['id'];
             $customerName  = $row['name'];
             $accessory   = $row['accessory'];
+            $brand   = $row['brand'];
+            $model   = $row['model'];
             $request_date = $row['request_date'];
             $delivery_date  = $row['delivery_date'];
             $job_desc   = $row['job_desc'];
             $user_desc = $row['user_desc'];
             $progress = $row['progress'];
+
+            $sql_p=mysqli_query($conn,"SELECT * FROM jobs J LEFT JOIN temp T ON J.jobId=T.jobID  WHERE J.jobID='$view_id'");
+                            
+            while($row1 = mysqli_fetch_assoc($sql_p)) {
+
+                $parts = $row1['parts'];
+                $imei = $row1['imei'];
+            }
           }
         }
     }
@@ -51,8 +61,8 @@
                   <h4 class="page-title">Dashboard</h4>
                   <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
                     <ul class="quick-links">
-                      <li><a href="#"> | JOBS</a></li>
-                      <li><a href="#"> | JOBS IN PROGRESS</a></li>
+                      <li><a href="#"> JOBS</a></li>
+                      <li><a href="#"> JOBS IN PROGRESS</a></li>
                     </ul>
                   </div>
                 </div>
@@ -108,6 +118,27 @@
                                 </div>
                             </div>
                         </div>
+
+
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Brand </label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name ="brand" value="<?php if(isset($_GET['view_id'])){ echo $brand;} ?>" placeholder="brand" readonly/>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Model </label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name ="model" value="<?php if(isset($_GET['view_id'])){ echo $model;} ?>" placeholder="model" readonly/>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
                         <div class="row">
                         <div class="col-md-6">
                             <div class="form-group row">
@@ -126,6 +157,7 @@
                             </div>
                         </div>
                         </div>
+
                         <div class="row">
                         <div class="col-md-6">
                             <div class="form-group row">
@@ -177,8 +209,111 @@
                         <?php endif ?>
 
 
+                        <?php if (isset($_GET['view_id'])): ?>
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Additionally add</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="parts" name="parts" value="<?php if(isset($_GET['view_id'])){ echo $parts;} ?>" placeholder="name"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">IMEI/Serial #</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="imei" name="imei" value="<?php if(isset($_GET['view_id'])){ echo $imei;} ?>" placeholder="IMEI #"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                               <button type="button" id="addbtn" name="addbtn" class="btn btn-primary btn-round">Add</button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div id="here">
+                          <div class="table-responsive">
+                            <table id="example1" class="table table-bordered table-striped" style="width:100%">
+                                <thead>
+                                  <tr>
+                                    <th>#</th>
+                                    <th>Part</th>
+                                    <th>IMEI</th>
+                                    <th>DELETE</th>  
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <?php
+                                    $sql_temp=mysqli_query($conn,"SELECT * FROM temp");
+                                    
+                                      $numRows = mysqli_num_rows($sql_temp); 
+                                
+                                      if($numRows > 0) {
+                                        
+                                        $i = 1;
+                              
+                                        while($row = mysqli_fetch_assoc($sql_temp)) {
+
+                                          $parts = $row['parts'];
+                                          $imei   = $row['imei'];
+                                          $id   = $row['id'];
+
+                                          echo ' <tr>';
+                                          echo ' <td>'.$i.' </td>';
+                                          echo ' <td>'.$parts.' </td>';
+                                          echo ' <td>'.$imei.' </td>';
+                                          echo '<td class="td-center"><button class="btn-edit" id="DeleteButton" onclick="removeForm('.$id.')">Delete</button></td>';
+                                          echo ' </tr>';
+                                          $i++;
+
+                                        }
+                                      }
+                                      // else{
+
+                                      //   $sql_real=mysqli_query($conn,"SELECT * FROM parts WHERE jobID='$view_id'");
+                                    
+                                      //   $numRows = mysqli_num_rows($sql_real); 
+                                  
+                                      //   if($numRows > 0) {
+
+                                      //   $i = 1;
+                              
+                                      //   while($row = mysqli_fetch_assoc($sql_real)) {
+
+                                      //     $parts = $row['parts'];
+                                      //     $imei   = $row['imei'];
+                                      //     $id   = $row['id'];
+
+                                      //     echo ' <tr>';
+                                      //     echo ' <td>'.$i.' </td>';
+                                      //     echo ' <td>'.$parts.' </td>';
+                                      //     echo ' <td>'.$imei.' </td>';
+                                      //     echo '<td class="td-center"><button class="btn-edit" id="DeleteButton" onclick="removeForm('.$id.')">Delete</button></td>';
+                                      //     echo ' </tr>';
+                                      //     $i++;
+
+                                      //   }
+
+                                      //   }
+                                      // }
+                                    ?>
+                                  </tbody>
+
+                            </table>
+                          </div> 
+                          <input type="hidden" class="form-control" id="job_id" name="job_id" value="<?php if(isset($_GET['view_id'])){ echo $view_id;} ?>" />          
+                          </div> <br><br>          
+                          <!-- end -->
+
+                        <?php else: ?>
+                        <?php endif ?>
+
+
                        <?php if (isset($_GET['view_id'])): ?>
-                          <input type="hidden" class="form-control" name="view_id" value="<?php if(isset($_GET['view_id'])){ echo $view_id;} ?>" />
+                          <input type="hidden" class="form-control" id="view_id" name="view_id" value="<?php if(isset($_GET['view_id'])){ echo $view_id;} ?>" />
                           <input type="hidden" class="form-control" name="req_update" value="req_update" />
                           <button type="submit" class="btn btn-info btn-fw">Update</button>
                           <button type="button" onclick="cancelForm()" class="btn btn-primary btn-fw">Cancel</button>
@@ -357,6 +492,64 @@
         }
      });
    }
+
+  $(document).ready(function() {
+
+      $('#example1').dataTable();
+      $('#addbtn').click(addrow);
+      //tmpEmpty();
+
+  });
+
+  function tmpEmpty() {
+
+    var tmpEmpty  ="tmpEmpty";
+
+      $.ajax({
+          type: 'post',
+          url: '../controller/progress_controller.php',
+          data: {tmpEmpty:tmpEmpty},
+          success: function (data) {
+              $( "#here" ).load(window.location.href + " #here" );
+            } 
+      });
+  }
+
+  ////// Add Row /////////
+  function addrow() {
+
+       var addrow  ="addrow";
+
+       $.ajax({
+            type: 'post',
+            url: '../controller/progress_controller.php',
+            data: {addrow:addrow,job_id:$('#job_id').val(),parts:$('#parts').val(),imei:$('#imei').val()
+            },
+            success: function (data) {
+              alert(data)
+              $('#parts').val("")
+              $('#imei').val("")
+
+               $( "#here" ).load(window.location.href + " #here" );
+               $('#example1').dataTable();
+              } 
+        });     
+  }
+
+  /////////// Remove the Row 
+    function removeForm(id){
+
+        var removeRow  ="removeRow";
+
+         $.ajax({
+            type: 'post',
+            url: '../controller/progress_controller.php',
+            data: {removeRow:removeRow,id:id},
+            success: function (data) {
+               $( "#here" ).load(window.location.href + " #here" );
+              } 
+        });
+    }
    
 
 

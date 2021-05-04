@@ -23,6 +23,16 @@
             $delivery_date  = $row['delivery_date'];
             $job_desc   = $row['job_desc'];
             $user_desc = $row['user_desc'];
+            $service_cost = $row['service_cost'];
+            $acessories_cost = $row['acessories_cost'];
+
+            $sql_p=mysqli_query($conn,"SELECT * FROM jobs J LEFT JOIN parts P ON J.jobId=P.jobID  WHERE J.jobID='$view_id'");
+                            
+            while($row1 = mysqli_fetch_assoc($sql_p)) {
+
+                $parts = $row1['parts'];
+                $imei = $row1['imei'];
+            }
           }
         }
     }
@@ -53,7 +63,7 @@
                   <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
                     <ul class="quick-links">
                       <li><a href="#"> JOBS</a></li>
-                      <li><a href="#"> REJECTED JOBS</a></li>
+                      <li><a href="#"> FINISHED JOBS</a></li>
                     </ul>
                   </div>
                 </div>
@@ -65,7 +75,7 @@
                 <div class="col-lg-12 grid-margin stretch-card">
                   <div class="card">
                     <div class="card-body">
-                    <h4 class="card-title">Rejected Jobs</h4>
+                    <h4 class="card-title">Completed Jobs</h4>
                         <p class="card-description">Job Info</p>
                         <div class="row">
                             <div class="col-md-6">
@@ -165,13 +175,80 @@
                             </div>
                         </div>
                         </div>
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Service Cost</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name ="service_cost" value="<?php if(isset($_GET['view_id'])){ echo $service_cost;} ?>" placeholder="LKR 0.00" readonly/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Cost of Accessories</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name ="acessories_cost" value="<?php if(isset($_GET['view_id'])){ echo $acessories_cost;} ?>" placeholder="LKR 0.00" readonly/>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
+                        <?php if (isset($_GET['view_id'])): ?>
+                        <div id="here">
+                          <div class="table-responsive">
+                            <table id="example1" class="table table-bordered table-striped" style="width:100%">
+                                <thead>
+                                  <tr>
+                                    <th>#</th>
+                                    <th>Part</th>
+                                    <th>IMEI</th> 
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <?php
+                                    $sql_temp=mysqli_query($conn,"SELECT * FROM parts WHERE jobID='$view_id'");
+                                    
+                                      $numRows = mysqli_num_rows($sql_temp); 
+                                
+                                      if($numRows > 0) {
+                                        
+                                        $i = 1;
+                              
+                                        while($row = mysqli_fetch_assoc($sql_temp)) {
+
+                                          $parts = $row['parts'];
+                                          $imei   = $row['imei'];
+                                          $id   = $row['id'];
+
+                                          echo ' <tr>';
+                                          echo ' <td>'.$i.' </td>';
+                                          echo ' <td>'.$parts.' </td>';
+                                          echo ' <td>'.$imei.' </td>';
+                                          echo ' </tr>';
+                                          $i++;
+
+                                        }
+                                      }
+                                      
+                                    ?>
+                                  </tbody>
+
+                            </table>
+                          </div> 
+                          
+                          <input type="hidden" class="form-control" id="job_id" name="job_id" value="<?php if(isset($_GET['view_id'])){ echo $view_id;} ?>" />          
+                          </div> <br><br>          
+                          <!-- end -->
+
+                        <?php else: ?>
+                        <?php endif ?>
 
 
                        <?php if (isset($_GET['view_id'])): ?>
                           <input type="hidden" class="form-control" name="view_id" value="<?php if(isset($_GET['view_id'])){ echo $view_id;} ?>" />
                           <button type="button" onclick="cancelForm()" class="btn btn-primary btn-fw">Cancel</button>
                       <?php else: ?>
-                          <button type="button" onclick="cancelForm()" class="btn btn-primary btn-fw">Cancel</button>
                       <?php endif ?>
                   
                     </div>
@@ -184,9 +261,9 @@
               <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Rejected Jobs Data</h4>
-                     
-                    <div class="table-responsive">         
+                    <h4 class="card-title">Finished Job Data</h4>
+                    
+                    <div class="table-responsive">          
                     <table id="example" class="table table-bordered">
                       <thead>
                         <tr>
@@ -197,14 +274,13 @@
                           <th>Request Date</th>
                           <th>Delivery Date</th>
                           <th>Job Desc</th>
-                          <!-- <th>User Desc</th> -->
-                          <th>View</th>
-                          <th>Delete</th>
+                          <th>Edit</th>
+                          <th>Print</th>
                         </tr>
                       </thead>
                       <tbody>
                         <?php
-                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE J.status='reject'");
+                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE J.status='finish'");
                           
                           $numRows = mysqli_num_rows($sql); 
                     
@@ -212,13 +288,15 @@
                             $i = 1;
                             while($row = mysqli_fetch_assoc($sql)) {
 
-                            $name    = $row['name'];  
-                            $order    = $row['jobNo']; 
+                            $name    = $row['name'];
+                            $order    = $row['jobNo'];   
                             $accessory   = $row['accessory'];
                             $request_date = $row['request_date'];
                             $delivery_date  = $row['delivery_date'];
                             $job_desc   = $row['job_desc'];
-                            // $user_desc = $row['user_desc'];
+                            $user_desc = $row['user_desc'];
+                            $service_cost = $row['service_cost'];
+                            $acessories_cost = $row['acessories_cost'];
 
                               echo ' <tr>';
                               echo ' <td>'.$i.' </td>';
@@ -228,9 +306,9 @@
                               echo ' <td>'.$request_date.' </td>';
                               echo ' <td>'.$delivery_date.' </td>';
                               echo ' <td>'.$job_desc.' </td>';
-                              // echo ' <td>'.$user_desc.' </td>';
-                              echo '<td class="td-center"><button type="button" onclick="editForm('.$row["jobId"].')" class="btn btn-info btn-fw">View</button></td>';
-                              echo '<td class="td-center"><button type="button" onclick="confirmation(event,'.$row["jobId"].')" class="btn btn-secondary btn-fw">Delete</button></td>';
+                              echo '<td class="td-center"><button type="button" onclick="editForm('.$row["jobId"].')" class="btn btn-info btn-fw">Edit</button></td>';
+                              echo '<td class="td-center"><button type="button" onclick="printForm('.$row["jobId"].')" name="print" class="btn btn-primary btn-fw">Print</button></td>';
+                              
                               echo ' </tr>';
                               $i++;
                             }
@@ -263,89 +341,20 @@
 </html>
 
 
-  <script>
-  
-    /////////////////////////////////////////////////// Form Submit Add  
-
-    // $(function () {
-
-    //     $('#requestAdd').on('submit', function (e) {
-
-    //       e.preventDefault();
-
-    //       $.ajax({
-    //         type: 'post',
-    //         url: '../controller/request_controller.php',
-    //         data: $('#requestAdd').serialize(),
-    //         success: function (data) {
-
-    //             if(data==0){
-
-    //                 swal({
-    //                   title: "Can't Duplication !",
-    //                   text: "Request",
-    //                   icon: "error",
-    //                   button: "Ok !",
-    //                 });
-
-    //             }else{
-
-    //                 swal({
-    //                   title: "Good job !",
-    //                   text: "Successfully Submited",
-    //                   icon: "success",
-    //                   button: "Ok !",
-    //                   });
-    //                   setTimeout(function(){ location.reload(); }, 2500);
-    //             }
-    //         }
-    //       });
-
-    //     });
-    //   });
+  <script> 
 
     function editForm(id){
-        window.location.href = "rejected.php?view_id=" + id;
+        window.location.href = "finished.php?view_id=" + id;
     }
 
     function cancelForm(){
-
-        window.location.href = "rejected.php";
+        window.location.href = "finished.php";
     }
 
-
-
-    ///////////// delete jobs ///////////////////////////
-    function confirmation(e,id) {
-        var answer = confirm("Are you sure, you want to permanently delete this record?")
-      if (!answer){
-        e.preventDefault();
-        return false;
-      }else{
-        myFunDelete(id)
-      }
+    //// print bill //////
+    function printForm(id){
+      window.open('invoice_print?id='+id, '_blank');
     }
-
-    function myFunDelete(id){
-
-      $.ajax({
-            url:"../controller/reject_controller.php",
-            method:"POST",
-            data:{removeID:id},
-            success:function(data){
-                swal({
-                title: "Good job !",
-                text: "Successfully Removerd",
-                icon: "success",
-                button: "Ok !",
-                });
-                setTimeout(function(){ location.reload(); }, 2500);
-                window.location.href = "rejected.php";
-            }
-      });
-    }
-
-     /////////////////////////////////////////////////////////////////
 
 
   </script>
