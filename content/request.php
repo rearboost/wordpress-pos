@@ -221,6 +221,8 @@
                           <th>Customer</th>
                           <th>Order</th>
                           <th>Accessory </th>
+                          <th>Brand </th>
+                          <th>Model </th>
                           <th>Request Date</th>
                           <th>Delivery Date</th>
                           <th>Job Desc</th>

@@ -32,6 +32,8 @@
 
                 $parts = $row1['parts'];
                 $imei = $row1['imei'];
+                $qty = $row1['qty'];
+                $price = $row1['price'];
             }
           }
         }
@@ -183,14 +185,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Cost of Accessories</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" name ="acessories_cost" value="<?php if(isset($_GET['view_id'])){ echo $acessories_cost;} ?>" placeholder="LKR 0.00" required/>
-                                </div>
-                            </div>
-                        </div>
                         </div>
 
                         <?php if (isset($_GET['view_id'])): ?>
@@ -201,7 +195,9 @@
                                   <tr>
                                     <th>#</th>
                                     <th>Part</th>
-                                    <th>IMEI</th> 
+                                    <th>IMEI</th>
+                                    <th>QTY</th>
+                                    <th>PRICE</th>  
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -218,12 +214,16 @@
 
                                           $parts = $row['parts'];
                                           $imei   = $row['imei'];
+                                          $qty   = $row['qty'];
+                                          $price   = $row['price'];
                                           $id   = $row['id'];
 
                                           echo ' <tr>';
                                           echo ' <td>'.$i.' </td>';
                                           echo ' <td>'.$parts.' </td>';
                                           echo ' <td>'.$imei.' </td>';
+                                          echo ' <td>'.$qty.' </td>';
+                                          echo ' <td>'.$price.' </td>';
                                           echo ' </tr>';
                                           $i++;
 

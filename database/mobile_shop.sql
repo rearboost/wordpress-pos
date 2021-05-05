@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 04, 2021 at 03:08 AM
+-- Generation Time: May 05, 2021 at 03:08 AM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 5.5.30
 
@@ -74,8 +74,8 @@ CREATE TABLE `jobs` (
 
 INSERT INTO `jobs` (`jobId`, `jobNo`, `accessory`, `brand`, `model`, `request_date`, `delivery_date`, `job_desc`, `user_desc`, `status`, `progress`, `service_cost`, `acessories_cost`, `customerId`) VALUES
 (1, 0, 'Huawei GR3 Phone', '', '', '2021-04-28', '2021-05-03', 'Need to repair', 'cant operate', 'technician', 50, 0.00, 0.00, 2),
-(2, 0, 'DELL I3 LAPTOP', '', '', '2021-04-01', '2021-04-30', 'Lorem ipsum', 'aaaaaaa', 'dispatch', 100, 1500.00, 3000.00, 1),
-(3, 0, 'HP pavilion X360', '', '', '2021-04-17', '2021-05-01', 'xxxxxxxxxxxxxxxxxxxxxx', '', 'request', 0, 0.00, 0.00, 4),
+(2, 20212, 'DELL I3 LAPTOP', '', '', '2021-04-01', '2021-04-30', 'Lorem ipsum', 'aaaaaaa', 'technician', 100, 0.00, 0.00, 1),
+(3, 0, 'HP pavilion X360', 'HP', 'i3', '2021-04-17', '2021-05-01', 'xxxxxxxxxxxxxxxxxxxxxx', 'sasa', 'complete', 100, 0.00, 0.00, 4),
 (4, 0, 'HP I5 LAPTOP', '', '', '2021-04-28', '2021-05-04', 'To change the battery', '', 'reject', 0, 0.00, 0.00, 3),
 (5, 20215, 'DELL I3 LAPTOP', '', '', '2021-04-29', '2021-05-05', 'For repairing', '', 'request', 0, 0.00, 0.00, 5),
 (6, 20216, 'Laptop', 'HP', 'i5 7gen', '2021-05-03', '2021-05-06', 'qqqqqqqq', 'aaa', 'complete', 100, 0.00, 0.00, 5);
@@ -89,7 +89,9 @@ INSERT INTO `jobs` (`jobId`, `jobNo`, `accessory`, `brand`, `model`, `request_da
 CREATE TABLE `parts` (
   `id` int(11) NOT NULL,
   `jobID` int(11) NOT NULL,
+  `qty` int(11) NOT NULL DEFAULT '1',
   `parts` text NOT NULL,
+  `price` double(10,2) NOT NULL,
   `imei` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -97,8 +99,14 @@ CREATE TABLE `parts` (
 -- Dumping data for table `parts`
 --
 
-INSERT INTO `parts` (`id`, `jobID`, `parts`, `imei`) VALUES
-(1, 6, 'keyboard', 'A124548');
+INSERT INTO `parts` (`id`, `jobID`, `qty`, `parts`, `price`, `imei`) VALUES
+(1, 2, 1, 'Keyboard', 1800.00, 'A1234'),
+(2, 1, 1, 'aaaa', 0.00, '1111'),
+(3, 0, 0, 'aaaa', 0.00, '111'),
+(4, 0, 1, 'aaaa', 123.00, 'a1122'),
+(5, 0, 1, 'as', 123.00, '1122'),
+(6, 3, 1, 'Touch pad', 3500.00, 'A123'),
+(7, 3, 1, 'aaaaa', 175.00, 'S1234234');
 
 -- --------------------------------------------------------
 
@@ -109,7 +117,9 @@ INSERT INTO `parts` (`id`, `jobID`, `parts`, `imei`) VALUES
 CREATE TABLE `temp` (
   `id` int(11) NOT NULL,
   `jobID` int(11) NOT NULL,
+  `qty` int(11) NOT NULL DEFAULT '1',
   `parts` text NOT NULL,
+  `price` double(10,2) NOT NULL,
   `imei` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -598,7 +608,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `parts`
 --
 ALTER TABLE `parts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `temp`
 --

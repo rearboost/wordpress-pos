@@ -31,6 +31,8 @@
 
                 $parts = $row1['parts'];
                 $imei = $row1['imei'];
+                $qty = $row1['qty'];
+                $price = $row1['price'];
             }
           }
         }
@@ -215,7 +217,7 @@
                             <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Additionally add</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="parts" name="parts" value="<?php if(isset($_GET['view_id'])){ echo $parts;} ?>" placeholder="name"/>
+                                    <input type="text" class="form-control" id="parts" name="parts" placeholder="name"/>
                                 </div>
                             </div>
                         </div>
@@ -223,15 +225,34 @@
                             <div class="form-group row">
                             <label class="col-sm-4 col-form-label">IMEI/Serial #</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="imei" name="imei" value="<?php if(isset($_GET['view_id'])){ echo $imei;} ?>" placeholder="IMEI #"/>
+                                    <input type="text" class="form-control" id="imei" name="imei" placeholder="IMEI #"/>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">QTY</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="qty" name="qty" placeholder="qty"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Price</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="price" name="price" placeholder="0.00"/>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-1">
                             <div class="form-group">
-                               <button type="button" id="addbtn" name="addbtn" class="btn btn-primary btn-round">Add</button>
+                               <button type="button" onclick="addrow()" id="addbtn" name="addbtn" class="btn btn-primary btn-round">Add</button>
                             </div>
-                          </div>
+                        </div>
                         </div>
 
                         <div id="here">
@@ -242,12 +263,14 @@
                                     <th>#</th>
                                     <th>Part</th>
                                     <th>IMEI</th>
+                                    <th>QTY</th>
+                                    <th>PRICE</th>
                                     <th>DELETE</th>  
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <?php
-                                    $sql_temp=mysqli_query($conn,"SELECT * FROM temp");
+                                    $sql_temp=mysqli_query($conn,"SELECT * FROM temp WHERE jobID='$view_id'");
                                     
                                       $numRows = mysqli_num_rows($sql_temp); 
                                 
@@ -259,46 +282,22 @@
 
                                           $parts = $row['parts'];
                                           $imei   = $row['imei'];
+                                          $qty   = $row['qty'];
+                                          $price   = $row['price'];
                                           $id   = $row['id'];
 
                                           echo ' <tr>';
                                           echo ' <td>'.$i.' </td>';
                                           echo ' <td>'.$parts.' </td>';
                                           echo ' <td>'.$imei.' </td>';
+                                          echo ' <td>'.$qty.' </td>';
+                                          echo ' <td>'.$price.' </td>';
                                           echo '<td class="td-center"><button class="btn-edit" id="DeleteButton" onclick="removeForm('.$id.')">Delete</button></td>';
                                           echo ' </tr>';
                                           $i++;
 
                                         }
                                       }
-                                      // else{
-
-                                      //   $sql_real=mysqli_query($conn,"SELECT * FROM parts WHERE jobID='$view_id'");
-                                    
-                                      //   $numRows = mysqli_num_rows($sql_real); 
-                                  
-                                      //   if($numRows > 0) {
-
-                                      //   $i = 1;
-                              
-                                      //   while($row = mysqli_fetch_assoc($sql_real)) {
-
-                                      //     $parts = $row['parts'];
-                                      //     $imei   = $row['imei'];
-                                      //     $id   = $row['id'];
-
-                                      //     echo ' <tr>';
-                                      //     echo ' <td>'.$i.' </td>';
-                                      //     echo ' <td>'.$parts.' </td>';
-                                      //     echo ' <td>'.$imei.' </td>';
-                                      //     echo '<td class="td-center"><button class="btn-edit" id="DeleteButton" onclick="removeForm('.$id.')">Delete</button></td>';
-                                      //     echo ' </tr>';
-                                      //     $i++;
-
-                                      //   }
-
-                                      //   }
-                                      // }
                                     ?>
                                   </tbody>
 
@@ -493,13 +492,15 @@
      });
    }
 
-  $(document).ready(function() {
+  // $(document).ready(function() {
 
-      $('#example1').dataTable();
-      $('#addbtn').click(addrow);
-      //tmpEmpty();
+  //     $('#example1').dataTable();
+  //     $('#addbtn').click(addrow);
+  //     //tmpEmpty();
 
-  });
+  // });
+
+
 
   function tmpEmpty() {
 
@@ -515,20 +516,23 @@
       });
   }
 
-  ////// Add Row /////////
-  function addrow() {
+
+
+    function addrow() {
 
        var addrow  ="addrow";
 
        $.ajax({
             type: 'post',
             url: '../controller/progress_controller.php',
-            data: {addrow:addrow,job_id:$('#job_id').val(),parts:$('#parts').val(),imei:$('#imei').val()
+            data: {addrow:addrow,job_id:$('#job_id').val(),qty:$('#qty').val(),parts:$('#parts').val(),price:$('#price').val(),imei:$('#imei').val()
             },
             success: function (data) {
-              alert(data)
+
               $('#parts').val("")
               $('#imei').val("")
+              $('#qty').val("")
+              $('#price').val("")
 
                $( "#here" ).load(window.location.href + " #here" );
                $('#example1').dataTable();
@@ -551,40 +555,6 @@
         });
     }
    
-
-
-    ///////////// delete jobs ///////////////////////////
-    // function confirmation(e,id) {
-    //     var answer = confirm("Are you sure, you want to permanently delete this record?")
-    //   if (!answer){
-    //     e.preventDefault();
-    //     return false;
-    //   }else{
-    //     myFunDelete(id)
-    //   }
-    // }
-
-    // function myFunDelete(id){
-
-    //   $.ajax({
-    //         url:"../controller/request_controller.php",
-    //         method:"POST",
-    //         data:{removeID:id},
-    //         success:function(data){
-    //             swal({
-    //             title: "Good job !",
-    //             text: "Successfully Removerd",
-    //             icon: "success",
-    //             button: "Ok !",
-    //             });
-    //             setTimeout(function(){ location.reload(); }, 2500);
-    //             window.location.href = "request.php";
-    //         }
-    //   });
-    // }
-
-     /////////////////////////////////////////////////////////////////
-
 
   </script>
 

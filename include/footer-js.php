@@ -20,3 +20,5 @@
     <script src="../assets/js/shared/chart.js"></script>
     <!-- End custom js for this page-->
     <!-- <script src="../assets/js/shared/jquery.cookie.js" type="text/javascript"></script> -->
+
+    <script src="../assets/js/core/jquery.min.js"></script><!-- JQUERY JS FILE -->

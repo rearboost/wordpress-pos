@@ -76,7 +76,7 @@
 
             ////////////// parts values /////////////////
 
-            $sql_temp=mysqli_query($conn,"SELECT * FROM temp");
+            $sql_temp=mysqli_query($conn,"SELECT * FROM temp WHERE jobID='addC_id'");
 
             $numRows = mysqli_num_rows($sql_temp); 
 
@@ -87,11 +87,14 @@
                     $jobID= $row['jobID'];
                     $parts=$row['parts'];
                     $imei=$row['imei'];
+                    $qty=$row['qty'];
+                    $price=$row['price'];
 
-                    $insert_item = mysqli_query($conn,"INSERT INTO parts (jobID,parts,imei) VALUES ('$jobID','$parts','$imei')");
+                    $insert_item = mysqli_query($conn,"INSERT INTO parts (jobID,qty,parts,price,imei) VALUES ('$jobID','$qty','$parts','$price','$imei')");
 
                 }
-                $insert_temp = "TRUNCATE TABLE temp;";
+                //$insert_temp = "TRUNCATE TABLE temp;";
+                $insert_temp = "DELETE FROM temp WHERE jobID='jobID';";
                 mysqli_query($conn,$insert_temp);
 
             }
@@ -104,8 +107,10 @@
             $job_id = $_POST['job_id'];
             $parts = $_POST['parts'];
             $imei = $_POST['imei'];
+            $qty=$_POST['qty'];
+            $price=$_POST['price'];
 
-            $insert_temp = "INSERT INTO  temp (jobID,parts,imei) VALUES ('$job_id','$parts','$imei')";
+            $insert_temp = "INSERT INTO temp (jobID,qty,parts,price,imei) VALUES ('$job_id','$qty','$parts','$price','$imei')";
             $result_temp = mysqli_query($conn,$insert_temp);
             
             if($result_temp){

@@ -46,10 +46,10 @@ include('../include/config.php');
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Product</label>
+                                <label class="col-sm-3 col-form-label">Choose Product</label>
                                     <div class="col-sm-6">
-                                      <select class="form-control" name="product" id="product" required>
-                                        <option selected>--Select product--</option>
+                                      <input list="brow" class="form-control" required>
+                                      <datalist id="brow">
                                         <?php
                                             $product = "SELECT A.ID as id, A.post_title as post_title FROM wp_posts A INNER JOIN wp_wc_product_meta_lookup B ON A.ID=B.product_id";
                                             $result = mysqli_query($conn,$product);
@@ -57,12 +57,11 @@ include('../include/config.php');
                             
                                             if($numRows > 0) {
                                                 while($row = mysqli_fetch_assoc($result)) {
-                                                echo "<option value = ".$row['id'].">" . $row['post_title'] . "</option>";
-                                                
+                                                echo '<option value ="'.$row["post_title"].'">';
                                                 }
                                             }
                                         ?>
-                                      </select>
+                                      </datalist>  
                                     </div>
                                     <div class="col-sm-3 size">
                                         <i class="fa fa-plus-circle pointer" onclick="AddPro()"></i>   
@@ -108,12 +107,12 @@ include('../include/config.php');
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <!-- <div class="form-group row">
+                                <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Payment</label>
                                     <div class="col-sm-8">
                                       <input type="text" class="form-control" name ="payment"  placeholder="0.00" required/>
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group row">
@@ -124,29 +123,6 @@ include('../include/config.php');
                                 </div>
                             </div>
                         </div><!-- end 3rd row-->
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">VAT</label>
-                                    <div class="col-sm-8">
-                                      <input type="text" class="form-control" name ="gross"  placeholder="0.00" required/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Payment</label>
-                                    <div class="col-sm-8">
-                                      <input type="text" class="form-control" name ="payment"  placeholder="0.00" required/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <input type="hidden" class="form-control" name="complete" value="complete" />
-                          		<button type="submit" class="btn btn-primary mr-2" style="width:100%">COMPLETE</button>
-                            </div>
-                        </div><!-- end 4th row-->
 
                         <div class="row">
                             <div class="col-md-4">
@@ -171,7 +147,7 @@ include('../include/config.php');
 	                            <input type="hidden" class="form-control" name="new" value="new" />
 	                          	<button type="submit" class="btn btn-primary" style="width:39%">NEW</button>
                             </div>
-                        </div><!-- end 5th row-->
+                        </div><!-- end 4th row-->
 
                         <div class="row">
                             <div class="col-md-4">
@@ -196,7 +172,7 @@ include('../include/config.php');
 	                            <input type="hidden" class="form-control" name="close" value="close" />
 	                          	<button type="submit" class="btn btn-primary" style="width:39%">CLOSE</button>
                             </div>
-                        </div><!-- end 6th row-->
+                        </div><!-- end 5th row-->
                   
                     </div>
                   </div>
@@ -346,8 +322,6 @@ include('../include/config.php');
                     });
 
                   }else{
-
-
 
                     swal({
                     title: "Good job !",
