@@ -48,7 +48,7 @@ table, td, th {
    border: 1px solid black; 
 }
 td{
-  line-height: 20px;
+  line-height: 40px;
 }
 td.customer{
   font-weight: 600;
@@ -147,7 +147,7 @@ table {
             <th>Customer</th>
           </tr>
           <tr>
-            <td class="customer">
+            <td class="customer" style="line-height: 20px;">
               <?php
               $client = mysqli_query($conn, "SELECT * FROM customer WHERE id='$customerId'");
               $person = mysqli_fetch_assoc($client);
@@ -180,8 +180,10 @@ table {
         
           <?php
 
+          $cost2 = 0;
+
           //$check1 = mysqli_query($conn, "SELECT * FROM parts WHERE jobID='$jobID'");
-          $check1 = mysqli_query($conn, "SELECT qty,parts,price,imei,SUM(qty*price) AS total FROM parts WHERE jobID='$jobID'");
+          $check1 = mysqli_query($conn, "SELECT qty,parts,price,imei FROM parts WHERE jobID='$jobID'");
           $count1 = mysqli_num_rows($check1);
 
           if($service_cost>0 && $count1>0){
@@ -194,8 +196,6 @@ table {
             echo '<td style="text-align:right;">'. number_format($qty*$service_cost,2,'.',',')  .'</td>';
             '</tr>';
             $cost1 = $qty*$service_cost;
-            $cost2 = $row['total'];
-            $total = number_format($cost1+$cost2,2,'.',',');
 
             while($row = mysqli_fetch_assoc($check1)){
               $p_qty = $row['qty'];
@@ -210,7 +210,9 @@ table {
               echo '<td style="text-align:right;">'. $price .'</td>';
               echo '<td style="text-align:right;">'. number_format($p_qty*$price,2,'.',',') .'</td>';
               '</tr>';
+              $cost2 =$cost2+($p_qty*$price);
             }
+            $total = $cost1+$cost2;
 
           }else if($service_cost>0){
             $qty = 1;
@@ -221,9 +223,10 @@ table {
             echo '<td style="text-align:right;">'. $service_cost .'</td>';
             echo '<td style="text-align:right;">'. number_format($qty*$service_cost,2,'.',',')  .'</td>';
             '</tr>';
-            $total = number_format($qty*$service_cost,2,'.',',');
+            $total = $qty*$service_cost;
 
           }else if($count1>0){
+             $i=1;
             while($row = mysqli_fetch_assoc($check1)){
               $p_qty = $row['qty'];
               $parts = $row['parts'];
@@ -237,15 +240,18 @@ table {
               echo '<td style="text-align:right;">'. $price .'</td>';
               echo '<td style="text-align:right;">'. number_format($p_qty*$price,2,'.',',') .'</td>';
               '</tr>';
-              $total = number_format($row['total'],2,'.',',');
+              $i++;
+              //$total = number_format($row['total'],2,'.',',');
+              $cost2 =$cost2+($p_qty*$price);
             }
+              $total=$cost2; 
           }
           ?>
         
         <tr>
           <th colspan="3"></th>
           <th>Total</th>
-          <th style="text-align:right;"><?php echo $total; ?></th>
+          <th style="text-align:right; line-height: 30px;"><?php echo number_format($total,2,'.',','); ?></th>
         </tr>
       </table>
     </div><!--row 3-->

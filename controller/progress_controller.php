@@ -36,8 +36,33 @@
                 }
 
             //}else{
-                echo 0;
+               // echo 0;
             //}
+
+                ////////////// parts values /////////////////
+
+            $sql_temp=mysqli_query($conn,"SELECT * FROM temp");
+
+            $numRows = mysqli_num_rows($sql_temp); 
+
+            if($numRows > 0) {
+
+                while($row = mysqli_fetch_assoc($sql_temp)) {
+
+                    $jobID= $row['jobID'];
+                    $parts=$row['parts'];
+                    $imei=$row['imei'];
+                    $qty=$row['qty'];
+                    $price=$row['price'];
+
+                    $insert_item = mysqli_query($conn,"INSERT INTO parts (jobID,qty,parts,price,imei) VALUES ('$jobID','$qty','$parts','$price','$imei')");
+
+                }
+                $insert_temp = "TRUNCATE TABLE temp;";
+                //$insert_temp = "DELETE FROM temp WHERE jobID='addC_id';";
+                mysqli_query($conn,$insert_temp);
+
+            }
 
         }
 
@@ -54,7 +79,7 @@
             $to = $mdata['contact'];
             $no = $mdata['jobNo'];
             $job = $mdata['accessory'];
-            $msg = 'Dear customer, Your' .$job. '(order - ' .$job_no. ' ) is ready. Please visit our place at your convenience.';
+            $msg = 'Dear customer, Your' .$job. '(order - ' .$no. ' ) is ready. Please visit our place at your convenience.';
 
             $query ="UPDATE  jobs  SET status=?  WHERE jobId=?;";
 
@@ -72,32 +97,9 @@
                 }else{
                   echo 0;
                 }
-             }
-
-            ////////////// parts values /////////////////
-
-            $sql_temp=mysqli_query($conn,"SELECT * FROM temp WHERE jobID='addC_id'");
-
-            $numRows = mysqli_num_rows($sql_temp); 
-
-            if($numRows > 0) {
-
-                while($row = mysqli_fetch_assoc($sql_temp)) {
-
-                    $jobID= $row['jobID'];
-                    $parts=$row['parts'];
-                    $imei=$row['imei'];
-                    $qty=$row['qty'];
-                    $price=$row['price'];
-
-                    $insert_item = mysqli_query($conn,"INSERT INTO parts (jobID,qty,parts,price,imei) VALUES ('$jobID','$qty','$parts','$price','$imei')");
-
-                }
-                //$insert_temp = "TRUNCATE TABLE temp;";
-                $insert_temp = "DELETE FROM temp WHERE jobID='jobID';";
-                mysqli_query($conn,$insert_temp);
-
             }
+
+            
 
         }
 
@@ -120,11 +122,20 @@
             }
          }
 
-         // Remove  Function 
+         // Remove  Function - remove from temp table
          if(isset($_POST['removeRow'])){
             
             $id = $_POST['id'];
             $insert_temp = "DELETE FROM temp WHERE id='$id'";
+            mysqli_query($conn,$insert_temp);
+            
+         }
+
+         // Remove  Function - remove from real table
+         if(isset($_POST['removeItem'])){
+            
+            $id = $_POST['id'];
+            $insert_temp = "DELETE FROM parts WHERE id='$id'";
             mysqli_query($conn,$insert_temp);
             
          }

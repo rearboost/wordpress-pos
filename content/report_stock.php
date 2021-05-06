@@ -42,28 +42,24 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                <!-- <label class="col-sm-4 col-form-label">PO Number</label> -->
-                                    <!-- <div class="col-sm-8">
-                                        <select class="form-control" name="po_number" id="po_number" required>
-                                            <option value="">--Select PO Number--</option> -->
-                                            <?php
-                                                // $custom = "SELECT * FROM po_entering";
-                                                // $result = mysqli_query($conn,$custom);
-                                                // $numRows = mysqli_num_rows($result); 
-                                
-                                                // if($numRows > 0) {
-                                                //     while($row = mysqli_fetch_assoc($result)) {
-                                                //     echo "<option value = ".$row['po_number'].">" . $row['po_number'] . "</option>";
-                                                    
-                                                //     }
-                                                // }
-                                            ?>
-                                        <!-- </select>
-                                    </div> -->
-                                    <label class="col-sm-4 col-form-label">Select Date</label>
+                                    <label class="col-sm-4 col-form-label">Stock Status</label>
                                     <div class="col-sm-8">
-                                        <input type="date" class="form-control" name="pdate" id="date">
-                                    </div>    
+                                        <select class="form-control" name="status" id="status" required>
+                                            <option value="" Selected>--Select Status--</option>
+                                            <?php
+                                                $status = "SELECT DISTINCT(stock_status) FROM wp_wc_product_meta_lookup";
+                                                $result = mysqli_query($conn,$status);
+                                                $numRows = mysqli_num_rows($result); 
+                                
+                                                if($numRows > 0) {
+                                                while($row = mysqli_fetch_assoc($result)) {
+                                                  echo '<option value ="'.$row["stock_status"].'">' . $row["stock_status"] . '</option>';
+                                                    
+                                                }
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>   
                                 </div>
                                 <button type="button" onclick="cancelForm()" class="btn btn-warning btn-fw">Cancel</button>                        
                             </div>
@@ -77,12 +73,12 @@
             
             <form class="forms-sample" id="profit_form">
 
-                <input type="hidden" value ='<?php echo $_GET['view_id']; ?>' name="po_number">
+                <input type="hidden" value ='<?php echo $_GET['view_id']; ?>' name="status">
 
                 <div class="col-lg-12 grid-margin stretch-card">
                   <div class="card">
                     <div class="card-body">
-                        <center><b><h5>PO Number - <?php echo $_GET['view_id']; ?></h5></b></center>
+                        <center><b><h5>Stock Status - <?php echo $_GET['view_id']; ?></h5></b></center>
                         <br>
                     
                     
@@ -90,12 +86,9 @@
                     
                         <?php 
 
-                          $poNo = $_GET['view_id'];
-                        //   $sql_buyerName=mysqli_query($conn,"SELECT * FROM po_entering WHERE po_number='$poNo'");
-                        //   $row_buyerName= mysqli_fetch_assoc($sql_buyerName);
-                        //   $bpo_no = $row_buyerName['bpo_no'];
+                          $status = $_GET['view_id'];
 
-                          $sql=mysqli_query($conn,"SELECT * FROM bom WHERE po_number='$poNo'"); 
+                          $sql=mysqli_query($conn,"SELECT * FROM wp_posts A RIGHT JOIN wp_wc_product_meta_lookup B ON A.ID=B.product_id WHERE B.stock_status='$status'"); 
                     
                         ?>
 
@@ -106,22 +99,11 @@
                                 <thead>
                                     <tr>
                                     <th> # </th>
-                                    <th>Master Cat</th>
-                                    <th>Main Cat </th>
-                                    <th>Sub Cat</th>
-                                    <th>Item </th>
-                                    <th>Color </th>
-                                    <th>Size </th>
-                                    <th>Reference </th>
-                                    <th>Dimension </th>
-                                    <th>Unit</th>
-                                    <th>Fab Type </th>
-                                    <th>Booking Consumption </th>
-                                    <th>Wastage%</th>
-                                    <th>Excess%</th>
-                                    <th>Required Qty</th>
-                                    <th>Unit Price</th>
-                                    <th>Value</th>
+                                    <th>Product ID</th>
+                                    <th>Product </th>
+                                    <th>Min Price</th>
+                                    <th>Max Price </th>
+                                    <th>QTY </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -134,41 +116,24 @@
 
                                         while($row = mysqli_fetch_assoc($sql)) {
 
-                                        $value = 0;
-                                        $masterName  = $row['masterName'];
-                                        $main   = $row['main'];
-                                        $subCategory = $row['subCategory'];
-                                        $itemName = $row['itemName'];
-                                        $color = $row['color'];
-                                        $size = $row['size'];
-                                        $reference = $row['reference'];
-                                        $dimension = $row['dimension'];
-                                        $unit = $row['unit'];
-                                        $fabType = $row['fabType'];
-                                        $consumption = $row['consumption'];
-                                        $wastage = $row['wastage'];
-                                        $excess = $row['excess'];
-                                        $req_qty = $row['req_qty'];
-                                        $unit_price = $row['unit_price'];
-                                        $value =number_format(($unit_price* $req_qty), 2, '.', '');
+                                        $product_id  = $row['product_id'];
+                                        $post_title   = $row['post_title'];
+                                        $min_price = $row['min_price'];
+                                        $max_price = $row['max_price'];
+                                        $stock_quantity = $row['stock_quantity'];
+
+                                        if(empty($stock_quantity)){
+                                            $stock_quantity=0;
+                                        }
+
+
                                         echo ' <tr>';
                                         echo ' <td>'.$i.' </td>';
-                                        echo ' <td>'.$masterName.' </td>';
-                                        echo ' <td>'.$main.' </td>';
-                                        echo ' <td>'.$subCategory.' </td>';
-                                        echo ' <td>'.$itemName.' </td>';
-                                        echo ' <td>'.$color.' </td>';
-                                        echo ' <td>'.$size.' </td>';
-                                        echo ' <td>'.$reference.' </td>';
-                                        echo ' <td>'.$dimension.' </td>';
-                                        echo ' <td>'.$unit.' </td>';
-                                        echo ' <td>'.$fabType.' </td>';
-                                        echo ' <td>'.$consumption.' </td>';
-                                        echo ' <td>'.$wastage.' </td>';
-                                        echo ' <td>'.$excess.' </td>';
-                                        echo ' <td>'.$req_qty.' </td>';
-                                        echo ' <td>'.$unit_price.' </td>';
-                                        echo ' <td>'.$value.' </td>';
+                                        echo ' <td>'.$product_id.' </td>';
+                                        echo ' <td>'.$post_title.' </td>';
+                                        echo ' <td>'.$min_price.' </td>';
+                                        echo ' <td>'.$max_price.' </td>';
+                                        echo ' <td>'.$stock_quantity.' </td>';
                                         echo ' </tr>';
                                         $i++;
                                         }
@@ -212,11 +177,11 @@
 <script>
    
     ////////////// bpo_no get  ///////////////////////
-    $("#po_number").on('change',function(){
+    $("#status").on('change',function(){
 
-      var bpo_no = $(this).val();
-      if(bpo_no){     
-        window.location.href = "report_stock.php?view_id=" + bpo_no;
+      var status = $(this).val();
+      if(status){     
+        window.location.href = "report_stock.php?view_id=" + status;
       }
     });
 

@@ -25,7 +25,8 @@
             $user_desc = $row['user_desc'];
             $progress = $row['progress'];
 
-            $sql_p=mysqli_query($conn,"SELECT * FROM jobs J LEFT JOIN temp T ON J.jobId=T.jobID  WHERE J.jobID='$view_id'");
+            //$sql_p=mysqli_query($conn,"SELECT * FROM jobs J LEFT JOIN temp T ON J.jobId=T.jobID  WHERE J.jobID='$view_id'");
+            $sql_p=mysqli_query($conn,"SELECT * FROM jobs J LEFT JOIN parts P ON J.jobId=P.jobID  WHERE J.jobID='$view_id'");
                             
             while($row1 = mysqli_fetch_assoc($sql_p)) {
 
@@ -270,11 +271,22 @@
                                 </thead>
                                 <tbody>
                                   <?php
-                                    $sql_temp=mysqli_query($conn,"SELECT * FROM temp WHERE jobID='$view_id'");
+                                    //$sql_real=mysqli_query($conn,"SELECT * FROM parts P ,temp T  WHERE T.jobID='$view_id' OR P.jobID='$view_id'");
                                     
-                                      $numRows = mysqli_num_rows($sql_temp); 
+                                      //$numRows = mysqli_num_rows($sql_real);
+
+                                      $sql_temp=mysqli_query($conn,"SELECT * FROM temp WHERE jobID='$view_id'");
+                                      $sql_real=mysqli_query($conn,"SELECT * FROM parts WHERE jobID='$view_id'");
+
+                                      $numRows_temp = mysqli_num_rows($sql_temp);  
+                                      $numRows_real = mysqli_num_rows($sql_real);  
                                 
-                                      if($numRows > 0) {
+                                      if($numRows_temp>0 && $numRows_real>0) {
+
+                                        //$sql=mysqli_query($conn,"SELECT * FROM parts P INNER JOIN temp T ON P.jobID=T.jobID WHERE P.jobID='$view_id' OR T.jobID='$view_id'");
+                                        //$numRows = mysqli_num_rows($sql);
+
+                                        //if($numRows>0){
                                         
                                         $i = 1;
                               
@@ -293,6 +305,78 @@
                                           echo ' <td>'.$qty.' </td>';
                                           echo ' <td>'.$price.' </td>';
                                           echo '<td class="td-center"><button class="btn-edit" id="DeleteButton" onclick="removeForm('.$id.')">Delete</button></td>';
+                                          echo ' </tr>';
+
+                                          $i++;
+
+                                        }
+                                        while($row = mysqli_fetch_assoc($sql_real)) {
+
+                                          $parts = $row['parts'];
+                                          $imei   = $row['imei'];
+                                          $qty   = $row['qty'];
+                                          $price   = $row['price'];
+                                          $id   = $row['id'];
+
+                                          echo ' <tr>';
+                                          echo ' <td>'.$i.' </td>';
+                                          echo ' <td>'.$parts.' </td>';
+                                          echo ' <td>'.$imei.' </td>';
+                                          echo ' <td>'.$qty.' </td>';
+                                          echo ' <td>'.$price.' </td>';
+                                          echo '<td class="td-center"><button class="btn-edit" id="DeleteButton" onclick="removeFormReal('.$id.')">Delete</button></td>';
+                                          echo ' </tr>';
+
+                                          $i++;
+
+                                        }
+                                        //}
+                                      }else if($numRows_temp>0) {
+
+                                        //$sql=mysqli_query($conn,"SELECT * FROM temp WHERE jobID='$view_id'");
+                                        
+                                        $i = 1;
+                              
+                                        while($row = mysqli_fetch_assoc($sql_temp)) {
+
+                                          $parts = $row['parts'];
+                                          $imei   = $row['imei'];
+                                          $qty   = $row['qty'];
+                                          $price   = $row['price'];
+                                          $id   = $row['id'];
+
+                                          echo ' <tr>';
+                                          echo ' <td>'.$i.' </td>';
+                                          echo ' <td>'.$parts.' </td>';
+                                          echo ' <td>'.$imei.' </td>';
+                                          echo ' <td>'.$qty.' </td>';
+                                          echo ' <td>'.$price.' </td>';
+                                          echo '<td class="td-center"><button class="btn-edit" id="DeleteButton" onclick="removeForm('.$id.')">Delete</button></td>';
+                                          echo ' </tr>';
+                                          $i++;
+
+                                        }
+                                      }else if($numRows_real>0) {
+
+                                        //$sql=mysqli_query($conn,"SELECT * FROM parts WHERE jobID='$view_id'");
+                                        
+                                        $i = 1;
+                              
+                                        while($row = mysqli_fetch_assoc($sql_real)) {
+
+                                          $parts = $row['parts'];
+                                          $imei   = $row['imei'];
+                                          $qty   = $row['qty'];
+                                          $price   = $row['price'];
+                                          $id   = $row['id'];
+
+                                          echo ' <tr>';
+                                          echo ' <td>'.$i.' </td>';
+                                          echo ' <td>'.$parts.' </td>';
+                                          echo ' <td>'.$imei.' </td>';
+                                          echo ' <td>'.$qty.' </td>';
+                                          echo ' <td>'.$price.' </td>';
+                                          echo '<td class="td-center"><button class="btn-edit" id="DeleteButton" onclick="removeFormReal('.$id.')">Delete</button></td>';
                                           echo ' </tr>';
                                           $i++;
 
@@ -463,11 +547,13 @@
 
     function pushForm(id) {
 
+
       $.ajax({
         url:"../controller/progress_controller.php",
         method:"POST",
         data:{addcomplete_job_edit:id},
         success:function(data){
+          alert(data)
 
           if(data==0){
 
@@ -499,8 +585,6 @@
   //     //tmpEmpty();
 
   // });
-
-
 
   function tmpEmpty() {
 
@@ -549,6 +633,21 @@
             type: 'post',
             url: '../controller/progress_controller.php',
             data: {removeRow:removeRow,id:id},
+            success: function (data) {
+               $( "#here" ).load(window.location.href + " #here" );
+              } 
+        });
+    }
+
+      /////////// Remove the Row 
+    function removeFormReal(id){
+
+        var removeItem  ="removeItem";
+
+         $.ajax({
+            type: 'post',
+            url: '../controller/progress_controller.php',
+            data: {removeItem:removeItem,id:id},
             success: function (data) {
                $( "#here" ).load(window.location.href + " #here" );
               } 

@@ -53,17 +53,13 @@
                                 
                                                 if($numRows > 0) {
                                                     while($row = mysqli_fetch_assoc($result)) {
-                                                    echo "<option value = ".$row['status'].">" . $row['status'] . "</option>";
+                                                    echo '<option value ="'.$row["status"].'">' . $row["status"] . '</option>';
                                                     
                                                     }
                                                 }
                                             ?>
                                         </select>
                                     </div>
-                                    <!-- <label class="col-sm-4 col-form-label">Select Date</label>
-                                    <div class="col-sm-8">
-                                        <input type="date" class="form-control" name="pdate" id="date">
-                                    </div>   -->  
                                 </div>
                                 <button type="button" onclick="cancelForm()" class="btn btn-warning btn-fw">Cancel</button>                        
                             </div>
@@ -106,10 +102,10 @@
                                     <th> # </th>
                                     <th>Name </th>
                                     <th>accessory</th>
-                                    <th>job_desc </th>
+                                    <!-- <th>job_desc </th> -->
                                     <th>request_date</th>
                                     <th>delivery_date </th>
-                                    <th>user_desc </th>
+                                    <!-- <th>user_desc </th> -->
                                     <th>service_cost </th>
                                     <th>acessories_cost </th>
                                     <th>Amount </th>
@@ -133,25 +129,35 @@
                                         $delivery_date = $row['delivery_date'];
                                         $user_desc = $row['user_desc'];
                                         $service_cost = $row['service_cost'];
-                                        $acessories_cost = $row['acessories_cost'];
-                                        $value =number_format(($service_cost+$acessories_cost), 2, '.', '');
+                                        $jobId = $row['jobId'];
+
+
+                                        $cost =mysqli_query($conn, "SELECT SUM(qty*price) as acessories_cost FROM parts WHERE jobID='$jobId'");
+                                        $cost_data = mysqli_fetch_assoc($cost);
+                                        $acessories_cost = $cost_data['acessories_cost'];
+
+                                        if(empty($acessories_cost)){
+                                          $acessories_cost=0.00;
+                                        }
+
+                                        $value =number_format(($service_cost+$acessories_cost), 2, '.', ',');
+
                                         echo ' <tr>';
                                         echo ' <td>'.$i.' </td>';
                                         echo ' <td>'.$name.' </td>';
                                         echo ' <td>'.$accessory.' </td>';
-                                        echo ' <td>'.$job_desc.' </td>';
+                                        //echo ' <td>'.$job_desc.' </td>';
                                         echo ' <td>'.$request_date.' </td>';
                                         echo ' <td>'.$delivery_date.' </td>';
-                                        echo ' <td>'.$user_desc.' </td>';
+                                        //echo ' <td>'.$user_desc.' </td>';
                                         echo ' <td>'.$service_cost.' </td>';
-                                        echo ' <td>'.$acessories_cost.' </td>';
+                                        echo ' <td>'.number_format($acessories_cost, 2, '.', ',').' </td>';
                                         echo ' <td>'.$value.' </td>';
                                         echo ' </tr>';
                                         $i++;
                                         }
                                     }
                                     ?>
-                                </tbody>
                                 </tbody>
                             </table>
                             </div>
@@ -164,6 +170,7 @@
                    </div>
                  </div>
                </div>
+              </div>
             </form>
            <?php else: ?>
 

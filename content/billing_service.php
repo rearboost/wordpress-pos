@@ -38,6 +38,12 @@
           }
         }
     }
+    if(isset($_GET['bill_id'])){
+
+        $bill_id = $_GET['bill_id'];
+
+        $sql=mysqli_query($conn,"UPDATE jobs SET status='finish' WHERE jobId='$bill_id'");  
+    }
 
   ?>
   <!-- include head code here -->
@@ -188,6 +194,7 @@
                         </div>
 
                         <?php if (isset($_GET['view_id'])): ?>
+                        <p>Added accessories Info :</p>
                         <div id="here">
                           <div class="table-responsive">
                             <table id="example1" class="table table-bordered table-striped" style="width:100%">
@@ -394,10 +401,19 @@
     //// print bill //////
     function printForm(id){
       window.open('invoice_print?id='+id, '_blank');
+
+      window.onafterprint = function(){
+        alert(id)
+        window.location.href = "billing_service.php?bill_id=" + id;
+        // $(window).off(window.onafterprint);
+        // console.log('Print Dialog Closed..');
+      };
     }
 
 
-  </script>
+
+
+</script>
 
 
 

@@ -39,50 +39,48 @@
                     <div class="card-body">
                     <h4 class="card-title">Profit report</h4>
                     <!-- <p class="card-description"> Horizontal form layout </p> -->
+                    <form>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <div class="form-group row">
-                                <!-- <label class="col-sm-4 col-form-label">PO Number</label> -->
-                                    <!-- <div class="col-sm-8">
-                                        <select class="form-control" name="po_number" id="po_number" required>
-                                            <option value="">--Select PO Number--</option> -->
-                                            <?php
-                                                // $custom = "SELECT * FROM po_entering";
-                                                // $result = mysqli_query($conn,$custom);
-                                                // $numRows = mysqli_num_rows($result); 
-                                
-                                                // if($numRows > 0) {
-                                                //     while($row = mysqli_fetch_assoc($result)) {
-                                                //     echo "<option value = ".$row['po_number'].">" . $row['po_number'] . "</option>";
-                                                    
-                                                //     }
-                                                // }
-                                            ?>
-                                        <!-- </select>
-                                    </div> -->
-                                    <label class="col-sm-4 col-form-label">Select Date</label>
+                                    <label class="col-sm-4 col-form-label">Select From Date</label>
                                     <div class="col-sm-8">
-                                        <input type="date" class="form-control" name="pdate" id="date">
+                                        <input type="date" class="form-control" name="fdate" id="fdate">
                                     </div>    
                                 </div>
                                 <button type="button" onclick="cancelForm()" class="btn btn-warning btn-fw">Cancel</button>                        
                             </div>
+                            <div class="col-md-5">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Select To Date</label>
+                                    <div class="col-sm-8">
+                                        <input type="date" class="form-control" name="tdate" id="tdate">
+                                    </div>    
+                                </div>                        
+                            </div>
+                            <div class="col-md-2">
+                               <div class="form-group row">
+                                 <button type="button" id="view_btn" class="btn btn-primary btn-fw">View</button>  
+                               </div>                        
+                            </div>
                         </div>
+                      </form>
                   </div>
                 </div>
             </div>
             <br>
 
-            <?php if (isset($_GET['view_id'])): ?>
+            <?php if (isset($_GET['view_id1']) && isset($_GET['view_id2'])): ?>
             
             <form class="forms-sample" id="profit_form">
 
-                <input type="hidden" value ='<?php echo $_GET['view_id']; ?>' name="po_number">
+                <input type="hidden" value ='<?php echo $_GET['view_id1']; ?>' name="fdate">
+                <input type="hidden" value ='<?php echo $_GET['view_id2']; ?>' name="tdate">
 
                 <div class="col-lg-12 grid-margin stretch-card">
                   <div class="card">
                     <div class="card-body">
-                        <center><b><h5>PO Number - <?php echo $_GET['view_id']; ?></h5></b></center>
+                        <center><b><h5> <?php echo $_GET['view_id1']; ?> &nbsp; to &nbsp; <?php echo $_GET['view_id2']; ?></h5></b></center>
                         <br>
                     
                     
@@ -90,12 +88,13 @@
                     
                         <?php 
 
-                          $poNo = $_GET['view_id'];
-                        //   $sql_buyerName=mysqli_query($conn,"SELECT * FROM po_entering WHERE po_number='$poNo'");
-                        //   $row_buyerName= mysqli_fetch_assoc($sql_buyerName);
-                        //   $bpo_no = $row_buyerName['bpo_no'];
+                        //if(isset($_GET['view_btn'])){
 
-                          $sql=mysqli_query($conn,"SELECT * FROM bom WHERE po_number='$poNo'"); 
+                            $fdate = $_GET['view_id1'];
+                            $tdate = $_GET['view_id2'];
+
+                            $sql = mysqli_query($conn, "SELECT DISTINCT(delivery_date) as delivery_date, SUM(service_cost) as service_cost, SUM(qty*price) as accessories_cost FROM jobs J LEFT JOIN parts P ON J.jobId=P.jobID WHERE delivery_date BETWEEN '$fdate' AND '$tdate' GROUP BY delivery_date");
+                        //}
                     
                         ?>
 
@@ -106,22 +105,10 @@
                                 <thead>
                                     <tr>
                                     <th> # </th>
-                                    <th>Master Cat</th>
-                                    <th>Main Cat </th>
-                                    <th>Sub Cat</th>
-                                    <th>Item </th>
-                                    <th>Color </th>
-                                    <th>Size </th>
-                                    <th>Reference </th>
-                                    <th>Dimension </th>
-                                    <th>Unit</th>
-                                    <th>Fab Type </th>
-                                    <th>Booking Consumption </th>
-                                    <th>Wastage%</th>
-                                    <th>Excess%</th>
-                                    <th>Required Qty</th>
-                                    <th>Unit Price</th>
-                                    <th>Value</th>
+                                    <th>Date</th>
+                                    <th>Service Income</th>
+                                    <th>Other Income</th>
+                                    <th>Total </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -135,46 +122,31 @@
                                         while($row = mysqli_fetch_assoc($sql)) {
 
                                         $value = 0;
-                                        $masterName  = $row['masterName'];
-                                        $main   = $row['main'];
-                                        $subCategory = $row['subCategory'];
-                                        $itemName = $row['itemName'];
-                                        $color = $row['color'];
-                                        $size = $row['size'];
-                                        $reference = $row['reference'];
-                                        $dimension = $row['dimension'];
-                                        $unit = $row['unit'];
-                                        $fabType = $row['fabType'];
-                                        $consumption = $row['consumption'];
-                                        $wastage = $row['wastage'];
-                                        $excess = $row['excess'];
-                                        $req_qty = $row['req_qty'];
-                                        $unit_price = $row['unit_price'];
-                                        $value =number_format(($unit_price* $req_qty), 2, '.', '');
+                                        $delivery_date  = $row['delivery_date'];
+                                        $service_cost   = $row['service_cost'];
+                                        //$jobId = $row['jobId'];
+                                        $accessories_cost = $row['accessories_cost'];
+
+                                        // $cost =mysqli_query($conn, "SELECT SUM(qty*price) as acessories_cost FROM parts WHERE jobID='$jobId'");
+                                        // $cost_data = mysqli_fetch_assoc($cost);
+                                        // $acessories_cost = $cost_data['acessories_cost'];
+                                        if(empty($accessories_cost)){
+                                          $accessories_cost=0.00;
+                                        }
+
+                                        $value =number_format(($service_cost+$accessories_cost), 2, '.', ',');
+
                                         echo ' <tr>';
                                         echo ' <td>'.$i.' </td>';
-                                        echo ' <td>'.$masterName.' </td>';
-                                        echo ' <td>'.$main.' </td>';
-                                        echo ' <td>'.$subCategory.' </td>';
-                                        echo ' <td>'.$itemName.' </td>';
-                                        echo ' <td>'.$color.' </td>';
-                                        echo ' <td>'.$size.' </td>';
-                                        echo ' <td>'.$reference.' </td>';
-                                        echo ' <td>'.$dimension.' </td>';
-                                        echo ' <td>'.$unit.' </td>';
-                                        echo ' <td>'.$fabType.' </td>';
-                                        echo ' <td>'.$consumption.' </td>';
-                                        echo ' <td>'.$wastage.' </td>';
-                                        echo ' <td>'.$excess.' </td>';
-                                        echo ' <td>'.$req_qty.' </td>';
-                                        echo ' <td>'.$unit_price.' </td>';
+                                        echo ' <td>'.$delivery_date.' </td>';
+                                        echo ' <td>'.$service_cost.' </td>';
+                                        echo ' <td>'.$accessories_cost.' </td>';
                                         echo ' <td>'.$value.' </td>';
                                         echo ' </tr>';
                                         $i++;
                                         }
                                     }
                                     ?>
-                                </tbody>
                                 </tbody>
                             </table>
                             </div>
@@ -185,6 +157,7 @@
                    </div>
                  </div>
                </div>
+              </div>
             </form>
            <?php else: ?>
 
@@ -210,15 +183,19 @@
 
 
 <script>
-   
-    ////////////// bpo_no get  ///////////////////////
-    $("#po_number").on('change',function(){
 
-      var bpo_no = $(this).val();
-      if(bpo_no){     
-        window.location.href = "report_profit.php?view_id=" + bpo_no;
+    $("#view_btn").on('click',function(){
+
+      var fdate = $('#fdate').val();
+      var tdate = $('#tdate').val();
+
+      if(fdate && tdate){      
+        window.location.href = "report_profit.php?view_id1="+fdate+"&view_id2="+ tdate;
+      }else{
+        alert("Please select date range first");
       }
     });
+
 
     function cancelForm(){
 

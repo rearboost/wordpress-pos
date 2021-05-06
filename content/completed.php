@@ -190,6 +190,7 @@
                         </div>
 
                         <?php if (isset($_GET['view_id'])): ?>
+                        <p>Added accessories Info :</p>
                         <div id="here">
                           <div class="table-responsive">
                             <table id="example1" class="table table-bordered table-striped" style="width:100%">
@@ -299,7 +300,11 @@
                             $job_desc   = $row['job_desc'];
                             $user_desc = $row['user_desc'];
                             $service_cost = $row['service_cost'];
-                            $acessories_cost = $row['acessories_cost'];
+                            $jobId = $row['jobId'];
+
+                            $cost =mysqli_query($conn, "SELECT SUM(qty*price) as acessories_cost FROM parts WHERE jobID='$jobId'");
+                            $cost_data = mysqli_fetch_assoc($cost);
+                            $acessories_cost = $cost_data['acessories_cost'];
 
                               echo ' <tr>';
                               echo ' <td>'.$i.' </td>';
@@ -310,7 +315,7 @@
                               echo ' <td>'.$delivery_date.' </td>';
                               echo ' <td>'.$job_desc.' </td>';
                               echo '<td class="td-center"><button type="button" onclick="editForm('.$row["jobId"].')" class="btn btn-info btn-fw">Edit</button></td>';
-                              if($service_cost>'0.00' && $acessories_cost>'0.00'){
+                              if($service_cost>'0.00' || $acessories_cost>'0.00'){
                                 echo '<td class="td-center"><button type="button" onclick="pushForm('.$row["jobId"].')" class="btn btn-success btn-fw">Dispatched</button></td>';
                               }else{
                                 echo '<td class="td-center"><button type="button" onclick="pushForm('.$row["jobId"].')" class="btn btn-success btn-fw" disabled>Dispatched</button></td>';
