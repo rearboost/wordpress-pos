@@ -1,20 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.7.7
+-- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 05, 2021 at 03:08 AM
--- Server version: 10.1.10-MariaDB
--- PHP Version: 5.5.30
+-- Host: localhost:8889
+-- Generation Time: May 09, 2021 at 04:43 PM
+-- Server version: 5.6.38
+-- PHP Version: 7.2.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `mobile_shop`
@@ -44,6 +38,67 @@ INSERT INTO `customer` (`id`, `name`, `address`, `contact`, `email`) VALUES
 (3, 'Sandamali ', 'Hanwella', '94712589574', 'sri123Sanda@gmail.com'),
 (4, 'Rashini Amanda', 'Bentara', '077 8956234', 'Rashiniamd@gmail.com'),
 (5, 'Rashmika', 'Kaduwela', '94773697894', 'rashmi191@gmail.com');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `invoice`
+--
+
+CREATE TABLE `invoice` (
+  `id` int(11) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `discount` decimal(10,2) NOT NULL,
+  `payment` decimal(10,2) NOT NULL,
+  `date` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `invoice`
+--
+
+INSERT INTO `invoice` (`id`, `total`, `discount`, `payment`, `date`) VALUES
+(1, '1745.00', '5.00', '5000.00', '2021-05-09'),
+(2, '1750.00', '0.00', '5000.00', '2021-05-09'),
+(3, '1750.00', '0.00', '5000.00', '2021-05-09'),
+(4, '1750.00', '0.00', '5000.00', '2021-05-09'),
+(5, '1750.00', '0.00', '5000.00', '2021-05-09'),
+(6, '1750.00', '0.00', '5000.00', '2021-05-09'),
+(7, '1750.00', '0.00', '5000.00', '2021-05-09'),
+(8, '1750.00', '0.00', '5000.00', '2021-05-09'),
+(9, '1750.00', '0.00', '5000.00', '2021-05-09'),
+(10, '1750.00', '0.00', '5000.00', '2021-05-09');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `invoice_items`
+--
+
+CREATE TABLE `invoice_items` (
+  `id` int(11) NOT NULL,
+  `invoice_id` int(11) NOT NULL,
+  `product` varchar(300) NOT NULL,
+  `qty` varchar(300) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `amount` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `invoice_items`
+--
+
+INSERT INTO `invoice_items` (`id`, `invoice_id`, `product`, `qty`, `price`, `amount`) VALUES
+(1, 1, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
+(2, 2, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
+(3, 3, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
+(4, 4, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
+(5, 5, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
+(6, 6, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
+(7, 7, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
+(8, 8, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
+(9, 9, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
+(10, 10, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00');
 
 -- --------------------------------------------------------
 
@@ -126,6 +181,21 @@ CREATE TABLE `temp` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `temp_pos`
+--
+
+CREATE TABLE `temp_pos` (
+  `id` int(11) NOT NULL,
+  `product` varchar(500) NOT NULL,
+  `qty` varchar(500) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `stock_quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -204,7 +274,7 @@ CREATE TABLE `wp_posts` (
 
 INSERT INTO `wp_posts` (`ID`, `post_author`, `post_date`, `post_date_gmt`, `post_content`, `post_title`, `post_excerpt`, `post_status`, `comment_status`, `ping_status`, `post_password`, `post_name`, `to_ping`, `pinged`, `post_modified`, `post_modified_gmt`, `post_content_filtered`, `post_parent`, `guid`, `menu_order`, `post_type`, `post_mime_type`, `comment_count`) VALUES
 (1, 1, '2019-07-29 03:42:45', '2019-07-29 03:42:45', '<!-- wp:paragraph -->\n<p>Aliquam ut tortor sed erat tempor egestas eget non augue. Suspendisse ultrices lacus ac risus molestie, vel tincidunt sapien scelerisque. Fusce id ipsum odio. Aliquam maximus purus ipsum, ac cursus velit ultricies a. Etiam posuere scelerisque tortor, et luctus libero laoreet a. Donec porttitor ex id augue facilisis, non tincidunt diam commodo. Suspendisse malesuada felis quis ante hendrerit, sed vehicula dui molestie. Sed in lacus eros. Ut et purus viverra, pretium nisl ultricies, bibendum metus. Nullam nec sagittis dui. Maecenas cursus efficitur est, eu consectetur sem bibendum in. Proin sit amet dui eu nisl molestie sollicitudin. Duis ullamcorper fringilla fringilla. Nunc augue ex, mollis nec nibh ac, accumsan consectetur dui. Maecenas ut justo lacus.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Nunc ullamcorper sapien vel nibh aliquam auctor. Mauris vitae sapien mauris. Etiam non mauris justo. Donec quis viverra velit. Vestibulum efficitur, neque pretium semper vestibulum, ipsum dolor lobortis purus, nec dapibus sem augue et ex. Praesent malesuada nulla ligula, at molestie est mollis vitae. Nulla rutrum quam ut sollicitudin semper. Vestibulum feugiat condimentum ligula.</p>\n<!-- /wp:paragraph -->', 'Aliquam ut tortor sed erat tempor egestas eget non augue.', '', 'publish', 'open', 'open', '', 'hello-world', '', '', '2019-07-29 03:42:45', '2019-07-29 03:42:45', '', 0, 'https://demo.themefarmer.com/newstore/?p=1', 0, 'post', '', 1),
-(2, 1, '2020-12-12 09:51:33', '2020-12-12 09:51:33', '<!-- wp:paragraph -->\n<p>This is an example page. It''s different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:quote -->\n<blockquote class="wp-block-quote"><p>Hi there! I''m a bike messenger by day, aspiring actor by night, and this is my website. I live in Los Angeles, have a great dog named Jack, and I like pi&#241;a coladas. (And gettin'' caught in the rain.)</p></blockquote>\n<!-- /wp:quote -->\n\n<!-- wp:paragraph -->\n<p>...or something like this:</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:quote -->\n<blockquote class="wp-block-quote"><p>The XYZ Doohickey Company was founded in 1971, and has been providing quality doohickeys to the public ever since. Located in Gotham City, XYZ employs over 2,000 people and does all kinds of awesome things for the Gotham community.</p></blockquote>\n<!-- /wp:quote -->\n\n<!-- wp:paragraph -->\n<p>As a new WordPress user, you should go to <a href="https://shadcomputers.lk/wp-admin/">your dashboard</a> to delete this page and create new pages for your content. Have fun!</p>\n<!-- /wp:paragraph -->', 'Sample Page', '', 'publish', 'closed', 'open', '', 'sample-page', '', '', '2020-12-12 09:51:33', '2020-12-12 09:51:33', '', 0, 'https://shadcomputers.lk/?page_id=2', 0, 'page', '', 0),
+(2, 1, '2020-12-12 09:51:33', '2020-12-12 09:51:33', '<!-- wp:paragraph -->\n<p>This is an example page. It\'s different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\"><p>Hi there! I\'m a bike messenger by day, aspiring actor by night, and this is my website. I live in Los Angeles, have a great dog named Jack, and I like pi&#241;a coladas. (And gettin\' caught in the rain.)</p></blockquote>\n<!-- /wp:quote -->\n\n<!-- wp:paragraph -->\n<p>...or something like this:</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\"><p>The XYZ Doohickey Company was founded in 1971, and has been providing quality doohickeys to the public ever since. Located in Gotham City, XYZ employs over 2,000 people and does all kinds of awesome things for the Gotham community.</p></blockquote>\n<!-- /wp:quote -->\n\n<!-- wp:paragraph -->\n<p>As a new WordPress user, you should go to <a href=\"https://shadcomputers.lk/wp-admin/\">your dashboard</a> to delete this page and create new pages for your content. Have fun!</p>\n<!-- /wp:paragraph -->', 'Sample Page', '', 'publish', 'closed', 'open', '', 'sample-page', '', '', '2020-12-12 09:51:33', '2020-12-12 09:51:33', '', 0, 'https://shadcomputers.lk/?page_id=2', 0, 'page', '', 0),
 (7, 1, '2019-07-30 05:34:47', '2019-07-30 05:34:47', '[tfwc_tool_wishilst]', 'Wishlist', '', 'publish', 'closed', 'closed', '', 'wishlist-2', '', '', '2019-07-30 05:34:47', '2019-07-30 05:34:47', '', 0, 'https://demo.themefarmer.com/newstore/wishlist/', 0, 'page', '', 0),
 (10, 1, '2019-07-30 05:36:30', '2019-07-30 05:36:30', '', 'Shop', '', 'publish', 'closed', 'closed', '', 'shop-2', '', '', '2019-07-30 05:36:30', '2019-07-30 05:36:30', '', 0, 'https://demo.themefarmer.com/newstore/shop/', 0, 'page', '', 0),
 (11, 1, '2019-07-30 05:36:30', '2019-07-30 05:36:30', '<!-- wp:shortcode -->[woocommerce_cart]<!-- /wp:shortcode -->', 'Cart', '', 'publish', 'closed', 'closed', '', 'cart-3', '', '', '2019-07-30 05:36:30', '2019-07-30 05:36:30', '', 0, 'https://demo.themefarmer.com/newstore/cart/', 0, 'page', '', 0),
@@ -510,6 +580,18 @@ ALTER TABLE `customer`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `invoice`
+--
+ALTER TABLE `invoice`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `invoice_items`
+--
+ALTER TABLE `invoice_items`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `jobs`
 --
 ALTER TABLE `jobs`
@@ -525,6 +607,12 @@ ALTER TABLE `parts`
 -- Indexes for table `temp`
 --
 ALTER TABLE `temp`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `temp_pos`
+--
+ALTER TABLE `temp_pos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -599,46 +687,69 @@ ALTER TABLE `wp_wc_product_meta_lookup`
 --
 ALTER TABLE `customer`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `invoice`
+--
+ALTER TABLE `invoice`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `invoice_items`
+--
+ALTER TABLE `invoice_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
 --
 -- AUTO_INCREMENT for table `jobs`
 --
 ALTER TABLE `jobs`
   MODIFY `jobId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
 -- AUTO_INCREMENT for table `parts`
 --
 ALTER TABLE `parts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
 --
 -- AUTO_INCREMENT for table `temp`
 --
 ALTER TABLE `temp`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `temp_pos`
+--
+ALTER TABLE `temp_pos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 --
 -- AUTO_INCREMENT for table `user_role`
 --
 ALTER TABLE `user_role`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `wp_posts`
 --
 ALTER TABLE `wp_posts`
   MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+
 --
 -- AUTO_INCREMENT for table `wp_termmeta`
 --
 ALTER TABLE `wp_termmeta`
   MODIFY `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
 --
 -- AUTO_INCREMENT for table `wp_terms`
 --
 ALTER TABLE `wp_terms`
   MODIFY `term_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

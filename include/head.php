@@ -23,8 +23,6 @@
      <!-- Data Tables styles -->
     <link rel="shortcut icon" href="../assets/css/jquery.dataTables.css" />
 
-
-
     <!-- include check the session is logedor not redrect to login code here -->
     <?php  include('../include/check.php');   ?>
     

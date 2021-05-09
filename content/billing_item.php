@@ -46,9 +46,9 @@ include('../include/config.php');
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Choose Product</label>
-                                    <div class="col-sm-6">
-                                      <input list="brow" class="form-control" required>
+                                   <label class="col-sm-2 col-form-label">Choose Product</label>
+                                    <div class="col-sm-4">
+                                      <input list="brow" class="form-control" id="product_name" required>
                                       <datalist id="brow">
                                         <?php
                                             $product = "SELECT A.ID as id, A.post_title as post_title FROM wp_posts A INNER JOIN wp_wc_product_meta_lookup B ON A.ID=B.product_id";
@@ -57,11 +57,15 @@ include('../include/config.php');
                             
                                             if($numRows > 0) {
                                                 while($row = mysqli_fetch_assoc($result)) {
-                                                echo '<option value ="'.$row["post_title"].'">';
+                                                    echo '<option value ="'.$row["post_title"].'">';
                                                 }
                                             }
                                         ?>
                                       </datalist>  
+                                    </div>
+                                    <label class="col-sm-1 col-form-label">Quantity</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Enter Quantity" required>
                                     </div>
                                     <div class="col-sm-3 size">
                                         <i class="fa fa-plus-circle pointer" onclick="AddPro()"></i>   
@@ -72,37 +76,63 @@ include('../include/config.php');
                         </form>
 
                         <div class="row">
-	                        <div class="col-md-12">
-		                        <div class="table-responsive">          
-	                          	<table id="example" class="table table-bordered">
-	                            <thead>
-	                              <tr>
-	                                <th> # </th>
-	                                <th>Product</th>
-	                                <th>QTY</th>
-	                                <th>Price</th>
-	                                <th>Amount</th>
-	                                <th></th>
-	                              </tr>
-	                            </thead>
-	                            <tbody>
-	                              <?php
-	                                
-	                              ?>
-	                            </tbody>
-	                          	</table>
-		                        </div>
+	                        <div class="col-md-12" style="height: 240px; overflow-y: auto;">
+                           <div id="here">
+                              <div class="table-responsive">          
+                                <table id="example" class="table table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th>Product</th>
+                                    <th>QTY</th>
+                                    <th>Price</th>
+                                    <th>Amount</th>
+                                    <th>DELETE</th>  
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $sql=mysqli_query($conn,"SELECT * FROM temp_pos");
+                                    
+                                      $numRows = mysqli_num_rows($sql); 
+                                
+                                      if($numRows > 0) {
+
+                                        $total_amt = 0;
+                                        
+                                        while($row = mysqli_fetch_assoc($sql)) {
+
+                                          $product = $row['product'];
+                                          $qty  = $row['qty'];
+                                          $price   = $row['price'];
+                                          $amount   = $row['amount'];
+                                          $id   = $row['id'];
+                                          echo ' <tr>';
+                                          echo ' <td>'.$product.' </td>';
+                                          echo ' <td>'.$qty.' </td>';
+                                          echo ' <td>'.$price.' </td>';
+                                          echo ' <td>'.$amount.' </td>';
+                                          echo '<td class="td-center"><button class="btn-edit" id="DeleteButton" onclick="removeForm('.$id.')">Delete</button></td>';
+                                          echo ' </tr>';
+                                           $total_amt = $total_amt + $amount;
+
+                                        }
+                                      }
+                                    ?>
+                                </tbody>
+                                </table>
+                              </div>
+                           </div>
 	                        </div>
                         </div><!-- end 2nd row-->
 
                         <br><br>
 
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-4" >
                                 <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Gross</label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control" name ="gross"  placeholder="0.00" required/>
+                                      <input type="text" class="form-control" name="gross" id="gross" placeholder="0.00" readonly/>
                                     </div>
                                 </div>
                             </div>
@@ -110,16 +140,31 @@ include('../include/config.php');
                                 <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Payment</label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control" name ="payment"  placeholder="0.00" required/>
+                                      <input type="text" class="form-control" name ="payment" id="payment" onkeyup="paymentFun()"  placeholder="0.00" required/>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">#</label>
-                                    <div class="col-sm-8">
-                                      <input type="text" class="form-control" name ="invoice_no"  placeholder="xx" required/>
-                                    </div>
+                                <?php
+
+                                  $sql ="SELECT id FROM invoice ORDER BY id DESC LIMIT 1";
+                                  $result=mysqli_query($conn,$sql);
+                                  $row_get = mysqli_fetch_assoc($result);
+                                  $count =mysqli_num_rows($result);
+
+                                  if($count==0){
+                                    $nextID = 1;
+                                  }else{
+                                    $nextID =$row_get['id']+1;
+                                  }
+
+                                ?>
+                                <input type="hidden" id="inv_id" value="<?php echo $nextID ?>">
+                                <b><label class="col-sm-12 col-form-label">Invoice No - <?php echo sprintf('%05d', $nextID); ?></label></b>
+                                    <!-- <div class="col-sm-8">
+                                      <input type="text" class="form-control" name ="invoice_no"  value=""/>
+                                    </div> -->
                                 </div>
                             </div>
                         </div><!-- end 3rd row-->
@@ -129,7 +174,7 @@ include('../include/config.php');
                                 <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Discount</label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control" name ="discount"  placeholder="0.00" required/>
+                                      <input type="text" class="form-control" name ="discount" id="discount" onkeyup="myFunction()"  placeholder="0.00" />
                                     </div>
                                 </div>
                             </div>
@@ -137,15 +182,13 @@ include('../include/config.php');
                                 <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Due</label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control" name ="due"  placeholder="0.00" required/>
+                                      <input type="text" class="form-control" name ="due" id="due"  placeholder="0.00" readonly/>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
-	                            <input type="hidden" class="form-control" name="save" value="save" />
-	                          	<button type="submit" class="btn btn-primary" style="width:59%">SAVE</button>
-	                            <input type="hidden" class="form-control" name="new" value="new" />
-	                          	<button type="submit" class="btn btn-primary" style="width:39%">NEW</button>
+	                          	<button type="submit" onclick="saveForm()" class="btn btn-primary" style="width:59%">SAVE</button>
+	                          	<button type="button" onclick="cancelForm()" class="btn btn-primary" style="width:39%">NEW</button>
                             </div>
                         </div><!-- end 4th row-->
 
@@ -154,7 +197,7 @@ include('../include/config.php');
                                 <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Total</label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control" name="total"  placeholder="0.00" required/>
+                                      <input type="text" class="form-control" style="font-weight: 600;" name="total" id="total"  placeholder="0.00" readonly/>
                                     </div>
                                 </div>
                             </div>
@@ -162,15 +205,13 @@ include('../include/config.php');
                                 <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Date</label>
                                     <div class="col-sm-8">
-                                      <input type="date" class="form-control" name="date" required/>
+                                      <input type="date" class="form-control" name="date" id="date" value="<?php echo date("Y-m-d"); ?>"  required/>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
-	                            <input type="hidden" class="form-control" name="print" value="print" />
-	                          	<button type="submit" class="btn btn-primary" style="width:59%">PRINT</button>
-	                            <input type="hidden" class="form-control" name="close" value="close" />
-	                          	<button type="submit" class="btn btn-primary" style="width:39%">CLOSE</button>
+	                          	<button type="button"  onclick="printForm()" class="btn btn-primary" style="width:59%">PRINT</button>
+	                          	<button type="button" onclick="cancelForm()" class="btn btn-primary" style="width:39%">CLOSE</button>
                             </div>
                         </div><!-- end 5th row-->
                   
@@ -190,26 +231,25 @@ include('../include/config.php');
                           		while($row = mysqli_fetch_assoc($items)) {
 
                           	?>
-                      			<div class="row" style="margin-bottom: 5px;">
-	                    			<div class="card" style="padding: 15px 5px 5px 5px;border-radius: 15px;">
-	                    			   <h5><strong><?php echo $row['post_title']; ?></strong></h5>
-	                    			   <p>Price: <strong><?php echo number_format($row['min_price'],2,'.',','); ?> - <?php echo number_format($row['max_price'],2,'.',','); ?></strong><br>
-	                    			   Status: 
-	                    			   <?php
-	                    			   $stock_status = $row['stock_status'];
-	                    			    if($stock_status=="instock"){
-			                              echo '<label class="badge badge-success">'."In stock".'</label>';
-			                            }else if($stock_status=="onbackorder"){
-			                              echo '<label class="badge badge-warning">'."On back order".'</label>';
-			                            }else if($stock_status=="outofstock"){
-			                              echo '<label class="badge badge-danger">'."Out of stock".'</label>';
-			                            }else{
-			                              echo '<label class="badge badge-primary">'.$stock_quantity.'</label>';
-			                            }
-	                    			   ?></p>
-	                    			   
-	                    			</div>
-	                    		</div>
+                            <div class="row pointer prod_name" style="margin-bottom: 5px;" id="<?php echo $row['post_title']?>">
+                              <div class="card" style="padding: 15px 5px 5px 5px;border-radius: 15px; width: 600px;">
+                                <h5><strong><?php echo $row['post_title']; ?></strong></h5>
+                                <p>Price: <strong><?php echo number_format($row['min_price'],2,'.',','); ?> - <?php echo number_format($row['max_price'],2,'.',','); ?></strong><br>
+                                Status: 
+                                <?php
+                                $stock_status = $row['stock_status'];
+                                  if($stock_status=="instock"){
+                                      echo '<label class="badge badge-success">'."In stock".'</label>';
+                                    }else if($stock_status=="onbackorder"){
+                                      echo '<label class="badge badge-warning">'."On back order".'</label>';
+                                    }else if($stock_status=="outofstock"){
+                                      echo '<label class="badge badge-danger">'."Out of stock".'</label>';
+                                    }else{
+                                      echo '<label class="badge badge-primary">'.$stock_quantity.'</label>';
+                                    }
+                                ?></p>
+                              </div>
+                            </div>
 
 		                    <?php
                           		}
@@ -220,8 +260,6 @@ include('../include/config.php');
                     </div>
                   </div>
                 </div>
-
-
               </div> <!-- END MAIN ROW-->
 
             <!-- content-wrapper ends -->
@@ -243,8 +281,224 @@ include('../include/config.php');
 
 
   <script>
+
+    var numberRegex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
+
+    $(document).ready(function() {
+
+        tmpEmpty();
+    });
+
+    //Discount On Change
+    function myFunction(){
+
+        var gross= $('#gross').val();
+        var discount= $('#discount').val();
+
+        if(numberRegex.test(discount)){
+
+          var total = (Number(gross) - Number(discount)).toFixed(2)
+          $('#total').val(total);
+
+        }else{
+
+          if(discount!=''){
+              swal({
+              title: "Discount must be Number !",
+              text: "Validation",
+              icon: "error",
+              button: "Ok !",
+              });
+              $('#discount').val('');
+          }
+        }
+    }
+
+    function paymentFun(){
+
+        var total= $('#total').val();
+        var payment= $('#payment').val();
+        
+        if(numberRegex.test(payment)){
+
+          var due = (Number(payment) - Number(total)).toFixed(2)
+          $('#due').val(due);
+
+        }else{
+
+          if(payment!=''){
+              swal({
+              title: "Payment must be Number !",
+              text: "Validation",
+              icon: "error",
+              button: "Ok !",
+              });
+              $('#payment').val('');
+          }
+        }
+
+    }
+
+    // Data add to the Temp POS table                      
+    function AddPro(){
+
+      var addrow  ="addrow";
+
+      var product_name= $('#product_name').val();
+      var quantity= $('#quantity').val();
+
+      if(product_name!='' && quantity !='' && numberRegex.test(quantity)){
+
+       $.ajax({
+            type: 'post',
+            url: '../controller/billing_controller.php',
+            data: {addrow:addrow,product_name:product_name,quantity:quantity},
+            success: function (data) {
+
+                if(data==2){
+
+                   swal({
+                      title: "Stock is Empty !",
+                      text: "Empty",
+                      icon: "error",
+                      button: "Ok !",
+                    });
+
+                }else{
+
+                    $('#product_name').val("")
+                    $('#quantity').val("")
+
+                    $( "#here" ).load(window.location.href + " #here" );
+                    $("#gross").val(data);
+                    $("#total").val(data);
+                }            
+              } 
+        });     
+      }
+    }
+
+    $(".prod_name").click(function() {
+
+      var addrow  ="addrow";
+
+       $.ajax({
+            type: 'post',
+            url: '../controller/billing_controller.php',
+            data: {addrow:addrow,product_name:this.id,quantity:1},
+            success: function (data) {
+
+                if(data==2){
+
+                   swal({
+                      title: "Stock is Empty !",
+                      text: "Empty",
+                      icon: "error",
+                      button: "Ok !",
+                    });
+
+                }else{
+                    $( "#here" ).load(window.location.href + " #here" );
+                    $("#gross").val(data);
+                    $("#total").val(data);
+                    
+                }
+              } 
+        });     
+    });
+
+    ///////////////////////////////////
+
+    function tmpEmpty() {
+
+      var tmpEmpty  ="tmpEmpty";
+
+        $.ajax({
+            type: 'post',
+            url: '../controller/billing_controller.php',
+            data: {tmpEmpty:tmpEmpty},
+            success: function (data) {
+
+                 $( "#here" ).load(window.location.href + " #here" );
+              } 
+        });
+    }
+
+     /////////// Remove the Row 
+    function removeForm(id){
+
+        var removeRow  ="removeRow";
+
+         $.ajax({
+            type: 'post',
+            url: '../controller/billing_controller.php',
+            data: {removeRow:removeRow,id:id},
+            success: function (data) {
+                $( "#here" ).load(window.location.href + " #here" );
+                $("#gross").val(data);
+                $("#total").val(data)
+              } 
+        });
+    }
+
   
     /////////////////////////////////////////////////// Form Submit Add  
+
+    function saveForm(){
+
+        var save  ="save";
+    
+        var total= $('#total').val();
+        var discount= $('#discount').val();
+        var payment= $('#payment').val();
+        var date= $('#date').val();
+
+        if(payment!='' && numberRegex.test(payment)){
+
+            $.ajax({
+                type: 'post',
+                url: '../controller/billing_controller.php',
+                data: {save:save,total:total,discount:discount,payment:payment,date:date},
+                success: function (data) {
+
+                    swal({
+                    title: "Good job !",
+                    text: "Successfully Submited",
+                    icon: "success",
+                    button: "Ok !",
+                    });
+                    setTimeout(function(){ location.reload(); }, 2500);
+                } 
+            });  
+        }
+    }
+
+     function printForm(){
+
+        var save  ="save";
+    
+        var total= $('#total').val();
+        var discount= $('#discount').val();
+        var payment= $('#payment').val();
+        var date= $('#date').val();
+        var inv_id= $('#inv_id').val();
+
+        if(payment!='' && numberRegex.test(payment)){
+
+            $.ajax({
+                type: 'post',
+                url: '../controller/billing_controller.php',
+                data: {save:save,total:total,discount:discount,payment:payment,date:date},
+                success: function (data) {
+
+                    setTimeout(function(){window.open('print?id='+inv_id, '_blank'); }, 100);
+
+                    setTimeout(function(){ location.reload(); }, 2500);
+
+                } 
+            });  
+        }
+    }
 
     $(function () {
 
@@ -285,19 +539,13 @@ include('../include/config.php');
         });
       });
 
-    function editForm(id){
-        window.location.href = "request.php?view_id=" + id;
-        //window.location.href = "request.php";
-    }
+    
 
     function cancelForm(){
 
-        window.location.href = "request.php";
+        window.location.href = "billing_item.php";
     }
 
-    function customerForm(){
-        $('#myModal').modal('show');
-    }
 
     /////////////////////////////////////////////////// Form Submit Add  
 
@@ -337,88 +585,9 @@ include('../include/config.php');
         });
       });
 
-
-    ///////////// delete jobs ///////////////////////////
-    function confirmation(e,id) {
-        var answer = confirm("Are you sure, you want to permanently delete this record?")
-      if (!answer){
-        e.preventDefault();
-        return false;
-      }else{
-        myFunDelete(id)
-      }
-    }
-
-    function myFunDelete(id){
-
-      $.ajax({
-            url:"../controller/request_controller.php",
-            method:"POST",
-            data:{removeID:id},
-            success:function(data){
-                swal({
-                title: "Good job !",
-                text: "Successfully Removerd",
-                icon: "success",
-                button: "Ok !",
-                });
-                setTimeout(function(){ location.reload(); }, 2500);
-                window.location.href = "request.php";
-            }
-      });
-    }
-
      /////////////////////////////////////////////////////////////////
 
-
   </script>
-
-
- <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
-          <h4 class="modal-title">Customer</h4>
-        </div>
-        <div class="modal-body">
-          <div class="card">
-            <div class="card-body">
-            <h4 class="card-title">Customer Register</h4>
-            <!-- <p class="card-description"> Basic form elements </p> -->
-            <form class="forms-sample" id="customerAdd">
-                <div class="form-group">
-                <label for="exampleInputName1">Name</label>
-                <input type="text" class="form-control" name="name" placeholder="customer name here.." required>
-                </div>
-                <div class="form-group">
-                <label for="exampleTextarea1">Address</label>
-                <textarea class="form-control" name="address" rows="2" placeholder="customer address here.."></textarea>
-                </div>
-                <div class="form-group">
-                <label for="exampleInputName1">Contact</label>
-                <input type="text" class="form-control" name="contact" placeholder="+94 00-0000-000" required>
-                </div>
-                <div class="form-group">
-                <label for="exampleInputEmail3">Email</label>
-                <input type="email" class="form-control" name="email" placeholder="sample@gmail.com" required>
-                </div>
-                <input type="hidden" class="form-control" name="add" value="add" />
-                <button type="submit" class="btn btn-success mr-2">Submit</button>
-                <!-- <button class="btn btn-light">Cancel</button> -->
-            </form>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
 
 

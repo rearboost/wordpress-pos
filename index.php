@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -106,7 +107,7 @@
    require 'include/config.php';
    if($_SERVER["REQUEST_METHOD"] == "POST")
    {
-        session_start();
+        
         // username and password sent from form
         $user = $_POST['username'];
 
