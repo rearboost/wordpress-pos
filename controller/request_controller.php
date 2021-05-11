@@ -12,7 +12,7 @@
             $request_date   = $_POST['request_date'];
             $delivery_date  = $_POST['delivery_date'];
             $job_desc       = $_POST['job_desc'];
-            $user_desc      = $_POST['user_desc'];
+            $advance        = $_POST['advance'];
             $status         = 'request';
 
             //$year = cur_date('Y');
@@ -29,12 +29,12 @@
             }
             $job_no = $year . $no;
 
-            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE jobNo='$job_no' AND accessory='$accessory' AND brand='$brand' AND model='$model' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND user_desc='$user_desc' AND customerId='$customer'");
+            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE jobNo='$job_no' AND accessory='$accessory' AND brand='$brand' AND model='$model' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND advance='$advance' AND customerId='$customer'");
 		    $count = mysqli_num_rows($check);
 
             if($count==0){
 
-                $insert = "INSERT INTO jobs (jobNo,accessory,brand,model,request_date,delivery_date,job_desc,user_desc,status,customerId) VALUES ('$job_no','$accessory','$brand','$model','$request_date','$delivery_date','$job_desc','$user_desc','$status','$customer')";
+                $insert = "INSERT INTO jobs (jobNo,accessory,brand,model,request_date,delivery_date,job_desc,advance,status,customerId) VALUES ('$job_no','$accessory','$brand','$model','$request_date','$delivery_date','$job_desc','$advance','$status','$customer')";
                 $result = mysqli_query($conn,$insert);
                 if($result){
                     echo  1;
@@ -66,9 +66,10 @@
             $request_date   = $_POST['request_date'];
             $delivery_date  = $_POST['delivery_date'];
             $job_desc       = $_POST['job_desc'];
+            $advance        = $_POST['advance'];
             $status         = $_POST['status'];
 
-            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE accessory='$accessory' AND brand='$brand' AND model='$model' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND customerId='$customer' AND status='$status' ");
+            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE accessory='$accessory' AND brand='$brand' AND model='$model' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND advance='$advance' AND customerId='$customer' AND status='$status' ");
 		    $count = mysqli_num_rows($check);
 
             if($count==0){
@@ -80,6 +81,7 @@
                                         request_date  ='$request_date',
                                         delivery_date  ='$delivery_date',
                                         job_desc  ='$job_desc',
+                                        advance  ='$advance',
                                         status  ='$status',
                                         customerId  ='$customer'
                                     WHERE jobId=$id";

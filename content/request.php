@@ -22,7 +22,7 @@
             $request_date = $row['request_date'];
             $delivery_date  = $row['delivery_date'];
             $job_desc   = $row['job_desc'];
-            $user_desc = $row['user_desc'];
+            $advance = $row['advance'];
             //Style Images
             // $sql_get=mysqli_query($conn,"SELECT * FROM style WHERE style='$style'");  
             // $row_get = mysqli_fetch_assoc($sql_get);
@@ -165,9 +165,9 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">User Description</label>
+                            <label class="col-sm-3 col-form-label">Advanced</label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control" name="user_desc" rows="4"  placeholder="Technician purpose only.." readonly><?php if(isset($_GET['view_id'])){ echo $user_desc;} ?></textarea>
+                                    <input type="text" class="form-control" name ="advance" placeholder="0.00" value="<?php if(isset($_GET['view_id'])){ echo $advance;} ?>" required/>
                                 </div>
                             </div>
                         </div>
@@ -226,7 +226,7 @@
                           <th>Request Date</th>
                           <th>Delivery Date</th>
                           <th>Job Desc</th>
-                          <!-- <th>User Desc</th> -->
+                          <th>Advanced</th>
                           <th>Edit</th>
                           <th>Delete</th>
                         </tr>
@@ -249,7 +249,7 @@
                             $request_date = $row['request_date'];
                             $delivery_date  = $row['delivery_date'];
                             $job_desc   = $row['job_desc'];
-                            // $user_desc = $row['user_desc'];
+                            $advance = $row['advance'];
 
                               echo ' <tr>';
                               echo ' <td>'.$i.' </td>';
@@ -261,7 +261,7 @@
                               echo ' <td>'.$request_date.' </td>';
                               echo ' <td>'.$delivery_date.' </td>';
                               echo ' <td>'.$job_desc.' </td>';
-                              // echo ' <td>'.$user_desc.' </td>';
+                              echo ' <td>'.$advance.' </td>';
                               echo '<td class="td-center"><button type="button" onclick="editForm('.$row["jobId"].')" class="btn btn-info btn-fw">Edit</button></td>';
                               echo '<td class="td-center"><button type="button" onclick="confirmation(event,'.$row["jobId"].')" class="btn btn-secondary btn-fw">Delete</button></td>';
                               echo ' </tr>';

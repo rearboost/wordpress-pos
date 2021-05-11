@@ -22,9 +22,9 @@
             $request_date = $row['request_date'];
             $delivery_date  = $row['delivery_date'];
             $job_desc   = $row['job_desc'];
+            $advance   = $row['advance'];
             $user_desc = $row['user_desc'];
             $service_cost = $row['service_cost'];
-            $acessories_cost = $row['acessories_cost'];
 
             $sql_p=mysqli_query($conn,"SELECT * FROM jobs J LEFT JOIN parts P ON J.jobId=P.jobID  WHERE J.jobID='$view_id'");
                             
@@ -179,6 +179,14 @@
                         </div>
                         </div>
                         <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Advanced</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name ="advance" value="<?php if(isset($_GET['view_id'])){ echo $advance;} ?>" placeholder="LKR 0.00" readonly/>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Service Cost</label>

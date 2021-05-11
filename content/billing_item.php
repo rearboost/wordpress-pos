@@ -63,7 +63,7 @@ include('../include/config.php');
                                         ?>
                                       </datalist>  
                                     </div>
-                                    <label class="col-sm-1 col-form-label">Quantity</label>
+                                    <label class="col-sm-1 col-form-label">QTY</label>
                                     <div class="col-sm-2">
                                         <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Enter Quantity" required>
                                     </div>
