@@ -13,16 +13,25 @@
             $request_date   = $_POST['request_date'];
             $delivery_date  = $_POST['delivery_date'];
             $job_desc       = $_POST['job_desc'];
+            $advance        = $_POST['advance'];
             $user_desc      = $_POST['user_desc'];
             $service_cost   = $_POST['service_cost'];
+            $discount       = $_POST['discount'];
+            $payment        = $_POST['payment'];
+            $cash_payment   = $_POST['cash_payment'];
+            $credit_payment = $_POST['credit_payment'];
 
-            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE accessory='$accessory' AND brand='$brand' AND model='$model' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND user_desc='$user_desc' AND service_cost='$service_cost' AND customerId='$customer'");
+            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE accessory='$accessory' AND brand='$brand' AND model='$model' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND advance='$advance' AND user_desc='$user_desc' AND service_cost='$service_cost' AND discount='$discount' AND payment='$payment' AND cash_payment='$cash_payment' AND credit_payment='$credit_payment' AND customerId='$customer'");
 		    $count = mysqli_num_rows($check);
 
             if($count==0){
 
                 $edit = "UPDATE jobs 
-                                    SET service_cost='$service_cost'
+                                    SET service_cost='$service_cost',
+                                    discount='$discount',
+                                    payment='$payment',
+                                    cash_payment='$cash_payment',
+                                    credit_payment='$credit_payment'
                                     WHERE jobId=$id";
 
                 $result = mysqli_query($conn,$edit);

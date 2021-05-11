@@ -189,17 +189,17 @@
                         <div class="row">
                         <div class="col-md-6">
                             <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Advanced</label>
+                            <label class="col-sm-3 col-form-label">Service Cost</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="advance" id="advance" value="<?php if(isset($_GET['view_id'])){ echo $advance;} ?>" placeholder="LKR 0.00" readonly/>
+                                    <input type="text" class="form-control" name="service_cost" value="<?php if(isset($_GET['view_id'])){ echo $service_cost;} ?>" placeholder="LKR 0.00" required/>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Service Cost</label>
+                            <label class="col-sm-3 col-form-label">Other Cost</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="service_cost" value="<?php if(isset($_GET['view_id'])){ echo $service_cost;} ?>" placeholder="LKR 0.00" required/>
+                                    <input type="text" class="form-control" name="Ad_amount" value="<?php if(isset($_GET['view_id'])){ echo $Ad_amount;} ?>" placeholder="LKR 0.00" required/>
                                 </div>
                             </div>
                         </div>
@@ -211,42 +211,54 @@
                             <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Gross amount</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="amount" id="amount" value="<?php if(isset($_GET['view_id'])){ echo $amount;} ?>" placeholder="LKR 0.00" readonly/>
+                                    <input type="text" class="form-control" name="amount" id="amount" value="<?php if(isset($_GET['view_id'])){ echo number_format($amount,2,'.',',');} ?>" placeholder="LKR 0.00" readonly/>
+                                    <input type="hidden" id="amount_hidden" value="<?php if(isset($_GET['view_id'])){echo $amount ;} ?>">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Discount</label>
+                            <label class="col-sm-3 col-form-label">Advanced</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="discount" id="discount" onkeyup="TotalCalc()" value="<?php if(isset($_GET['view_id'])){ echo $discount;} ?>" placeholder="LKR 0.00" />
+                                    <input type="text" class="form-control" name="advance" id="advance" value="<?php if(isset($_GET['view_id'])){ echo $advance;} ?>" placeholder="LKR 0.00" readonly/>
                                 </div>
                             </div>
                         </div>
                         </div>
 
                         <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                            <label class="col-sm-5 col-form-label">Total amount</label>
-                                <div class="col-sm-12">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Discount</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="discount" id="discount" onkeyup="TotalCalc()" value="<?php if(isset($_GET['view_id'])){ echo $discount;} ?>" placeholder="LKR 0.00" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Payable Amt</label>
+                                <div class="col-sm-9">
                                     <input type="text" class="form-control" name="total_amount" id="total_amount" value="<?php if(isset($_GET['view_id'])){ echo $total_amount;} ?>" placeholder="LKR 0.00" readonly/>
                                 </div>
                             </div>
+                        </div>    
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                            <label class="col-sm-5 col-form-label">Cash Paid</label>
-                                <div class="col-sm-12">
-                                    <input type="text" class="form-control" name ="cash_payment" value="<?php if(isset($_GET['view_id'])){ echo $cash_payment;} ?>" placeholder="LKR 0.00" required/>
+
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Cash Paid</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="cash_payment" id="cash" onkeyup="CreditCalc()" placeholder="LKR 0.00" required/>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
+                        <div class="col-md-6">
+                            <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Credit</label>
-                                <div class="col-sm-12">
-                                    <input type="text" class="form-control" name ="credit_payment" value="<?php if(isset($_GET['view_id'])){ echo $credit_payment;} ?>" placeholder="LKR 0.00" required/>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name ="credit_payment" id="credit" placeholder="LKR 0.00" required/>
                                 </div>
                             </div>
                         </div>
@@ -407,42 +419,12 @@
 
 
   <script>
-     var numberRegex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
-    // function TotalCalc(){
+    var numberRegex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
 
-    //     var id = $('view_id').val();
-
-    //     alert(id)
-    //     $.ajax({
-    //     url: 'data.php',
-    //     method:"POST",
-    //     data:{id:id},
-    //     success: function (response) {
-
-    //       var obj = JSON.parse(response);
-
-    //       var advance       = obj.advance
-    //       var service_cost  = obj.service_cost
-    //       var accessory     = obj.accessory
-    //       var discount      $('#discount').val();
-
-    //       alert(advance)
-    //       alert(service_cost)
-    //       alert(accessory)
-    //       alert(discount)
-
-    //       var total = (Number(service_cost)+Number(accessory))-(Number(advance)+Number(discount))
-
-    //       $('#total_amount').val(total);
-     
-    //     }
-    //   });
-
-    // }
 
     function TotalCalc(){
 
-        var gross= $('#amount').val();
+        var gross= $('#amount_hidden').val();
         var advance= $('#advance').val();
         var discount= $('#discount').val();
 
@@ -461,8 +443,36 @@
               button: "Ok !",
               });
               $('#discount').val('');
+              var total = (Number(gross) - Number(advance)).toFixed(2)
+              $('#total_amount').val(total);
           }
         }
+    }
+
+    function CreditCalc(){
+
+        var total= $('#total_amount').val();
+        var cash= $('#cash').val();
+        
+        if(numberRegex.test(cash)){
+
+          var credit = (Number(total) - Number(cash)).toFixed(2)
+          $('#credit').val(credit);
+
+        }else{
+
+          if(cash!=''){
+              swal({
+              title: "Payment must be Number !",
+              text: "Validation",
+              icon: "error",
+              button: "Ok !",
+              });
+              $('#cash').val('');
+              $('#credit').val(total);
+          }
+        }
+
     }
   
     ////////////////////// Form Submit Add  /////////////////////////////
@@ -473,33 +483,40 @@
 
           e.preventDefault();
 
-          $.ajax({
-            type: 'post',
-            url: '../controller/dispatch_controller.php',
-            data: $('#requestAdd').serialize(),
-            success: function (data) {
+          // var discount_check = $('#discount').val();
 
-                if(data==0){
+          // if(discount_check==''){
+          //   alert('Required field is empty. Please check.');
+          // }else{
 
-                    swal({
-                      title: "Can't Duplication !",
-                      text: "Jobs",
-                      icon: "error",
-                      button: "Ok !",
-                    });
+              $.ajax({
+                type: 'post',
+                url: '../controller/dispatch_controller.php',
+                data: $('#requestAdd').serialize(),
+                success: function (data) {
 
-                }else{
+                    if(data==0){
 
-                    swal({
-                      title: "Good job !",
-                      text: "Successfully Submited",
-                      icon: "success",
-                      button: "Ok !",
-                      });
-                      setTimeout(function(){ location.reload(); }, 2500);
+                        swal({
+                          title: "Can't Duplication !",
+                          text: "Jobs",
+                          icon: "error",
+                          button: "Ok !",
+                        });
+
+                    }else{
+
+                        swal({
+                          title: "Good job !",
+                          text: "Successfully Submited",
+                          icon: "success",
+                          button: "Ok !",
+                          });
+                          setTimeout(function(){ location.reload(); }, 2500);
+                    }
                 }
-            }
-          });
+              });
+          //}
 
         });
       });
