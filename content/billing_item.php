@@ -441,7 +441,6 @@ include('../include/config.php');
         });
     }
 
-  
     /////////////////////////////////////////////////// Form Submit Add  
 
     function saveForm(){
@@ -500,13 +499,10 @@ include('../include/config.php');
         }
     }
 
-    
-
     function cancelForm(){
 
         window.location.href = "billing_item.php";
     }
-
      /////////////////////////////////////////////////////////////////
 
   </script>
