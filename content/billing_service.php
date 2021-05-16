@@ -22,18 +22,22 @@
             $request_date = $row['request_date'];
             $delivery_date  = $row['delivery_date'];
             $job_desc   = $row['job_desc'];
+            $advance   = $row['advance'];
             $user_desc = $row['user_desc'];
             $service_cost = $row['service_cost'];
-            $acessories_cost = $row['acessories_cost'];
+            $discount = $row['discount'];
+            $payment = $row['payment'];
+            $cash_payment = $row['cash_payment'];
+            $credit_payment = $row['credit_payment'];
 
-            $sql_p=mysqli_query($conn,"SELECT * FROM jobs J LEFT JOIN parts P ON J.jobId=P.jobID  WHERE J.jobID='$view_id'");
+            $sql_p=mysqli_query($conn,"SELECT SUM(qty*price) as Ad_amount FROM jobs J LEFT JOIN parts P ON J.jobId=P.jobID  WHERE J.jobID='$view_id' GROUP BY P.jobID");
                             
             while($row1 = mysqli_fetch_assoc($sql_p)) {
 
-                $parts = $row1['parts'];
-                $imei = $row1['imei'];
-                $qty = $row1['qty'];
-                $price = $row1['price'];
+                $Ad_amount = $row1['Ad_amount'];
+                $amount = $service_cost+$Ad_amount;
+
+                $total_amount = $amount-$advance;
             }
           }
         }
@@ -187,13 +191,79 @@
                             <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Service Cost</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name ="service_cost" value="<?php if(isset($_GET['view_id'])){ echo $service_cost;} ?>" placeholder="LKR 0.00" required/>
+                                    <input type="text" class="form-control" name="service_cost" value="<?php if(isset($_GET['view_id'])){ echo $service_cost;} ?>" placeholder="LKR 0.00" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Other Cost</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="Ad_amount" value="<?php if(isset($_GET['view_id'])){ echo $Ad_amount;} ?>" placeholder="LKR 0.00" required/>
                                 </div>
                             </div>
                         </div>
                         </div>
 
                         <?php if (isset($_GET['view_id'])): ?>
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Gross amount</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="amount" id="amount" value="<?php if(isset($_GET['view_id'])){ echo number_format($amount,2,'.',',');} ?>" placeholder="LKR 0.00" readonly/>
+                                    <input type="hidden" id="amount_hidden" value="<?php if(isset($_GET['view_id'])){echo $amount ;} ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Advanced</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="advance" id="advance" value="<?php if(isset($_GET['view_id'])){ echo $advance;} ?>" placeholder="LKR 0.00" readonly/>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Discount</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="discount" id="discount" onkeyup="TotalCalc()" value="<?php if(isset($_GET['view_id'])){ echo $discount;} ?>" placeholder="LKR 0.00" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Payable Amt</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="total_amount" id="total_amount" value="<?php if(isset($_GET['view_id'])){ echo $total_amount;} ?>" placeholder="LKR 0.00" readonly/>
+                                </div>
+                            </div>
+                        </div>    
+                        </div>
+
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Cash Paid</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="cash_payment" id="cash" onkeyup="CreditCalc()" placeholder="LKR 0.00" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Credit</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name ="credit_payment" id="credit" placeholder="LKR 0.00" required/>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
                         <p>Added accessories Info :</p>
                         <div id="here">
                           <div class="table-responsive">
@@ -252,7 +322,7 @@
 
 
                        <?php if (isset($_GET['view_id'])): ?>
-                          <input type="hidden" class="form-control" name="view_id" value="<?php if(isset($_GET['view_id'])){ echo $view_id;} ?>" />
+                          <input type="hidden" class="form-control" name="view_id" id="view_id" value="<?php if(isset($_GET['view_id'])){ echo $view_id;} ?>" />
                           <input type="hidden" class="form-control" name="req_update" value="req_update" />
                           <button type="submit" class="btn btn-info btn-fw">Update</button>
                           <button type="button" onclick="cancelForm()" class="btn btn-primary btn-fw">Cancel</button>
@@ -304,7 +374,6 @@
                             $job_desc   = $row['job_desc'];
                             $user_desc = $row['user_desc'];
                             $service_cost = $row['service_cost'];
-                            $acessories_cost = $row['acessories_cost'];
 
                               echo ' <tr>';
                               echo ' <td>'.$i.' </td>';
@@ -350,8 +419,63 @@
 
 
   <script>
+    var numberRegex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
+
+
+    function TotalCalc(){
+
+        var gross= $('#amount_hidden').val();
+        var advance= $('#advance').val();
+        var discount= $('#discount').val();
+
+        if(numberRegex.test(discount)){
+
+          var total = (Number(gross) - (Number(advance)+Number(discount))).toFixed(2)
+          $('#total_amount').val(total);
+
+        }else{
+
+          if(discount!=''){
+              swal({
+              title: "Discount must be Number !",
+              text: "Validation",
+              icon: "error",
+              button: "Ok !",
+              });
+              $('#discount').val('');
+              var total = (Number(gross) - Number(advance)).toFixed(2)
+              $('#total_amount').val(total);
+          }
+        }
+    }
+
+    function CreditCalc(){
+
+        var total= $('#total_amount').val();
+        var cash= $('#cash').val();
+        
+        if(numberRegex.test(cash)){
+
+          var credit = (Number(total) - Number(cash)).toFixed(2)
+          $('#credit').val(credit);
+
+        }else{
+
+          if(cash!=''){
+              swal({
+              title: "Payment must be Number !",
+              text: "Validation",
+              icon: "error",
+              button: "Ok !",
+              });
+              $('#cash').val('');
+              $('#credit').val(total);
+          }
+        }
+
+    }
   
-    /////////////////////////////////////////////////// Form Submit Add  
+    ////////////////////// Form Submit Add  /////////////////////////////
 
     $(function () {
 
@@ -359,33 +483,40 @@
 
           e.preventDefault();
 
-          $.ajax({
-            type: 'post',
-            url: '../controller/dispatch_controller.php',
-            data: $('#requestAdd').serialize(),
-            success: function (data) {
+          // var discount_check = $('#discount').val();
 
-                if(data==0){
+          // if(discount_check==''){
+          //   alert('Required field is empty. Please check.');
+          // }else{
 
-                    swal({
-                      title: "Can't Duplication !",
-                      text: "Jobs",
-                      icon: "error",
-                      button: "Ok !",
-                    });
+              $.ajax({
+                type: 'post',
+                url: '../controller/dispatch_controller.php',
+                data: $('#requestAdd').serialize(),
+                success: function (data) {
 
-                }else{
+                    if(data==0){
 
-                    swal({
-                      title: "Good job !",
-                      text: "Successfully Submited",
-                      icon: "success",
-                      button: "Ok !",
-                      });
-                      setTimeout(function(){ location.reload(); }, 2500);
+                        swal({
+                          title: "Can't Duplication !",
+                          text: "Jobs",
+                          icon: "error",
+                          button: "Ok !",
+                        });
+
+                    }else{
+
+                        swal({
+                          title: "Good job !",
+                          text: "Successfully Submited",
+                          icon: "success",
+                          button: "Ok !",
+                          });
+                          setTimeout(function(){ location.reload(); }, 2500);
+                    }
                 }
-            }
-          });
+              });
+          //}
 
         });
       });
@@ -403,7 +534,7 @@
       window.open('invoice_print?id='+id, '_blank');
 
       window.onafterprint = function(){
-        alert(id)
+        //alert(id)
         window.location.href = "billing_service.php?bill_id=" + id;
         // $(window).off(window.onafterprint);
         // console.log('Print Dialog Closed..');

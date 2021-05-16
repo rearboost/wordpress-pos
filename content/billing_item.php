@@ -63,7 +63,7 @@ include('../include/config.php');
                                         ?>
                                       </datalist>  
                                     </div>
-                                    <label class="col-sm-1 col-form-label">Quantity</label>
+                                    <label class="col-sm-1 col-form-label">QTY</label>
                                     <div class="col-sm-2">
                                         <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Enter Quantity" required>
                                     </div>
@@ -500,90 +500,12 @@ include('../include/config.php');
         }
     }
 
-    $(function () {
-
-        $('#requestAdd').on('submit', function (e) {
-
-          e.preventDefault();
-
-          $.ajax({
-            type: 'post',
-            url: '../controller/request_controller.php',
-            data: $('#requestAdd').serialize(),
-            success: function (data) {
-
-              alert(data)
-
-                if(data==0){
-
-                    swal({
-                      title: "Can't Duplication !",
-                      text: "Request",
-                      icon: "error",
-                      button: "Ok !",
-                    });
-
-                }else{
-
-                    swal({
-                      title: "Good job !",
-                      text: "Successfully Submited",
-                      icon: "success",
-                      button: "Ok !",
-                      });
-                      setTimeout(function(){ location.reload(); }, 2500);
-                }
-            }
-          });
-
-        });
-      });
-
     
 
     function cancelForm(){
 
         window.location.href = "billing_item.php";
     }
-
-
-    /////////////////////////////////////////////////// Form Submit Add  
-
-    $(function () {
-
-        $('#customerAdd').on('submit', function (e) {
-
-          e.preventDefault();
-
-          $.ajax({
-            type: 'post',
-            url: '../controller/customer_controller.php',
-            data: $('#customerAdd').serialize(),
-            success: function (data) {
-                  if(data==0){
-
-                    swal({
-                      title: "Can't Duplication !",
-                      text: "Customer",
-                      icon: "error",
-                      button: "Ok !",
-                    });
-
-                  }else{
-
-                    swal({
-                    title: "Good job !",
-                    text: "Successfully Submited",
-                    icon: "success",
-                    button: "Ok !",
-                    });
-                    setTimeout(function(){ location.reload(); }, 2500);
-                    
-                  }
-               }
-          });
-        });
-      });
 
      /////////////////////////////////////////////////////////////////
 
