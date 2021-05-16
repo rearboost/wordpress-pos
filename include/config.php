@@ -1,7 +1,7 @@
 <?php
 	$severname = "localhost";
 	$username = "root";
-	$password = "";
+	$password = "root";
 	$db = "mobile_shop";
 
 	$conn = mysqli_connect($severname,$username,$password);

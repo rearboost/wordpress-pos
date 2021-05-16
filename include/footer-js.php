@@ -14,10 +14,11 @@
     <!-- <script src="../assets/js/shared/jquery.cookie.js" type="text/javascript"></script> -->
     <!-- sweetalert message -->
     <script src="../assets/js/sweetalert.min.js"></script>
-    <!-- dataTables -->
-    <script src="../assets/js/jquery.dataTables.js"></script>
-
+  
     <script src="../assets/js/shared/chart.js"></script>
     <!-- End custom js for this page-->
     <!-- <script src="../assets/js/shared/jquery.cookie.js" type="text/javascript"></script>-->
     <script src="../assets/js/core/jquery.min.js"></script><!-- JQUERY JS FILE -->
+
+   <!-- dataTables -->
+    <script src="../assets/js/jquery.dataTables.js"></script>
