@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: May 09, 2021 at 04:43 PM
+-- Generation Time: May 16, 2021 at 08:52 AM
 -- Server version: 5.6.38
 -- PHP Version: 7.2.1
 
@@ -67,7 +67,9 @@ INSERT INTO `invoice` (`id`, `total`, `discount`, `payment`, `date`) VALUES
 (7, '1750.00', '0.00', '5000.00', '2021-05-09'),
 (8, '1750.00', '0.00', '5000.00', '2021-05-09'),
 (9, '1750.00', '0.00', '5000.00', '2021-05-09'),
-(10, '1750.00', '0.00', '5000.00', '2021-05-09');
+(10, '1750.00', '0.00', '5000.00', '2021-05-09'),
+(11, '1750.00', '0.00', '5000.00', '2021-05-16'),
+(12, '1745.00', '5.00', '5000.00', '2021-05-16');
 
 -- --------------------------------------------------------
 
@@ -98,7 +100,9 @@ INSERT INTO `invoice_items` (`id`, `invoice_id`, `product`, `qty`, `price`, `amo
 (7, 7, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
 (8, 8, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
 (9, 9, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
-(10, 10, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00');
+(10, 10, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
+(11, 11, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
+(12, 12, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00');
 
 -- --------------------------------------------------------
 
@@ -692,13 +696,13 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `invoice_items`
 --
 ALTER TABLE `invoice_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `jobs`
