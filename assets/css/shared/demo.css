@@ -10,9 +10,6 @@
 .dataTables_length {
   display: none;
 }
-.dataTables_filter {
-  display: none;
-}
 #example_info {
   display: none;
 }
@@ -38,4 +35,14 @@
 }
 .y_form {
   padding: 25px;
+}
+.print-size {
+  width: 790px;
+  height: 550px;
+  border: 1px solid;
+}
+.botton-table {
+  height: 2px !important;
+  padding: 8px 15px !important;
+  font-size: 0.8rem !important;
 }

@@ -115,7 +115,7 @@
             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#ui-style" aria-expanded="false" aria-controls="ui-style">
                 <i class="menu-icon typcn typcn-coffee"></i>
-                <span class="menu-style">POS</span>
+                <span class="menu-title" style="color: chartreuse;">POS</span>
                 <i class="menu-arrow"></i>
               </a>
               <div class="collapse" id="ui-style">
@@ -125,6 +125,9 @@
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="billing_service.php">Billing Services</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="billing_history.php">POS Bill History</a>
                   </li>
                 </ul>
               </div>
