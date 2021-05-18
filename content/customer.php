@@ -59,18 +59,22 @@
                           <label for="exampleInputName">Name</label>
                               <input type="text" class="form-control" value="<?php if(isset($_GET['edit_id'])){ echo $edit_name;} ?>" name="name" placeholder="customer name here.." required>
                           </div>
+
                           <div class="form-group">
                           <label for="exampleInputAddress">Address</label>
                               <input type="text" class="form-control" value="<?php if(isset($_GET['edit_id'])){ echo $edit_address;} ?>" name="address" placeholder="customer address here.." required>
                           </div>
+
                           <div class="form-group">
                           <label for="exampleInputContact">Contact</label>
-                              <input type="text" class="form-control" value="<?php if(isset($_GET['edit_id'])){ echo $edit_contact;} ?>" name="contact" placeholder="+94 00-0000-000" required>
+                              <input type="number" class="form-control" name="contact" value="<?php if(isset($_GET['edit_id'])){ echo $edit_contact;} ?>" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "9" placeholder="Ex: 771234567" required>
                           </div>
+
                           <div class="form-group">
                           <label for="exampleInputEmail">Email</label>
                               <input type="email" class="form-control" value="<?php if(isset($_GET['edit_id'])){ echo $edit_email;} ?>" name="email" placeholder="sample@gmail.com" required>
                           </div>
+
                            <?php if (isset($_GET['edit_id'])): ?>
                               <input type="hidden" class="form-control" name="edit_id" value="<?php if(isset($_GET['edit_id'])){ echo $edit_id;} ?>" />
                               <input type="hidden" class="form-control" name="update" value="update" />
@@ -94,7 +98,7 @@
                     <h4 class="card-title">Customer Data</h4>
                      
                     <div class="table-responsive">         
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="myTable">
                       <thead>
                         <tr>
                           <th> # </th>
@@ -103,7 +107,7 @@
                           <th>Contact </th>
                           <th>Email </th>
                           <th>Edit</th>
-                          <th>SMS</th>
+                          <!-- <th>SMS</th> -->
                           <th>Delete</th>
                         </tr>
                       </thead>
@@ -130,7 +134,7 @@
                               echo ' <td>'.$email.' </td>';
                               echo '<td class="td-center"><button type="button" onclick="editForm('.$row["id"].')" class="btn btn-info btn-fw">Edit</button></td>';
 
-                              echo '<td class="td-center"><button type="button" id="'.$row["id"].'" name="'.$row["id"].'" class="btn btn-primary btn-fw view_data" data-toggle="modal" data-target="#myModal" >Send SMS</button></td>';
+                              //echo '<td class="td-center"><button type="button" id="'.$row["id"].'" name="'.$row["id"].'" class="btn btn-primary btn-fw view_data" data-toggle="modal" data-target="#myModal" >Send SMS</button></td>';
 
                               echo '<td class="td-center"><button type="button" onclick="confirmation(event,'.$row["id"].')" class="btn btn-secondary btn-fw">Delete</button></td>';
                               echo ' </tr>';
@@ -166,6 +170,9 @@
 </html>
 
   <script>
+    $(document).ready( function () {
+      $('#myTable').DataTable();
+    });
   
     /////////////////////////////////////////////////// Form Submit Add  
 

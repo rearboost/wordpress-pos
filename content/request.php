@@ -23,12 +23,7 @@
             $delivery_date  = $row['delivery_date'];
             $job_desc   = $row['job_desc'];
             $advance = $row['advance'];
-            //Style Images
-            // $sql_get=mysqli_query($conn,"SELECT * FROM style WHERE style='$style'");  
-            // $row_get = mysqli_fetch_assoc($sql_get);
-
-            // $styleSpec = $row_get['styleSpec'];
-            // $stylePicture = $row_get['stylePicture'];
+            $service = $row['service_cost'];
           }
         }
     }
@@ -165,6 +160,12 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Estimated Amt</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name ="service" placeholder="0.00" value="<?php if(isset($_GET['view_id'])){ echo $service;} ?>" required/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Advanced</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" name ="advance" placeholder="0.00" value="<?php if(isset($_GET['view_id'])){ echo $advance;} ?>" required/>
@@ -214,7 +215,7 @@
                     <h4 class="card-title">Inbound Request Data</h4>
                     
                     <div class="table-responsive">          
-                    <table id="example" class="table table-bordered">
+                    <table id="myTable" class="table table-bordered">
                       <thead>
                         <tr>
                           <th> # </th>
@@ -297,6 +298,9 @@
 
 
   <script>
+    $(document).ready( function () {
+      $('#myTable').DataTable();
+    });
   
     /////////////////////////////////////////////////// Form Submit Add  
 

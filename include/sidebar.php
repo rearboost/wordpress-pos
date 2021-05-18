@@ -101,6 +101,17 @@
 
             <?php if ($_SESSION['user_role']==1): ?>
             <li class="nav-item">
+              <a class="nav-link" href="dashboard_items.php">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">Dashboard Items</span>
+              </a>
+            </li>
+
+            <?php else: ?>
+            <?php endif ?>
+
+            <?php if ($_SESSION['user_role']==1): ?>
+            <li class="nav-item">
               <a class="nav-link" href="stock.php">
                 <i class="menu-icon typcn typcn-shopping-bag"></i>
                 <span class="menu-title">Manage Stock</span>

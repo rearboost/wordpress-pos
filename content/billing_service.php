@@ -26,7 +26,6 @@
             $user_desc = $row['user_desc'];
             $service_cost = $row['service_cost'];
             $discount = $row['discount'];
-            $payment = $row['payment'];
             $cash_payment = $row['cash_payment'];
             $credit_payment = $row['credit_payment'];
 
@@ -35,6 +34,9 @@
             while($row1 = mysqli_fetch_assoc($sql_p)) {
 
                 $Ad_amount = $row1['Ad_amount'];
+                if(empty($Ad_amount)){
+                    $Ad_amount=0;
+                }
                 $amount = $service_cost+$Ad_amount;
 
                 $total_amount = $amount-$advance;
@@ -199,7 +201,7 @@
                             <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Other Cost</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="Ad_amount" value="<?php if(isset($_GET['view_id'])){ echo $Ad_amount;} ?>" placeholder="LKR 0.00" required/>
+                                    <input type="text" class="form-control" name="Ad_amount" value="<?php if(isset($_GET['view_id'])){ echo $Ad_amount;} ?>" placeholder="LKR 0.00" readonly/>
                                 </div>
                             </div>
                         </div>
@@ -212,7 +214,7 @@
                             <label class="col-sm-3 col-form-label">Gross amount</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" name="amount" id="amount" value="<?php if(isset($_GET['view_id'])){ echo number_format($amount,2,'.',',');} ?>" placeholder="LKR 0.00" readonly/>
-                                    <input type="hidden" id="amount_hidden" value="<?php if(isset($_GET['view_id'])){echo $amount ;} ?>">
+                                    <input type="hidden" name="amount_hidden" id="amount_hidden" value="<?php if(isset($_GET['view_id'])){echo $amount ;} ?>">
                                 </div>
                             </div>
                         </div>
@@ -324,7 +326,7 @@
                        <?php if (isset($_GET['view_id'])): ?>
                           <input type="hidden" class="form-control" name="view_id" id="view_id" value="<?php if(isset($_GET['view_id'])){ echo $view_id;} ?>" />
                           <input type="hidden" class="form-control" name="req_update" value="req_update" />
-                          <button type="submit" class="btn btn-info btn-fw">Update</button>
+                          <button type="submit" class="btn btn-info btn-fw">SAVE</button>
                           <button type="button" onclick="cancelForm()" class="btn btn-primary btn-fw">Cancel</button>
                       <?php else: ?>
                       <?php endif ?>
@@ -342,7 +344,7 @@
                     <h4 class="card-title">Ready To Dispatch</h4>
                     
                     <div class="table-responsive">          
-                    <table id="example" class="table table-bordered">
+                    <table id="myTable" class="table table-bordered">
                       <thead>
                         <tr>
                           <th> # </th>
@@ -374,6 +376,7 @@
                             $job_desc   = $row['job_desc'];
                             $user_desc = $row['user_desc'];
                             $service_cost = $row['service_cost'];
+                            $payable_amt = $row['payable_amt'];
 
                               echo ' <tr>';
                               echo ' <td>'.$i.' </td>';
@@ -384,8 +387,11 @@
                               echo ' <td>'.$delivery_date.' </td>';
                               echo ' <td>'.$job_desc.' </td>';
                               echo '<td class="td-center"><button type="button" onclick="editForm('.$row["jobId"].')" class="btn btn-info btn-fw">Edit</button></td>';
+                              if($payable_amt>0){
                               echo '<td class="td-center"><button type="button" onclick="printForm('.$row["jobId"].')" name="print" class="btn btn-primary btn-fw">Print</button></td>';
-                            
+                              }else{
+                              echo '<td class="td-center"><button type="button" onclick="printForm('.$row["jobId"].')" name="print" class="btn btn-primary btn-fw" disabled>Print</button></td>';
+                              }
                               echo ' </tr>';
                               $i++;
                             }
@@ -419,6 +425,10 @@
 
 
   <script>
+    $(document).ready( function () {
+      $('#myTable').DataTable();
+    });
+    
     var numberRegex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
 
 
@@ -483,12 +493,6 @@
 
           e.preventDefault();
 
-          // var discount_check = $('#discount').val();
-
-          // if(discount_check==''){
-          //   alert('Required field is empty. Please check.');
-          // }else{
-
               $.ajax({
                 type: 'post',
                 url: '../controller/dispatch_controller.php',
@@ -516,7 +520,7 @@
                     }
                 }
               });
-          //}
+
 
         });
       });
@@ -529,17 +533,46 @@
         window.location.href = "billing_service.php";
     }
 
-    //// print bill //////
+    // print bill //////
     function printForm(id){
       window.open('invoice_print?id='+id, '_blank');
 
-      window.onafterprint = function(){
-        //alert(id)
-        window.location.href = "billing_service.php?bill_id=" + id;
-        // $(window).off(window.onafterprint);
-        // console.log('Print Dialog Closed..');
-      };
+      // window.onafterprint = function(){
+      //   //alert(id)
+      //   window.location.href = "billing_service.php?bill_id=" + id;
+      //   // $(window).off(window.onafterprint);
+      //   // console.log('Print Dialog Closed..');
+      // };
     }
+
+    // function printForm(){
+
+    //     var invoice  ="invoice";
+    
+    //     var amount= $('#amount').val();
+    //     var advance= $('#advance').val();
+    //     var discount= $('#discount').val();
+    //     var total_amount= $('#total_amount').val();
+    //     var cash= $('#cash_payment  ').val();
+    //     var credit= $('#credit_payment').val();
+    //     var inv_id= $('#inv_id').val();
+
+    //     //if(payment!='' && numberRegex.test(payment)){
+
+    //         $.ajax({
+    //             type: 'post',
+    //             url: '../controller/dispatch_controller.php',
+    //             data: {invoice:invoice,amount:amount,advance:advance,discount:discount,total_amount:total_amount,cash:cash,credit:credit},
+    //             success: function (data) {
+
+    //                 setTimeout(function(){window.open('print?id='+inv_id, '_blank'); }, 100);
+
+    //                 setTimeout(function(){ location.reload(); }, 2500);
+
+    //             } 
+    //         });  
+    //     //}
+    // }
 
 
 

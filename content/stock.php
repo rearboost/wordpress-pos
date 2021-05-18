@@ -39,7 +39,7 @@ include('../include/config.php');
                     <h4 class="card-title">All Stock Details</h4>
                     
                     <div class="table-responsive">          
-                    <table id="example" class="table table-bordered">
+                    <table id="myTable" class="table table-bordered">
                       <thead>
                         <tr>
                           <th> # </th>
@@ -120,5 +120,8 @@ include('../include/config.php');
 </html>
 
 <script>
+    $(document).ready( function () {
+      $('#myTable').DataTable();
+    });
   
 </script>

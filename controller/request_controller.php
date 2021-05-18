@@ -13,13 +13,14 @@
             $delivery_date  = $_POST['delivery_date'];
             $job_desc       = $_POST['job_desc'];
             $advance        = $_POST['advance'];
+            $service        = $_POST['service'];
             $status         = 'request';
 
             //$year = cur_date('Y');
             $today = new DateTime(null, new DateTimeZone('Asia/Colombo'));
             $year = $today->format('Y');
 
-            $max_jobno = mysqli_query($conn,"SELECT jobId FROM jobs ORDER BY jobId DESC LIMIT 1");
+            $max_jobno = mysqli_query($conn,"SELECT * FROM jobs ORDER BY jobId DESC LIMIT 1");
             $data = mysqli_fetch_assoc($max_jobno);
             $numRows = mysqli_num_rows($max_jobno);
             if($numRows>0){
@@ -29,14 +30,14 @@
             }
             $job_no = $year . $no;
 
-            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE jobNo='$job_no' AND accessory='$accessory' AND brand='$brand' AND model='$model' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND advance='$advance' AND customerId='$customer'");
+            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE jobNo='$job_no' AND accessory='$accessory' AND brand='$brand' AND model='$model' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND advance='$advance' AND service_cost='$service' AND customerId='$customer'");
 		    $count = mysqli_num_rows($check);
 
             if($count==0){
 
-                $insert = "INSERT INTO jobs (jobNo,accessory,brand,model,request_date,delivery_date,job_desc,advance,status,customerId) VALUES ('$job_no','$accessory','$brand','$model','$request_date','$delivery_date','$job_desc','$advance','$status','$customer')";
-                $result = mysqli_query($conn,$insert);
-                if($result){
+                $insert = "INSERT INTO jobs (jobNo,accessory,brand,model,request_date,delivery_date,job_desc,advance,status,service_cost,customerId) VALUES ('$job_no','$accessory','$brand','$model','$request_date','$delivery_date','$job_desc','$advance','$status','$service','$customer')";
+                $output = mysqli_query($conn,$insert);
+                if($output){
                     echo  1;
                 }else{
                     echo  mysqli_error($conn);		
@@ -51,8 +52,34 @@
             $get_contact = mysqli_query($conn, "SELECT * FROM customer WHERE id='$customer'");
             $cus_data = mysqli_fetch_assoc($get_contact);
 
-            $to = $cus_data['contact'];
-            $msg = 'Dear customer, Your order has been placed under ' . $job_no .'. Thank You.';
+            $customer_name = $cus_data['name'];
+            //$to = $cus_data['contact'];
+            $advanced = number_format($advance,2,'.',',');
+            $estimate_amt = number_format($service,2,'.',',');
+
+            $User_name ="Shadcomputers"; //Your Username 
+            $Api_key = "5bbb49d5c63f487727f0"; //Your API Key 
+            $Gateway_type = "1"; //Define Economy Gateway 
+            $Country_code = "94"; //Country Code 
+            $Number = $cus_data['contact']; //Mobile Number Without 0 
+            $message = "Hi ".$customer_name.", We are Received Your Repair [Job Note Number - ".$job_no."].Estimated Amount Rs.".$estimate_amt." Advance Rs.".$advanced." Your Status-request Job Will Be Completed ".$delivery_date.".Thank You, SHAD COMPUTERS"; //Your Message 
+
+            $data = array( "user_name" => $User_name, "api_key" => $Api_key, "gateway_type" => $Gateway_type, "country_code" => $Country_code, "number" => $Number, "message" => $message ); 
+            $data_string = json_encode($data); 
+
+            $ch = curl_init('https://my.ipromo.lk/api/postsendsms/'); 
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); 
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string); 
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array( 'Content-Type: application/json', 'Content-Length: ' . strlen($data_string)) ); 
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5); 
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); 
+
+            //Execute Post 
+            $result = curl_exec($ch);
+            //Close Connection 
+            curl_close($ch); 
+            echo $result; 
         }
 
         //  Update Function 
@@ -67,9 +94,10 @@
             $delivery_date  = $_POST['delivery_date'];
             $job_desc       = $_POST['job_desc'];
             $advance        = $_POST['advance'];
+            $service        = $_POST['service'];
             $status         = $_POST['status'];
 
-            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE accessory='$accessory' AND brand='$brand' AND model='$model' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND advance='$advance' AND customerId='$customer' AND status='$status' ");
+            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE accessory='$accessory' AND brand='$brand' AND model='$model' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND advance='$advance' AND service_cost='$service' AND customerId='$customer' AND status='$status' ");
 		    $count = mysqli_num_rows($check);
 
             if($count==0){
@@ -82,6 +110,7 @@
                                         delivery_date  ='$delivery_date',
                                         job_desc  ='$job_desc',
                                         advance  ='$advance',
+                                        service_cost  ='$service',
                                         status  ='$status',
                                         customerId  ='$customer'
                                     WHERE jobId=$id";

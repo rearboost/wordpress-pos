@@ -151,6 +151,10 @@
               <li>Warranty covers only manufcatures defects, damages or due to other <br><b> </b> casues as negkigence, misuse , improper opertion, power fluctuation , lightening or <br> natural disaster , sabotage or Accident etc. are NOT included under this warranty.</li>
               <li>1 Year warranty less than 14 working day. ( -350 days/2 year-700/3 year- 1050 days ).</li>
               <li> Goods sold once not returnable.</li>
+              <!-- <li>Phones that do not arrive within 10 days of being handed over for repair are not responsible.</li>
+              <li>Check the phone after the repair, the advance paid for the repair will not be refunded for any reason.</li> 
+              <li>Submission of this bill is mandatory to obtain the phone provided for repairs.</li> 
+              <li>Please note that anyone who does not have this bill will not be given a warranty and the phone provided for repair under any circumstances.</li> -->
            
            </ul>
            <div class="col-sm-12 row">
@@ -171,23 +175,23 @@
             <table class="table table-bordered">
              <tr>
                 <td  class="botton-table"><b>AMOUNT</b></td>
-                <td  class="botton-table"><?php echo number_format($totalAMT,2,'.',','); ?></td>
+                <td  class="botton-table" style="text-align: right;"><?php echo number_format($totalAMT,2,'.',','); ?></td>
               </tr>
               <tr>
                 <td class="botton-table"><b>ADVANCED</b></td>
-                <td class="botton-table"><?php echo number_format(0,2,'.',','); ?></td>
+                <td class="botton-table" style="text-align: right;"><?php echo number_format(0,2,'.',','); ?></td>
               </tr>
               <tr>
                 <td class="botton-table"><b>DISCOUNT</b></td>
-                <td class="botton-table"><?php echo number_format($discount,2,'.',','); ?></td>
+                <td class="botton-table" style="text-align: right;"><?php echo number_format($discount,2,'.',','); ?></td>
               </tr>
               <tr>
                 <td class="botton-table"><b>CASH PAY</b></td>
-                <td class="botton-table"><?php echo number_format($payment,2,'.',','); ?></td>
+                <td class="botton-table" style="text-align: right;"><?php echo number_format($payment,2,'.',','); ?></td>
               </tr>
               <tr>
                 <td class="botton-table"><b>CREDIT</b></td>
-                <td class="botton-table"><?php echo number_format(0,2,'.',','); ?></td>
+                <td class="botton-table" style="text-align: right;"><?php echo number_format(0,2,'.',','); ?></td>
               </tr>
             </table>
        </div>

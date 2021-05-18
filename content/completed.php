@@ -276,7 +276,7 @@
                     <h4 class="card-title">Completed Job Data</h4>
                     
                     <div class="table-responsive">          
-                    <table id="example" class="table table-bordered">
+                    <table  id="myTable" class="table table-bordered">
                       <thead>
                         <tr>
                           <th> # </th>
@@ -362,6 +362,9 @@
 
 
   <script>
+    $(document).ready( function () {
+      $('#myTable').DataTable();
+    });
   
     /////////////////////////////////////////////////// Form Submit Add  
 

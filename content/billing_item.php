@@ -60,6 +60,16 @@ include('../include/config.php');
                                                     echo '<option value ="'.$row["post_title"].'">';
                                                 }
                                             }
+
+                                            $product2 = "SELECT item FROM dashboard_items";
+                                            $result2 = mysqli_query($conn,$product2);
+                                            $numRows2 = mysqli_num_rows($result2); 
+                            
+                                            if($numRows2 > 0) {
+                                                while($row2 = mysqli_fetch_assoc($result2)) {
+                                                    echo '<option value ="'.$row2["item"].'">';
+                                                }
+                                            }
                                         ?>
                                       </datalist>  
                                     </div>
@@ -245,7 +255,7 @@ include('../include/config.php');
                                     }else if($stock_status=="outofstock"){
                                       echo '<label class="badge badge-danger">'."Out of stock".'</label>';
                                     }else{
-                                      echo '<label class="badge badge-primary">'.$stock_quantity.'</label>';
+                                      echo '<label class="badge badge-primary">'.$stock_status.'</label>';
                                     }
                                 ?></p>
                               </div>
@@ -255,6 +265,39 @@ include('../include/config.php');
                           		}
                           	}
                     		?>
+
+                        <?php
+                        $items2= mysqli_query($conn,"SELECT * FROM dashboard_items");
+                        $numRows2 = mysqli_num_rows($items2); 
+                    
+                            if($numRows2 > 0) {
+                              while($row2 = mysqli_fetch_assoc($items2)) {
+
+                            ?>
+                            <div class="row pointer prod_name" style="margin-bottom: 5px;" id="<?php echo $row2['item']?>">
+                              <div class="card" style="padding: 15px 5px 5px 5px;border-radius: 15px; width: 600px;">
+                                <h5><strong><?php echo $row2['item']; ?></strong></h5>
+                                <p>Price: <strong><?php echo number_format($row2['min_price'],2,'.',','); ?> - <?php echo number_format($row2['max_price'],2,'.',','); ?></strong><br>
+                                Status: 
+                                <?php
+                                $status = $row2['stock_status'];
+                                  if($status=="instock"){
+                                      echo '<label class="badge badge-success">'."In stock".'</label>';
+                                    }else if($status=="onbackorder"){
+                                      echo '<label class="badge badge-warning">'."On back order".'</label>';
+                                    }else if($status=="outofstock"){
+                                      echo '<label class="badge badge-danger">'."Out of stock".'</label>';
+                                    }else{
+                                      echo '<label class="badge badge-primary">'.$status.'</label>';
+                                    }
+                                ?></p>
+                              </div>
+                            </div>
+
+                        <?php
+                              }
+                            }
+                        ?>
                     		
                     	</div>
                     </div>
@@ -398,7 +441,7 @@ include('../include/config.php');
                     });
 
                 }else{
-                    $( "#here" ).load(window.location.href + " #here" );
+                    $("#here" ).load(window.location.href + " #here" );
                     $("#gross").val(data);
                     $("#total").val(data);
                     

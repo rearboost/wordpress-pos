@@ -1,14 +1,20 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.7
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
--- Host: localhost:8889
--- Generation Time: May 16, 2021 at 08:52 AM
--- Server version: 5.6.38
--- PHP Version: 7.2.1
+-- Host: 127.0.0.1
+-- Generation Time: May 18, 2021 at 01:58 AM
+-- Server version: 10.1.10-MariaDB
+-- PHP Version: 5.5.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `mobile_shop`
@@ -24,7 +30,7 @@ CREATE TABLE `customer` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `address` varchar(500) NOT NULL,
-  `contact` varchar(15) NOT NULL,
+  `contact` int(9) NOT NULL,
   `email` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -33,11 +39,34 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`id`, `name`, `address`, `contact`, `email`) VALUES
-(1, 'Dimashi Liyanage', 'Hikkaduwa', '94771234458', 'dimashi123@gmail.com'),
-(2, 'Indunil Dissanayaka', 'matale', '94771234567', 'indunil@gmail.com'),
-(3, 'Sandamali ', 'Hanwella', '94712589574', 'sri123Sanda@gmail.com'),
-(4, 'Rashini Amanda', 'Bentara', '077 8956234', 'Rashiniamd@gmail.com'),
-(5, 'Rashmika', 'Kaduwela', '94773697894', 'rashmi191@gmail.com');
+(1, 'Dimashi Liyanage', 'Hikkaduwa', 771234458, 'dimashi123@gmail.com'),
+(2, 'Indunil Dissanayaka', 'matale', 771234567, 'indunil@gmail.com'),
+(3, 'Sandamali ', 'Hanwella', 712589574, 'sri123Sanda@gmail.com'),
+(4, 'Rashini Amanda', 'Bentara', 778956234, 'Rashiniamd@gmail.com'),
+(5, 'Rashmika', 'Kaduwela', 773697894, 'rashmi191@gmail.com'),
+(6, 'Imashi Liyanage', 'Egodamulla, Ahungalla', 771234567, 'imashi@gmail.com');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dashboard_items`
+--
+
+CREATE TABLE `dashboard_items` (
+  `item_id` int(11) NOT NULL,
+  `item` varchar(250) NOT NULL,
+  `min_price` double(10,2) NOT NULL,
+  `max_price` double(10,2) NOT NULL,
+  `stock_qty` int(11) NOT NULL,
+  `stock_status` varchar(50) NOT NULL DEFAULT 'instock'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `dashboard_items`
+--
+
+INSERT INTO `dashboard_items` (`item_id`, `item`, `min_price`, `max_price`, `stock_qty`, `stock_status`) VALUES
+(1, 'AAA', 1250.00, 1300.00, 250, 'instock');
 
 -- --------------------------------------------------------
 
@@ -68,8 +97,8 @@ INSERT INTO `invoice` (`id`, `total`, `discount`, `payment`, `date`) VALUES
 (8, '1750.00', '0.00', '5000.00', '2021-05-09'),
 (9, '1750.00', '0.00', '5000.00', '2021-05-09'),
 (10, '1750.00', '0.00', '5000.00', '2021-05-09'),
-(11, '1750.00', '0.00', '5000.00', '2021-05-16'),
-(12, '1745.00', '5.00', '5000.00', '2021-05-16');
+(11, '5200.00', '50.00', '5300.00', '2021-05-11'),
+(12, '1750.00', '0.00', '2000.00', '2021-05-17');
 
 -- --------------------------------------------------------
 
@@ -101,7 +130,7 @@ INSERT INTO `invoice_items` (`id`, `invoice_id`, `product`, `qty`, `price`, `amo
 (8, 8, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
 (9, 9, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
 (10, 10, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
-(11, 11, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00'),
+(11, 11, 'Dell WM126 Wireless Optical Mouse', '3', '1750.00', '5250.00'),
 (12, 12, 'Dell WM126 Wireless Optical Mouse', '1', '1750.00', '1750.00');
 
 -- --------------------------------------------------------
@@ -119,11 +148,16 @@ CREATE TABLE `jobs` (
   `request_date` varchar(50) NOT NULL,
   `delivery_date` varchar(50) NOT NULL,
   `job_desc` varchar(500) NOT NULL,
+  `advance` double(10,2) NOT NULL DEFAULT '0.00',
   `user_desc` varchar(500) NOT NULL,
   `status` enum('request','reject','technician','complete','dispatch','finish') NOT NULL,
   `progress` int(11) NOT NULL DEFAULT '0',
   `service_cost` double(10,2) NOT NULL,
-  `acessories_cost` double(10,2) NOT NULL,
+  `discount` double(10,2) NOT NULL DEFAULT '0.00',
+  `gross_amount` double(10,2) NOT NULL,
+  `payable_amt` double(10,2) NOT NULL,
+  `cash_payment` double(10,2) NOT NULL DEFAULT '0.00',
+  `credit_payment` double(10,2) NOT NULL DEFAULT '0.00',
   `customerId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -131,13 +165,14 @@ CREATE TABLE `jobs` (
 -- Dumping data for table `jobs`
 --
 
-INSERT INTO `jobs` (`jobId`, `jobNo`, `accessory`, `brand`, `model`, `request_date`, `delivery_date`, `job_desc`, `user_desc`, `status`, `progress`, `service_cost`, `acessories_cost`, `customerId`) VALUES
-(1, 0, 'Huawei GR3 Phone', '', '', '2021-04-28', '2021-05-03', 'Need to repair', 'cant operate', 'technician', 50, 0.00, 0.00, 2),
-(2, 20212, 'DELL I3 LAPTOP', '', '', '2021-04-01', '2021-04-30', 'Lorem ipsum', 'aaaaaaa', 'technician', 100, 0.00, 0.00, 1),
-(3, 0, 'HP pavilion X360', 'HP', 'i3', '2021-04-17', '2021-05-01', 'xxxxxxxxxxxxxxxxxxxxxx', 'sasa', 'complete', 100, 0.00, 0.00, 4),
-(4, 0, 'HP I5 LAPTOP', '', '', '2021-04-28', '2021-05-04', 'To change the battery', '', 'reject', 0, 0.00, 0.00, 3),
-(5, 20215, 'DELL I3 LAPTOP', '', '', '2021-04-29', '2021-05-05', 'For repairing', '', 'request', 0, 0.00, 0.00, 5),
-(6, 20216, 'Laptop', 'HP', 'i5 7gen', '2021-05-03', '2021-05-06', 'qqqqqqqq', 'aaa', 'complete', 100, 0.00, 0.00, 5);
+INSERT INTO `jobs` (`jobId`, `jobNo`, `accessory`, `brand`, `model`, `request_date`, `delivery_date`, `job_desc`, `advance`, `user_desc`, `status`, `progress`, `service_cost`, `discount`, `gross_amount`, `payable_amt`, `cash_payment`, `credit_payment`, `customerId`) VALUES
+(1, 20212, 'Huawei GR3 Phone', '', '', '2021-04-28', '2021-05-03', 'Need to repair', 0.00, 'cant operate', 'technician', 50, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 2),
+(2, 20212, 'DELL I3 LAPTOP', '', '', '2021-04-01', '2021-04-30', 'Lorem ipsum', 0.00, 'aaaaaaa', 'technician', 100, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1),
+(3, 20213, 'HP pavilion X360', 'HP', 'i3', '2021-04-17', '2021-05-01', 'xxxxxxxxxxxxxxxxxxxxxx', 0.00, 'sasa', 'dispatch', 100, 1200.00, 0.00, 4875.00, 4875.00, 4000.00, 875.00, 4),
+(4, 20214, 'HP I5 LAPTOP', '', '', '2021-04-28', '2021-05-04', 'To change the battery', 0.00, '', 'reject', 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 3),
+(5, 20215, 'DELL I3 LAPTOP', '', '', '2021-04-29', '2021-05-05', 'For repairing', 0.00, '', 'request', 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 5),
+(6, 20216, 'Laptop', 'HP', 'i5 7gen', '2021-05-03', '2021-05-06', 'qqqqqqqq', 0.00, 'aaa', 'complete', 100, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 5),
+(7, 20217, 'I5 LAPTOP', 'HP', 'i5 7gen', '2021-05-15', '2021-05-20', 'xxxxxx', 500.00, 'ok', 'dispatch', 100, 2100.00, 0.00, 2100.00, 1600.00, 2000.00, 0.00, 5);
 
 -- --------------------------------------------------------
 
@@ -196,6 +231,14 @@ CREATE TABLE `temp_pos` (
   `amount` decimal(10,2) NOT NULL,
   `stock_quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `temp_pos`
+--
+
+INSERT INTO `temp_pos` (`id`, `product`, `qty`, `price`, `amount`, `stock_quantity`) VALUES
+(1, 'AAA', '11', '1300.00', '14300.00', 239),
+(2, 'Dell WM126 Wireless Optical Mouse', '5', '1750.00', '8750.00', 0);
 
 -- --------------------------------------------------------
 
@@ -278,7 +321,7 @@ CREATE TABLE `wp_posts` (
 
 INSERT INTO `wp_posts` (`ID`, `post_author`, `post_date`, `post_date_gmt`, `post_content`, `post_title`, `post_excerpt`, `post_status`, `comment_status`, `ping_status`, `post_password`, `post_name`, `to_ping`, `pinged`, `post_modified`, `post_modified_gmt`, `post_content_filtered`, `post_parent`, `guid`, `menu_order`, `post_type`, `post_mime_type`, `comment_count`) VALUES
 (1, 1, '2019-07-29 03:42:45', '2019-07-29 03:42:45', '<!-- wp:paragraph -->\n<p>Aliquam ut tortor sed erat tempor egestas eget non augue. Suspendisse ultrices lacus ac risus molestie, vel tincidunt sapien scelerisque. Fusce id ipsum odio. Aliquam maximus purus ipsum, ac cursus velit ultricies a. Etiam posuere scelerisque tortor, et luctus libero laoreet a. Donec porttitor ex id augue facilisis, non tincidunt diam commodo. Suspendisse malesuada felis quis ante hendrerit, sed vehicula dui molestie. Sed in lacus eros. Ut et purus viverra, pretium nisl ultricies, bibendum metus. Nullam nec sagittis dui. Maecenas cursus efficitur est, eu consectetur sem bibendum in. Proin sit amet dui eu nisl molestie sollicitudin. Duis ullamcorper fringilla fringilla. Nunc augue ex, mollis nec nibh ac, accumsan consectetur dui. Maecenas ut justo lacus.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Nunc ullamcorper sapien vel nibh aliquam auctor. Mauris vitae sapien mauris. Etiam non mauris justo. Donec quis viverra velit. Vestibulum efficitur, neque pretium semper vestibulum, ipsum dolor lobortis purus, nec dapibus sem augue et ex. Praesent malesuada nulla ligula, at molestie est mollis vitae. Nulla rutrum quam ut sollicitudin semper. Vestibulum feugiat condimentum ligula.</p>\n<!-- /wp:paragraph -->', 'Aliquam ut tortor sed erat tempor egestas eget non augue.', '', 'publish', 'open', 'open', '', 'hello-world', '', '', '2019-07-29 03:42:45', '2019-07-29 03:42:45', '', 0, 'https://demo.themefarmer.com/newstore/?p=1', 0, 'post', '', 1),
-(2, 1, '2020-12-12 09:51:33', '2020-12-12 09:51:33', '<!-- wp:paragraph -->\n<p>This is an example page. It\'s different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\"><p>Hi there! I\'m a bike messenger by day, aspiring actor by night, and this is my website. I live in Los Angeles, have a great dog named Jack, and I like pi&#241;a coladas. (And gettin\' caught in the rain.)</p></blockquote>\n<!-- /wp:quote -->\n\n<!-- wp:paragraph -->\n<p>...or something like this:</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\"><p>The XYZ Doohickey Company was founded in 1971, and has been providing quality doohickeys to the public ever since. Located in Gotham City, XYZ employs over 2,000 people and does all kinds of awesome things for the Gotham community.</p></blockquote>\n<!-- /wp:quote -->\n\n<!-- wp:paragraph -->\n<p>As a new WordPress user, you should go to <a href=\"https://shadcomputers.lk/wp-admin/\">your dashboard</a> to delete this page and create new pages for your content. Have fun!</p>\n<!-- /wp:paragraph -->', 'Sample Page', '', 'publish', 'closed', 'open', '', 'sample-page', '', '', '2020-12-12 09:51:33', '2020-12-12 09:51:33', '', 0, 'https://shadcomputers.lk/?page_id=2', 0, 'page', '', 0),
+(2, 1, '2020-12-12 09:51:33', '2020-12-12 09:51:33', '<!-- wp:paragraph -->\n<p>This is an example page. It''s different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:quote -->\n<blockquote class="wp-block-quote"><p>Hi there! I''m a bike messenger by day, aspiring actor by night, and this is my website. I live in Los Angeles, have a great dog named Jack, and I like pi&#241;a coladas. (And gettin'' caught in the rain.)</p></blockquote>\n<!-- /wp:quote -->\n\n<!-- wp:paragraph -->\n<p>...or something like this:</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:quote -->\n<blockquote class="wp-block-quote"><p>The XYZ Doohickey Company was founded in 1971, and has been providing quality doohickeys to the public ever since. Located in Gotham City, XYZ employs over 2,000 people and does all kinds of awesome things for the Gotham community.</p></blockquote>\n<!-- /wp:quote -->\n\n<!-- wp:paragraph -->\n<p>As a new WordPress user, you should go to <a href="https://shadcomputers.lk/wp-admin/">your dashboard</a> to delete this page and create new pages for your content. Have fun!</p>\n<!-- /wp:paragraph -->', 'Sample Page', '', 'publish', 'closed', 'open', '', 'sample-page', '', '', '2020-12-12 09:51:33', '2020-12-12 09:51:33', '', 0, 'https://shadcomputers.lk/?page_id=2', 0, 'page', '', 0),
 (7, 1, '2019-07-30 05:34:47', '2019-07-30 05:34:47', '[tfwc_tool_wishilst]', 'Wishlist', '', 'publish', 'closed', 'closed', '', 'wishlist-2', '', '', '2019-07-30 05:34:47', '2019-07-30 05:34:47', '', 0, 'https://demo.themefarmer.com/newstore/wishlist/', 0, 'page', '', 0),
 (10, 1, '2019-07-30 05:36:30', '2019-07-30 05:36:30', '', 'Shop', '', 'publish', 'closed', 'closed', '', 'shop-2', '', '', '2019-07-30 05:36:30', '2019-07-30 05:36:30', '', 0, 'https://demo.themefarmer.com/newstore/shop/', 0, 'page', '', 0),
 (11, 1, '2019-07-30 05:36:30', '2019-07-30 05:36:30', '<!-- wp:shortcode -->[woocommerce_cart]<!-- /wp:shortcode -->', 'Cart', '', 'publish', 'closed', 'closed', '', 'cart-3', '', '', '2019-07-30 05:36:30', '2019-07-30 05:36:30', '', 0, 'https://demo.themefarmer.com/newstore/cart/', 0, 'page', '', 0),
@@ -584,6 +627,12 @@ ALTER TABLE `customer`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `dashboard_items`
+--
+ALTER TABLE `dashboard_items`
+  ADD PRIMARY KEY (`item_id`);
+
+--
 -- Indexes for table `invoice`
 --
 ALTER TABLE `invoice`
@@ -690,70 +739,67 @@ ALTER TABLE `wp_wc_product_meta_lookup`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `dashboard_items`
+--
+ALTER TABLE `dashboard_items`
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `invoice`
 --
 ALTER TABLE `invoice`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
 --
 -- AUTO_INCREMENT for table `invoice_items`
 --
 ALTER TABLE `invoice_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
 --
 -- AUTO_INCREMENT for table `jobs`
 --
 ALTER TABLE `jobs`
-  MODIFY `jobId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
+  MODIFY `jobId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `parts`
 --
 ALTER TABLE `parts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
 --
 -- AUTO_INCREMENT for table `temp`
 --
 ALTER TABLE `temp`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `temp_pos`
 --
 ALTER TABLE `temp_pos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
 --
 -- AUTO_INCREMENT for table `user_role`
 --
 ALTER TABLE `user_role`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
 --
 -- AUTO_INCREMENT for table `wp_posts`
 --
 ALTER TABLE `wp_posts`
   MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
-
 --
 -- AUTO_INCREMENT for table `wp_termmeta`
 --
 ALTER TABLE `wp_termmeta`
   MODIFY `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
-
 --
 -- AUTO_INCREMENT for table `wp_terms`
 --
 ALTER TABLE `wp_terms`
   MODIFY `term_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

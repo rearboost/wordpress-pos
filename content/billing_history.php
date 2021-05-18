@@ -8,8 +8,6 @@
   <!-- include head code here -->
    <?php  include('../include/head.php');   ?>
 
-   <link rel="stylesheet" href="../assets/css/jquery.dataTables.css">
-
   <body>
     <div class="container-scroller">
       <!-- partial:../../partials/_navbar.html -->
@@ -112,144 +110,15 @@
   <script>
 
 
-    $(document).ready( function () {
+  $(document).ready( function () {
       $('#myTable').DataTable();
-   });
-  
-    /////////////////////////////////////////////////// Form Submit Add  
+  });
 
-    $(function () {
+  function printForm(id){
 
-        $('#customerForm').on('submit', function (e) {
+    setTimeout(function(){window.open('print?id='+id, '_blank'); }, 100);
 
-          e.preventDefault();
-
-          $.ajax({
-            type: 'post',
-            url: '../controller/customer_controller.php',
-            data: $('#customerForm').serialize(),
-            success: function (data) {
-
-                  if(data==0){
-
-                    swal({
-                      title: "Can't Duplication !",
-                      text: "Customer",
-                      icon: "error",
-                      button: "Ok !",
-                    });
-
-                  }else{
-
-                    swal({
-                    title: "Good job !",
-                    text: "Successfully Submited",
-                    icon: "success",
-                    button: "Ok !",
-                    });
-                    setTimeout(function(){ location.reload(); }, 2500);
-                    //window.location.href = "customer.php";
-                    
-                  }
-               }
-          });
-
-        });
-
-      });
-
-   /////////////////////////////////////////////////// Form Submit Add  
-
-    function confirmation(e,id) {
-        var answer = confirm("Are you sure, you want to permanently delete this record?")
-      if (!answer){
-        e.preventDefault();
-        return false;
-      }else{
-        myFunDelete(id)
-      }
-    }
-
-    function myFunDelete(id){
-
-      $.ajax({
-            url:"../controller/customer_controller.php",
-            method:"POST",
-            data:{removeID:id},
-            success:function(data){
-                swal({
-                title: "Good job !",
-                text: "Successfully Removerd",
-                icon: "success",
-                button: "Ok !",
-                });
-                setTimeout(function(){ location.reload(); }, 2500);
-                window.location.href = "customer.php";
-            }
-      });
-    }
-
-    function editForm(id){
-        window.location.href = "customer.php?edit_id=" + id;
-    }
-
-    function cancelForm(){
-        window.location.href = "customer.php";
-    }
-
-    /////// Message Form ////////////
-
-    $(document).on('click', '.view_data', function(){
-
-    var view_id = $(this).attr("name");
-
-    $.ajax({
-         url:"../controller/customer_controller.php",
-         method:"POST",
-         data:{view_id:view_id},
-         success:function(data){
-           //alert(data)
-
-           var data =JSON.parse(data);
-
-           $('#id').val(data['id']);
-           $('#name').val(data['name']);
-           $('#contact').val(data['contact']);
-         }
-      });
-    });
-
-
-    //// submitting sms /////
-    $(function () {
-
-        $('#msgForm').on('submit', function (e) {
-
-          e.preventDefault();
-
-          $.ajax({
-            type: 'post',
-            url: '../controller/customer_controller.php',
-            data: $('#msgForm').serialize(),
-            success: function (data) {
-                    swal({
-                    title: "Good job !",
-                    text: "Successfully Send",
-                    icon: "success",
-                    button: "Ok !",
-                    });
-                    setTimeout(function(){ location.reload(); }, 2500);
-                                      
-               }
-          });
-        });
-      });
-
-    function printForm(id){
-
-       setTimeout(function(){window.open('print?id='+id, '_blank'); }, 100);
-
-       setTimeout(function(){ location.reload(); }, 2500);
-    }
+    setTimeout(function(){ location.reload(); }, 2500);
+  }
 
   </script>

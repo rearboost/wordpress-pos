@@ -187,7 +187,7 @@
                     <h4 class="card-title">Rejected Jobs Data</h4>
                      
                     <div class="table-responsive">         
-                    <table id="example" class="table table-bordered">
+                    <table id="myTable" class="table table-bordered">
                       <thead>
                         <tr>
                           <th> # </th>
@@ -264,45 +264,9 @@
 
 
   <script>
-  
-    /////////////////////////////////////////////////// Form Submit Add  
-
-    // $(function () {
-
-    //     $('#requestAdd').on('submit', function (e) {
-
-    //       e.preventDefault();
-
-    //       $.ajax({
-    //         type: 'post',
-    //         url: '../controller/request_controller.php',
-    //         data: $('#requestAdd').serialize(),
-    //         success: function (data) {
-
-    //             if(data==0){
-
-    //                 swal({
-    //                   title: "Can't Duplication !",
-    //                   text: "Request",
-    //                   icon: "error",
-    //                   button: "Ok !",
-    //                 });
-
-    //             }else{
-
-    //                 swal({
-    //                   title: "Good job !",
-    //                   text: "Successfully Submited",
-    //                   icon: "success",
-    //                   button: "Ok !",
-    //                   });
-    //                   setTimeout(function(){ location.reload(); }, 2500);
-    //             }
-    //         }
-    //       });
-
-    //     });
-    //   });
+    $(document).ready( function () {
+      $('#myTable').DataTable();
+    });
 
     function editForm(id){
         window.location.href = "rejected.php?view_id=" + id;

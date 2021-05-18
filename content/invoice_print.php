@@ -1,198 +1,180 @@
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-<style>
-body{
-  font-family: sans-serif;
-  font-size: 30px;
-  font-color: black;
-}
-.invoice{
-  width: 760px;
-  /* height:700px; */
-  /*width:1240px;
-  height:874px;*/
-  display: flex;
-}
-.left{
-  width:20%;
-  background-color: #ffffff;
-}
-.img-center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-.right{
-  width:100%;
-  padding-top: 80px;
-}
-h1{
-  text-align: center;
-  font-weight: 500;
-  color:#282365;
-}
-.row1{
-  display: flex;
-  padding: 0px 0px 10px 0px;
-  border-bottom: 1px double black;
-}
-.col1{
-  width:65%;
-}
-.col2{
-  width:35%;
-  padding-left: 10%;
-  padding-top: 10px;
-  font-weight: 600;
-}
-table, td, th {
-   border: 1px solid black; 
-}
-td{
-  line-height: 40px;
-}
-td.customer{
-  font-weight: 600;
-  padding-left: 5px;
-}
+<?php  
+  include('../include/config.php');
+  
+  include('../include/head.php'); 
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.row2{
-  display: flex;
-  padding: 10px 0px 10px 0px;
-}
-.row3{
-  display: flex;
-  padding: 10px 0px 10px 0px;
-}
-.row4{
-  display: flex;
-  padding: 10px 0px 10px 0px;
-}
+  ///after printing function area start
 
-.font-print{
-  font-size: 14px;
-  line-height: 20px;
-}
-</style>
-<body>
-<?php
-  // Database Connection
-  require '../include/config.php';
-  $id = $_GET['id']; // get id through query string
+  //update status to finish
+  $update_status = mysqli_query($conn, "UPDATE jobs SET status='finish' WHERE jobId='' ");
 
-  $qry = mysqli_query($conn,"SELECT * FROM jobs WHERE jobId=$id "); // select query
+  ///send an SMS
+  $sql_query = mysqli_query($conn,"SELECT C.name as name,C.contact as contact,J.jobNo as jobNo,J.payable_amt as payable_amt FROM customer C INNER JOIN jobs J ON C.id = J.customerId WHERE jobId='' ");
 
-  $data = mysqli_fetch_array($qry); // fetch data
-      
-  $date = new DateTime(null, new DateTimeZone('Asia/Colombo'));
+  $data = mysqli_fetch_assoc($sql_query);
 
-  $jobNo =  $data['jobNo'];
-  $customerId =  $data['customerId'];
-  $jobID =  $data['jobId'];
-  $accessory =  $data['accessory'];
-  $service_cost =  $data['service_cost'];
+  $customer_name = $data['name'];
+  $amount = $data['payable_amt'];
+  $jobNo = $data['jobNo'];
 
+  $User_name ="Shadcomputers"; //Your Username 
+  $Api_key = "5bbb49d5c63f487727f0"; //Your API Key 
+  $Gateway_type = "1"; //Define Economy Gateway 
+  $Country_code = "94"; //Country Code 
+  $Number = $data['contact']; //Mobile Number Without 0 
 
+  $message = "Hi ".$customer_name.", Thank You For Your Purchase, We are Received Your Payment Rs.".$amount." For Invoice-".$jobNo."Thank You, SHAD COMPUTERS"; //Your Message 
 
-  // $check= mysqli_query($conn, "SELECT * FROM invoice WHERE job_id='$job_no'");
-  // $count = mysqli_num_rows($check);
+  //"Hi {customer Name}, Thank You For Your Purchase, We are Received Your Payment Rs.{Amount} For Invoice {Invoice Number}, You Have Received Point {loyalty point}Thank You, SHAD COMPUTERS";
 
-  // if($count ==0){
+  $data = array( "user_name" => $User_name, "api_key" => $Api_key, "gateway_type" => $Gateway_type, "country_code" => $Country_code, "number" => $Number, "message" => $message ); 
+  $data_string = json_encode($data); 
 
-  //   $check_get= mysqli_query($conn, "SELECT * FROM invoice ORDER BY invoice_id DESC LIMIT 1");
-  //   $row = mysqli_fetch_array($check_get);
-  //   $invoice_id= $row['invoice_id']+1;
+  $ch = curl_init('https://my.ipromo.lk/api/postsendsms/'); 
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); 
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string); 
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+  curl_setopt($ch, CURLOPT_HTTPHEADER, array( 'Content-Type: application/json', 'Content-Length: ' . strlen($data_string)) ); 
+  curl_setopt($ch, CURLOPT_TIMEOUT, 5); 
+  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); 
 
-  //   //Insert 
-  //   $insert = "INSERT INTO invoice (job_id) VALUES ('$job_no')";
-  //   $result = mysqli_query($conn,$insert);
+  //Execute Post 
+  $result = curl_exec($ch);
+  //Close Connection 
+  curl_close($ch); 
+  echo $result; 
 
-  // }else{
+  ///after printing function area end
 
-  //    $row = mysqli_fetch_array($check);
-  //    $invoice_id= $row['invoice_id'];
-  // }
+  date_default_timezone_set("Asia/Colombo");
 
-  // $invoice_id = str_pad($invoice_id, 5, '0', STR_PAD_LEFT);
+   // Get Print ID Data
+    if(isset($_GET['id'])){
 
+        $print_id = $_GET['id'];
+
+        $sql=mysqli_query($conn,"SELECT * FROM jobs WHERE jobId='$print_id'");  
+        $numRows = mysqli_num_rows($sql); 
+        if($numRows > 0) {
+          while($row = mysqli_fetch_assoc($sql)) {
+
+            $jobId          = $row['jobId'];
+            $jobNo          = $row['jobNo'];
+            $customerId     = $row['customerId'];
+            $accessory      = $row['accessory'];
+            $service_cost   = $row['service_cost'];
+
+            $advance        = $row['advance'];
+            $gross_amount   = $row['gross_amount'];
+            $discount       = $row['discount'];
+            $cash           = $row['cash_payment'];
+            $credit         = $row['credit_payment'];
+          }
+        }
+    }
 ?>
-<div class="invoice">
 
-  <div class="left">
-    <img src="../assets/images/light_logo.png" style="padding-left: 4%; width:40%;"><br>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-  </div><!--column 1-->
-
-  <div class="right">
-    <!-- <h1><i>INVOICE</i></h1> -->
-
-    <div class="row1">
-
-      <div class="col1">
-        <span><b>SHAD Computers</b></span><br>
-        <label class="font-print">No:4/29, Agalawatta road, Mathugama.</label><br>
-        <label class="font-print">Tel : 034-4931353 / 071-8035689</label><br>
-        <label class="font-print">Email : ShadComputers@gmail.com</label>
-      </div> 
-
-    </div>
-
-    <div class="row2 font-print">
-      <div class="col1">
-        <table>
-          <tr>
-            <th>Customer</th>
-          </tr>
-          <tr>
-            <td class="customer" style="line-height: 20px;">
-              <?php
-              $client = mysqli_query($conn, "SELECT * FROM customer WHERE id='$customerId'");
-              $person = mysqli_fetch_assoc($client);
-              ?>
-              <span><?php echo $person['name']; ?></span><br>
-              <span><?php echo $person['address']; ?></span><br>
-              <span><?php echo $person['contact']; ?></span><br>
-            </td>
-          </tr>
-        </table>
+<div class="print-size">
+  
+   <div class="col-sm-12 row">
+      <!------------------- Head Left Area -->
+      <div class="col-sm-6">
+          <img src="../assets/images/logo.jpeg" style="width: 170px;" class="bill-logo" alt="bill  logo">
+          <span class="web-url" style="padding: 0px 0px 0px 5px; font-size: 18px; "><b>www.shadcomputers.lk</b></span>
+          <form style="margin-top: 10px;">
+            <div class=" row">
+              <label for="staticEmail" style="font-size: 12px; margin-bottom: -7px;" class="col-sm-3 col-form-label"><b>ADDRESS</b>   </label>
+              <div class="col-sm-9 row">
+                 <span class="col-form-label"  style="font-size: 12px; margin-bottom: -7px;">: NO, 390, NEGOMBO ROAD , SEEDUWA  </span>
+              </div>
+            </div>
+            <div class=" row">
+              <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-3 col-form-label"><b>TEL</b>  </label>
+              <div class="col-sm-9 row">
+                <span class="col-form-label" style="font-size: 12px; margin-bottom: -7px;">: +94 77 609 1137  </span>
+              </div>
+            </div>
+            <div class=" row">
+              <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-3 col-form-label"><b>EMAIL</b> </label>
+              <div class="col-sm-9 row">
+              <span class="col-form-label" style="font-size: 12px; margin-bottom: -7px;">: SHADcomputersinfo@gmail.com <br> <span style="padding-left: 5px;">info@shadcomputers.lk</span>  </span>
+              </div>
+            </div>
+           
+          </form>
       </div>
+      <!------------------- Head Rigth Area -->
+      <div class="col-sm-6">
+          <form style="margin-top: 40px; margin-left: 60px;">
+            <div class=" row">
+              <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-5 col-form-label">DATE  </label>
+              <div class="col-sm-7 row">
+                <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">: <?php echo date("Y-m-d").' | '.date("h:i:sa");  ?> </span>
+              </div>
+            </div>
+            <div class=" row">
+              <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-5 col-form-label">USER  </label>
+              <div class="col-sm-7 row">
+                <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">: <?php echo $_SESSION['username']; ?> </span>
+              </div>
+            </div>
+            <div class=" row">
+              <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-5 col-form-label">INVOICE NO </label>
+              <div class="col-sm-7 row">
+              <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">:  <?php echo $jobNo; ?> </span>
+              </div>
+            </div>
+            <div class=" row">
+              <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-5 col-form-label">PAYMENT METHOD</label>
+              <div class="col-sm-7 row">
+              <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">: CSAH  </span>
+              </div>
+            </div>
+              <?php
+                  $client = mysqli_query($conn, "SELECT * FROM customer WHERE id='$customerId'");
+                  $client_data = mysqli_fetch_assoc($client);
+              ?>
+            <div class=" row">
+              <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-5 col-form-label">CUSTOMER</label>
+              <div class="col-sm-7 row">
+              <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">: <?php echo $client_data['name']; ?></span>
+              </div>
+            </div>
+           
+          </form>
+      </div>
+   </div>
 
-      <div class="col2 font-print">
-        <label>Date : </label><span><?php echo $date->format('Y-m-d'); ?> </span><br>
-        <label>Time : </label><span><?php echo $date->format('H:i:s:a'); ?> </span><br>
-        <label>Invoice # : <?php echo $jobNo; ?></label><br>
-        <!-- <label>Invoice # : 1035</label> -->
-      </div> 
-    </div>
+   <!------------------- Main Item Table Area -->
+   <div  class="col-sm-12">
+      <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Description</th>
+              <th scope="col">Serial #</th>
+              <th scope="col">Qty</th>
+              <th scope="col">Unit Price</th>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
 
-    <div class="row3 font-print">
-      <table>
-        <tr>
-          <th>Qty</th>
-          <th>Description</th>
-          <th>Serial #</th>
-          <th>Unit Price</th>
-          <th>Amount</th>
-        </tr>
-        
-          <?php
+           <?php
 
           $cost2 = 0;
 
-          //$check1 = mysqli_query($conn, "SELECT * FROM parts WHERE jobID='$jobID'");
-          $check1 = mysqli_query($conn, "SELECT qty,parts,price,imei FROM parts WHERE jobID='$jobID'");
+          $check1 = mysqli_query($conn, "SELECT qty,parts,price,imei FROM parts WHERE jobID='$print_id'");
           $count1 = mysqli_num_rows($check1);
 
           if($service_cost>0 && $count1>0){
             $qty = 1;
             echo '<tr>';
-            echo '<td style="text-align:center;">'. $qty .'</td>';
             echo '<td>'. 'Service cost of '. $accessory .'</td>';
             echo '<td>'. '' .'</td>';
-            echo '<td style="text-align:right;">'. $service_cost .'</td>';
+            echo '<td style="text-align:center;">'. $qty .'</td>';
+            echo '<td style="text-align:right;">'. number_format($service_cost,2,'.',',') .'</td>';
             echo '<td style="text-align:right;">'. number_format($qty*$service_cost,2,'.',',')  .'</td>';
             '</tr>';
             $cost1 = $qty*$service_cost;
@@ -204,10 +186,10 @@ table {
               $imei = $row['imei'];
 
               echo '<tr>';
-              echo '<td style="text-align:center;">'. $p_qty .'</td>';
               echo '<td>'. $parts .'</td>';
               echo '<td>'. $imei .'</td>';
-              echo '<td style="text-align:right;">'. $price .'</td>';
+              echo '<td style="text-align:center;">'. $p_qty .'</td>';
+              echo '<td style="text-align:right;">'. number_format($price,2,'.',',') .'</td>';
               echo '<td style="text-align:right;">'. number_format($p_qty*$price,2,'.',',') .'</td>';
               '</tr>';
               $cost2 =$cost2+($p_qty*$price);
@@ -217,10 +199,10 @@ table {
           }else if($service_cost>0){
             $qty = 1;
             echo '<tr>';
-            echo '<td style="text-align:center;">'. $qty .'</td>';
             echo '<td>'. 'Service cost of '. $accessory .'</td>';
             echo '<td>'. '' .'</td>';
-            echo '<td style="text-align:right;">'. $service_cost .'</td>';
+            echo '<td style="text-align:center;">'. $qty .'</td>';
+            echo '<td style="text-align:right;">'. number_format($service_cost,2,'.',',') .'</td>';
             echo '<td style="text-align:right;">'. number_format($qty*$service_cost,2,'.',',')  .'</td>';
             '</tr>';
             $total = $qty*$service_cost;
@@ -234,10 +216,10 @@ table {
               $imei = $row['imei'];
 
               echo '<tr>';
-              echo '<td style="text-align:center;">'. $p_qty .'</td>';
               echo '<td>'. $parts .'</td>';
               echo '<td>'. $imei .'</td>';
-              echo '<td style="text-align:right;">'. $price .'</td>';
+              echo '<td style="text-align:center;">'. $p_qty .'</td>';
+              echo '<td style="text-align:right;">'. number_format($price,2,'.',',') .'</td>';
               echo '<td style="text-align:right;">'. number_format($p_qty*$price,2,'.',',') .'</td>';
               '</tr>';
               $i++;
@@ -247,33 +229,109 @@ table {
               $total=$cost2; 
           }
           ?>
-        
-        <tr>
-          <th colspan="3"></th>
-          <th>Total</th>
-          <th style="text-align:right; line-height: 30px;"><?php echo number_format($total,2,'.',','); ?></th>
-        </tr>
-      </table>
-    </div><!--row 3-->
+  
+          </tbody>
+        </table>
+   </div>
+   <br>
 
-    <div class="row4"></div><!--row 4-->
+  
+   <div class="col-sm-12 row">
+       <!------------------- Item and warranty Conditions Area -->
+       <div class="col-sm-9">
+           <ul style="font-size: 13px;">
+              <li>Please submit the orginal invoice for warranty claims.</li>
+              <li>No warranty on key board , mouse cartridge and other no warranty items.</li>
+              <li>Warranty covers only manufcatures defects, damages or due to other <br><b> </b> casues as negkigence, misuse , improper opertion, power fluctuation , lightening or <br> natural disaster , sabotage or Accident etc. are NOT included under this warranty.</li>
+              <li>1 Year warranty less than 14 working day. ( -350 days/2 year-700/3 year- 1050 days ).</li>
+              <li>Goods sold once not returnable.</li><!-- 
+              <li>Phones that do not arrive within 10 days of being handed over for repair are not responsible.</li>
+              <li>Check the phone after the repair, the advance paid for the repair will not be refunded for any reason.</li> 
+              <li>Submission of this bill is mandatory to obtain the phone provided for repairs.</li> 
+              <li>Please note that anyone who does not have this bill will not be given a warranty and the phone provided for repair under any circumstances.</li> --> 
+           
+           </ul>
+           <div class="col-sm-12 row">
+              <!-- Authorized Signature -->
+              <div class="col-sm-5">
+                  <span>..................................</span><br>
+                  <p>Authorized Signature</p>
+              </div>
+              <!-- Customer Signature( Agree and Accept ) -->
+              <div class="col-sm-7">
+                  <span>..................................</span><br>
+                  <p>Customer Signature( Agree and Accept )</p>
+              </div>
+           </div>
+       </div>
+       <!-- Bill Final details  -->
+        <div class="col-sm-3">
+            <table class="table table-bordered">
+             <tr>
+                <td  class="botton-table"><b>AMOUNT</b></td>
+                <td  class="botton-table" style="text-align: right;"><?php echo number_format($gross_amount,2,'.',','); ?></td>
+              </tr>
+              <tr>
+                <td class="botton-table"><b>ADVANCED</b></td>
+                <td class="botton-table" style="text-align: right;"><?php echo number_format($advance,2,'.',','); ?></td>
+              </tr>
+              <tr>
+                <td class="botton-table"><b>DISCOUNT</b></td>
+                <td class="botton-table" style="text-align: right;"><?php echo number_format($discount,2,'.',','); ?></td>
+              </tr>
+              <tr>
+                <td class="botton-table"><b>CASH PAY</b></td>
+                <td class="botton-table" style="text-align: right;"><?php echo number_format($cash,2,'.',','); ?></td>
+              </tr>
+              <tr>
+                <td class="botton-table"><b>CREDIT</b></td>
+                <td class="botton-table" style="text-align: right;"><?php echo number_format($credit,2,'.',','); ?></td>
+              </tr>
+            </table>
+       </div>
+   </div>
+</div>
 
-  </div><!--column 2-->
-</div><!--invoice-->
+<script>
 
-</body>
-  <!--   Print JS Files   -->
-  <script src="../assets/js/core/jquery.min.js"></script>
-
-  <script>
-  ////////////////  Print  ///////////////////////
+  ///////////////////////////////////////  Print  
   $(document).ready(function(){
-     setTimeout(function(){ window.print(); }, 1500);
+      setTimeout(function(){ window.print(); }, 2000);
      // setTimeout(window.close, 3000);
   });
   ///////////////////////////////////////////
+
+    window.onafterprint = function(e){
+        alert('Print');
+    };
+    // (function () {
+
+    //     // var beforePrint = function () {
+    //     //     alert('Functionality to run before printing.');
+    //     // };
+
+    //     //var afterPrint = function () {
+    //         //alert('Functionality to run after printing');
+    //     //};
+
+    //     if (window.matchMedia) {
+    //         var mediaQueryList = window.matchMedia('print');
+
+    //         mediaQueryList.addListener(function (mql) {
+    //             //alert($(mediaQueryList).html());
+    //             if (mql.matches) {
+    //                 //afterPrint();
+    //                 alert('Functionality to run after printing');
+    //             }
+    //         });
+    //     }
+
+    //     //window.onbeforeprint = beforePrint;
+    //     //window.onafterprint = afterPrint;
+
+    // }());
+
+
+
+
   </script>
-
-              
-
-

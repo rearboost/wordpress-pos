@@ -273,7 +273,7 @@
                     <h4 class="card-title">Finished Job Data</h4>
                     
                     <div class="table-responsive">          
-                    <table id="example" class="table table-bordered">
+                    <table  id="myTable" class="table table-bordered">
                       <thead>
                         <tr>
                           <th> # </th>
@@ -350,6 +350,9 @@
 
 
   <script> 
+    $(document).ready( function () {
+      $('#myTable').DataTable();
+    });
 
     function editForm(id){
         window.location.href = "finished.php?view_id=" + id;
