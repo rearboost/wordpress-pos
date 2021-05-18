@@ -2,7 +2,7 @@
         // Database Connection
         require '../include/config.php';
 
-        // Row Add Function 
+           // Row Add Function 
         if(isset($_POST['addrow'])){
 
             $product_name = $_POST['product_name'];
@@ -14,29 +14,17 @@
                             ON A.ID = B.product_id WHERE A.post_title = '$product_name'";
 
             $result_price = mysqli_query($conn,$get_price);
-
-            $check = mysqli_num_rows($result_price);
-
-            if(!empty($check)){
-                $row = mysqli_fetch_assoc($result_price);
-                $price  = $row['price'];
-                $stock  = $row['stock']-1;
-            }else{
-                $get_price2 = "SELECT max_price AS price , stock_qty AS stock 
-                            FROM dashboard_items  
-                            WHERE item = '$product_name'";
-
-                $result_price2 = mysqli_query($conn,$get_price2);
-                $row2 = mysqli_fetch_assoc($result_price2);
-                $price  = $row2['price'];
-                $stock  = $row2['stock']-1;
-            }
+            $row = mysqli_fetch_assoc($result_price);
+            $price  = $row['price'];
+            $stock  = $row['stock']-1;
 
             $sql ="SELECT * FROM temp_pos WHERE product= '$product_name'";
             $result=mysqli_query($conn,$sql);
             $row_get = mysqli_fetch_assoc($result);
             $count =mysqli_num_rows($result);
             $stock_quantity = $row_get['stock_quantity'];
+
+            $stockEmptyCode = 0;
 
             $amount = $quantity * $price;
 
@@ -56,11 +44,12 @@
                         WHERE product= '$product_name'";
                         $result_temp = mysqli_query($conn,$sql_temp);
                     }else{
-                        echo 2;
+
+                        $stockEmptyCode = 2 ;
                     } 
                 }
 
-                if($result_temp){
+                if($stockEmptyCode==0){
 
                     $sql ="SELECT SUM(amount) AS amount FROM temp_pos";
                     $result=mysqli_query($conn,$sql);
@@ -70,16 +59,18 @@
                     echo $amount;
 
                 }else{
-                    echo  mysqli_error($conn);		
+                    //echo  mysqli_error($con);		
+                    $stockEmptyCode = 2;
+                    echo $stockEmptyCode;
                 }
+
             }else{
-                echo 2;
+                $stockEmptyCode = 2;
+                echo $stockEmptyCode;
             }
         }
 
         /////////Add function from dashboard items
-
-
 
         // Table Empty Function 
         if(isset($_POST['tmpEmpty'])){
