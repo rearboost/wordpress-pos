@@ -14,9 +14,22 @@
                             ON A.ID = B.product_id WHERE A.post_title = '$product_name'";
 
             $result_price = mysqli_query($conn,$get_price);
-            $row = mysqli_fetch_assoc($result_price);
-            $price  = $row['price'];
-            $stock  = $row['stock']-1;
+            $check = mysqli_num_rows($result_price);
+
+            if(!empty($check)){
+                $row = mysqli_fetch_assoc($result_price);
+                $price  = $row['price'];
+                $stock  = $row['stock']-1;
+            }else{
+                $get_price2 = "SELECT max_price AS price , stock_qty AS stock 
+                            FROM dashboard_items  
+                            WHERE item = '$product_name'";
+
+                $result_price2 = mysqli_query($conn,$get_price2);
+                $row2 = mysqli_fetch_assoc($result_price2);
+                $price  = $row2['price'];
+                $stock  = $row2['stock']-1;
+            }
 
             $sql ="SELECT * FROM temp_pos WHERE product= '$product_name'";
             $result=mysqli_query($conn,$sql);

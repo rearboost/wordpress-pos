@@ -23,9 +23,7 @@
   $Country_code = "94"; //Country Code 
   $Number = $data['contact']; //Mobile Number Without 0 
 
-  $message = "Hi ".$customer_name.", Thank You For Your Purchase, We are Received Your Payment Rs.".$amount." For Invoice-".$jobNo."Thank You, SHAD COMPUTERS"; //Your Message 
-
-  //"Hi {customer Name}, Thank You For Your Purchase, We are Received Your Payment Rs.{Amount} For Invoice {Invoice Number}, You Have Received Point {loyalty point}Thank You, SHAD COMPUTERS";
+  $message = "Hi ".$customer_name.", Thank You For Your Purchase, We are Received Your Payment Rs.".$amount." For Invoice-".$jobNo."Thank You, SHAD COMPUTERS"; //Message 
 
   $data = array( "user_name" => $User_name, "api_key" => $Api_key, "gateway_type" => $Gateway_type, "country_code" => $Country_code, "number" => $Number, "message" => $message ); 
   $data_string = json_encode($data); 
