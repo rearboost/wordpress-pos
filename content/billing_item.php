@@ -46,8 +46,8 @@ include('../include/config.php');
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group row">
-                                   <label class="col-sm-2 col-form-label">Choose Product</label>
-                                    <div class="col-sm-4">
+                                   <label class="col-sm-1 col-form-label">Product</label>
+                                    <div class="col-sm-3">
                                       <input list="brow" class="form-control" id="product_name" required>
                                       <datalist id="brow">
                                         <?php
@@ -73,11 +73,19 @@ include('../include/config.php');
                                         ?>
                                       </datalist>  
                                     </div>
-                                    <label class="col-sm-1 col-form-label">QTY</label>
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Enter Quantity" required>
+                                    <label class="col-sm-0.5 col-form-label">QTY</label>
+                                    <div class="col-sm-1">
+                                        <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Quantity" required>
                                     </div>
-                                    <div class="col-sm-3 size">
+                                    <label class="col-sm-0.5 col-form-label">Warranty</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" id="warranty" name="warranty" placeholder="Warranty Days" required>
+                                    </div>
+                                    <label class="col-sm-0.5 col-form-label">Serial No</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" id="serial_no" name="serial_no" placeholder="Serial Number" required>
+                                    </div>
+                                    <div class="col-sm-1 size">
                                         <i class="fa fa-plus-circle pointer" onclick="AddPro()"></i>   
                                     </div>
                                 </div>
@@ -224,6 +232,11 @@ include('../include/config.php');
 	                          	<button type="button" onclick="cancelForm()" class="btn btn-primary" style="width:39%">CLOSE</button>
                             </div>
                         </div><!-- end 5th row-->
+
+                        <!-- Trigger the modal with a button -->
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#exampleModalCenter">Open Modal</button>
+
+
                   
                     </div>
                   </div>
@@ -309,6 +322,7 @@ include('../include/config.php');
             <!-- partial:../../partials/_footer.html -->
             <!-- include footer coe here -->
             <?php include('../include/footer.php');   ?>
+
             <!-- partial -->
           </div>
         <!-- main-panel ends -->
@@ -389,13 +403,15 @@ include('../include/config.php');
 
       var product_name= $('#product_name').val();
       var quantity= $('#quantity').val();
+      var warranty= $('#warranty').val();
+      var serial_no= $('#serial_no').val();
 
       if(product_name!='' && quantity !='' && numberRegex.test(quantity)){
 
        $.ajax({
             type: 'post',
             url: '../controller/billing_controller.php',
-            data: {addrow:addrow,product_name:product_name,quantity:quantity},
+            data: {addrow:addrow,product_name:product_name,quantity:quantity,warranty:warranty,serial_no:serial_no},
             success: function (data) {
 
                 if(data==2){
@@ -550,5 +566,25 @@ include('../include/config.php');
 
   </script>
 
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 

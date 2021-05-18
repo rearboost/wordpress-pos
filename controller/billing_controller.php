@@ -7,6 +7,8 @@
 
             $product_name = $_POST['product_name'];
             $quantity = $_POST['quantity'];
+            $warranty = $_POST['warranty'];
+            $serial_no = $_POST['serial_no'];
 
             $get_price = "SELECT B.max_price AS price , B.stock_quantity AS stock 
                             FROM wp_posts A 
@@ -45,7 +47,7 @@
 
                 if($count==0){
                 
-                    $sql_temp = "INSERT INTO  temp_pos (product,qty,price,amount,stock_quantity) VALUES ('$product_name','$quantity','$price','$amount','$stock')";
+                    $sql_temp = "INSERT INTO  temp_pos (product,warranty,serial_no,qty,price,amount,stock_quantity) VALUES ('$product_name','$warranty','$serial_no','$quantity','$price','$amount','$stock')";
                     $result_temp = mysqli_query($conn,$sql_temp);
                 
                 }else{
@@ -113,7 +115,6 @@
         // Save Function 
         if(isset($_POST['save'])){
 
-
             $total = $_POST['total'];
             $discount = $_POST['discount'];
             $payment = $_POST['payment'];
@@ -139,8 +140,10 @@
                     $qty=$row['qty'];
                     $price=$row['price'];
                     $amount=$row['amount'];
+                    $warranty=$row['warranty'];
+                    $serial_no=$row['serial_no'];
 
-                    $sql_invoice_items = "INSERT INTO invoice_items (invoice_id,product,qty,price,amount) VALUES ('$invoice_id','$product','$qty','$price','$amount')";
+                    $sql_invoice_items = "INSERT INTO invoice_items (invoice_id,product,warranty,serial_no,qty,price,amount) VALUES ('$invoice_id','$product','$warranty','$serial_no','$qty','$price','$amount')";
                     mysqli_query($conn,$sql_invoice_items);
                 }
             }

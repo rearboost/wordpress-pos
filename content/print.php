@@ -119,11 +119,16 @@
                   $qty  = $row_get['qty'];
                   $price   = $row_get['price'];
                   $amount   = $row_get['amount'];
+                  $warranty   = $row_get['warranty'];
+                  $serial_no   = $row_get['serial_no'];
 
                   echo '
                   <tr>
-                      <td>'.$product.'</td>
-                      <td>360 days</td>
+                  <td>';
+                     echo  $product;  if($serial_no!=0){ echo  ' ('.$serial_no.')';};
+                  echo '</td>';                  
+                  echo '
+                      <td>'.$warranty.' days</td>
                       <td>'.$qty.'</td>
                       <td>'.$price.'</td>
                       <td>'.$amount.'</td>
@@ -202,7 +207,7 @@
 
   ///////////////////////////////////////  Print  
   $(document).ready(function(){
-      setTimeout(function(){ window.print(); }, 2000);
+    //  setTimeout(function(){ window.print(); }, 2000);
      // setTimeout(window.close, 3000);
   });
   ///////////////////////////////////////////
