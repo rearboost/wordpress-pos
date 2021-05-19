@@ -75,7 +75,7 @@ include('../include/config.php');
                                     </div>
                                     <label class="col-sm-0.5 col-form-label">QTY</label>
                                     <div class="col-sm-1">
-                                        <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Quantity" required>
+                                        <input type="text" class="form-control" id="quantity" name="quantity" required>
                                     </div>
                                     <label class="col-sm-0.5 col-form-label">Warranty</label>
                                     <div class="col-sm-2">
@@ -234,7 +234,7 @@ include('../include/config.php');
                         </div><!-- end 5th row-->
 
                         <!-- Trigger the modal with a button -->
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#exampleModalCenter">Open Modal</button>
+                        <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#exampleModalCenter">Open Modal</button> -->
 
 
                   
@@ -243,8 +243,9 @@ include('../include/config.php');
                 </div>
 
                 <div class="col-lg-3 grid-margin stretch-card">
-                  <div class="card" style="padding:0px;width: 100%;height: 600px;overflow-x: hidden;overflow-y: auto; text-align: center;">
+                  <div class="card" style="padding:0px;width: 100%;height: 650px;overflow-x: hidden;overflow-y: auto; text-align: center;">
                     <div class="card-body">
+                      <input type="text" id="myInput" placeholder="Search by names.." title="Type in a name" style="width: 100%; font-size: 14px; border:1px solid #ddd; border-radius:5px; padding: 10px; margin-bottom: 12px;">
                     	<div class="card-scroll" style="">
                     		<?php
                     		$items= mysqli_query($conn,"SELECT * FROM wp_posts A INNER JOIN wp_wc_product_meta_lookup B ON A.ID=B.product_id");
@@ -338,6 +339,14 @@ include('../include/config.php');
 
 
   <script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $(".prod_name").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
 
     var numberRegex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
 
