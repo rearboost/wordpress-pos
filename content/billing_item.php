@@ -446,34 +446,34 @@ include('../include/config.php');
       }
     }
 
-    $(".prod_name").click(function() {
+    // $(".prod_name").click(function() {
 
-      var addrow  ="addrow";
+    //   var addrow  ="addrow";
 
-       $.ajax({
-            type: 'post',
-            url: '../controller/billing_controller.php',
-            data: {addrow:addrow,product_name:this.id,quantity:1},
-            success: function (data) {
+    //    $.ajax({
+    //         type: 'post',
+    //         url: '../controller/billing_controller.php',
+    //         data: {addrow:addrow,product_name:this.id,quantity:1},
+    //         success: function (data) {
 
-                if(data==2){
+    //             if(data==2){
 
-                   swal({
-                      title: "Stock is Empty !",
-                      text: "Empty",
-                      icon: "error",
-                      button: "Ok !",
-                    });
+    //                swal({
+    //                   title: "Stock is Empty !",
+    //                   text: "Empty",
+    //                   icon: "error",
+    //                   button: "Ok !",
+    //                 });
 
-                }else{
-                    $("#here" ).load(window.location.href + " #here" );
-                    $("#gross").val(data);
-                    $("#total").val(data);
+    //             }else{
+    //                 $("#here" ).load(window.location.href + " #here" );
+    //                 $("#gross").val(data);
+    //                 $("#total").val(data);
                     
-                }
-              } 
-        });     
-    });
+    //             }
+    //           } 
+    //     });     
+    // });
 
     ///////////////////////////////////
 
