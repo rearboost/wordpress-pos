@@ -52,29 +52,63 @@
             }
         }
 
-        // if (isset($_POST['adddispatch_job_edit']))
-        // {
-        //     $addD_id = $_POST['adddispatch_job_edit'];
-        //     $newstatus ="finish";
+        //update status to finish & Send SMS
+        if (isset($_POST['addfinish_job_edit']))
+        {
+            $addF_id = $_POST['addfinish_job_edit'];
+            $newstatus ="finish";
 
-        //     $query ="UPDATE  jobs  SET status=?  WHERE jobId=?;";
+            $query ="UPDATE  jobs  SET status=?  WHERE jobId=?;";
 
-        //     $stmt =mysqli_stmt_init($conn);
-        //     if(!mysqli_stmt_prepare($stmt,$query))
-        //     {
-        //        echo "SQL Error";
-        //     }
-        //     else
-        //     {
-        //         mysqli_stmt_bind_param($stmt,"ss",$newstatus,$addD_id);
-        //         $result =  mysqli_stmt_execute($stmt);
-        //         if($result){
-        //           echo 1;
-        //         }else{
-        //           echo 0;
-        //         }
-        //      }
+            $stmt =mysqli_stmt_init($conn);
+            if(!mysqli_stmt_prepare($stmt,$query))
+            {
+               echo "SQL Error";
+            }
+            else
+            {
+                mysqli_stmt_bind_param($stmt,"ss",$newstatus,$addF_id);
+                $result =  mysqli_stmt_execute($stmt);
+                if($result){
+                  echo 1;
+                }else{
+                  echo 0;
+                }
+             }
 
-        // }
+              $sql_query = mysqli_query($conn,"SELECT C.name as name,C.contact as contact,J.jobNo as jobNo,J.payable_amt as payable_amt FROM customer C INNER JOIN jobs J ON C.id = J.customerId WHERE jobId='$addF_id' ");
+
+              $data = mysqli_fetch_assoc($sql_query);
+
+              $customer_name = $data['name'];
+              $amount = $data['payable_amt'];
+              $jobNo = $data['jobNo'];
+
+              $User_name ="Shadcomputers"; //Your Username 
+              $Api_key = "5bbb49d5c63f487727f0"; //Your API Key 
+              $Gateway_type = "1"; //Define Economy Gateway 
+              $Country_code = "94"; //Country Code 
+              $Number = $data['contact']; //Mobile Number Without 0 
+
+              $message = "Hi ".$customer_name.", Thank You For Your Purchase, We Received Your Payment Rs.".$amount." For Invoice-".$jobNo." .Thank You, SHAD COMPUTERS"; //Message 
+
+              $data = array( "user_name" => $User_name, "api_key" => $Api_key, "gateway_type" => $Gateway_type, "country_code" => $Country_code, "number" => $Number, "message" => $message ); 
+              $data_string = json_encode($data); 
+
+              $ch = curl_init('https://my.ipromo.lk/api/postsendsms/'); 
+              curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); 
+              curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string); 
+              curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+              curl_setopt($ch, CURLOPT_HTTPHEADER, array( 'Content-Type: application/json', 'Content-Length: ' . strlen($data_string)) ); 
+              curl_setopt($ch, CURLOPT_TIMEOUT, 5); 
+              curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); 
+
+              //Execute Post 
+              $result = curl_exec($ch);
+              //Close Connection 
+              curl_close($ch); 
+              echo $result; 
+
+        }
 
     ?>

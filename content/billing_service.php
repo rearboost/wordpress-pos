@@ -16,6 +16,7 @@
 
             $id  = $row['id'];
             $customerName  = $row['name'];
+            $job_no  = $row['jobNo'];
             $accessory   = $row['accessory'];
             $brand   = $row['brand'];
             $model   = $row['model'];
@@ -316,6 +317,7 @@
                           </div> 
                           
                           <input type="hidden" class="form-control" id="job_id" name="job_id" value="<?php if(isset($_GET['view_id'])){ echo $view_id;} ?>" />          
+                          <input type="hidden" class="form-control" id="job_no" name="job_no" value="<?php if(isset($_GET['view_id'])){ echo $job_no;} ?>" />          
                           </div> <br><br>          
                           <!-- end -->
 
@@ -326,7 +328,7 @@
                        <?php if (isset($_GET['view_id'])): ?>
                           <input type="hidden" class="form-control" name="view_id" id="view_id" value="<?php if(isset($_GET['view_id'])){ echo $view_id;} ?>" />
                           <input type="hidden" class="form-control" name="req_update" value="req_update" />
-                          <button type="submit" class="btn btn-info btn-fw">SAVE</button>
+                          <button type="submit" class="btn btn-info btn-fw">PRINT</button>
                           <button type="button" onclick="cancelForm()" class="btn btn-primary btn-fw">Cancel</button>
                       <?php else: ?>
                       <?php endif ?>
@@ -355,7 +357,7 @@
                           <th>Delivery Date</th>
                           <th>Job Desc</th>
                           <th>Edit</th>
-                          <th>Print</th>
+                          <th>PUSH</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -388,9 +390,9 @@
                               echo ' <td>'.$job_desc.' </td>';
                               echo '<td class="td-center"><button type="button" onclick="editForm('.$row["jobId"].')" class="btn btn-info btn-fw">Edit</button></td>';
                               if($payable_amt>0){
-                              echo '<td class="td-center"><button type="button" onclick="printForm('.$row["jobId"].')" name="print" class="btn btn-primary btn-fw">Print</button></td>';
+                              echo '<td class="td-center"><button type="button" onclick="pushForm('.$row["jobId"].')" name="push" class="btn btn-primary btn-fw">Finished</button></td>';
                               }else{
-                              echo '<td class="td-center"><button type="button" onclick="printForm('.$row["jobId"].')" name="print" class="btn btn-primary btn-fw" disabled>Print</button></td>';
+                              echo '<td class="td-center"><button type="button" onclick="pushForm('.$row["jobId"].')" name="push" class="btn btn-primary btn-fw" disabled>Finished</button></td>';
                               }
                               echo ' </tr>';
                               $i++;
@@ -493,6 +495,8 @@
 
           e.preventDefault();
 
+          var job_id= $('#job_id').val();
+
               $.ajax({
                 type: 'post',
                 url: '../controller/dispatch_controller.php',
@@ -516,6 +520,9 @@
                           icon: "success",
                           button: "Ok !",
                           });
+                          //setTimeout(function(){ location.reload(); }, 2500);
+                          setTimeout(function(){window.open('invoice_print?id='+job_id, '_blank'); }, 100);
+
                           setTimeout(function(){ location.reload(); }, 2500);
                     }
                 }
@@ -532,6 +539,37 @@
     function cancelForm(){
         window.location.href = "billing_service.php";
     }
+
+    function pushForm(id) {
+
+      $.ajax({
+        url:"../controller/dispatch_controller.php",
+        method:"POST",
+        data:{addfinish_job_edit:id},
+        success:function(data){
+
+          if(data==0){
+
+              swal({
+                title: "Can't Push to next level!",
+                text: "Incompleted",
+                icon: "error",
+                button: "Ok !",
+              });
+
+          }else{
+
+              swal({
+                title: "Good job !",
+                text: "Successfully pushed",
+                icon: "success",
+                button: "Ok !",
+                });
+                setTimeout(function(){ location.reload(); }, 2500);
+          }
+        }
+     });
+   }
 
     // print bill //////
     function printForm(id){
@@ -550,19 +588,19 @@
     //     var invoice  ="invoice";
     
     //     var amount= $('#amount').val();
-    //     var advance= $('#advance').val();
     //     var discount= $('#discount').val();
     //     var total_amount= $('#total_amount').val();
     //     var cash= $('#cash_payment  ').val();
     //     var credit= $('#credit_payment').val();
-    //     var inv_id= $('#inv_id').val();
+    //     var job_id= $('#job_id').val();
+    //     var job_no= $('#job_no').val();
 
     //     //if(payment!='' && numberRegex.test(payment)){
 
     //         $.ajax({
     //             type: 'post',
     //             url: '../controller/dispatch_controller.php',
-    //             data: {invoice:invoice,amount:amount,advance:advance,discount:discount,total_amount:total_amount,cash:cash,credit:credit},
+    //             data: {invoice:invoice,amount:amount,discount:discount,total_amount:total_amount,cash:cash,credit:credit},
     //             success: function (data) {
 
     //                 setTimeout(function(){window.open('print?id='+inv_id, '_blank'); }, 100);

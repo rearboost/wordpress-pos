@@ -3,47 +3,6 @@
   
   include('../include/head.php'); 
 
-  ///after printing function area start
-
-  //update status to finish
-  $update_status = mysqli_query($conn, "UPDATE jobs SET status='finish' WHERE jobId='' ");
-
-  ///send an SMS
-  $sql_query = mysqli_query($conn,"SELECT C.name as name,C.contact as contact,J.jobNo as jobNo,J.payable_amt as payable_amt FROM customer C INNER JOIN jobs J ON C.id = J.customerId WHERE jobId='' ");
-
-  $data = mysqli_fetch_assoc($sql_query);
-
-  $customer_name = $data['name'];
-  $amount = $data['payable_amt'];
-  $jobNo = $data['jobNo'];
-
-  $User_name ="Shadcomputers"; //Your Username 
-  $Api_key = "5bbb49d5c63f487727f0"; //Your API Key 
-  $Gateway_type = "1"; //Define Economy Gateway 
-  $Country_code = "94"; //Country Code 
-  $Number = $data['contact']; //Mobile Number Without 0 
-
-  $message = "Hi ".$customer_name.", Thank You For Your Purchase, We are Received Your Payment Rs.".$amount." For Invoice-".$jobNo."Thank You, SHAD COMPUTERS"; //Message 
-
-  $data = array( "user_name" => $User_name, "api_key" => $Api_key, "gateway_type" => $Gateway_type, "country_code" => $Country_code, "number" => $Number, "message" => $message ); 
-  $data_string = json_encode($data); 
-
-  $ch = curl_init('https://my.ipromo.lk/api/postsendsms/'); 
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); 
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string); 
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-  curl_setopt($ch, CURLOPT_HTTPHEADER, array( 'Content-Type: application/json', 'Content-Length: ' . strlen($data_string)) ); 
-  curl_setopt($ch, CURLOPT_TIMEOUT, 5); 
-  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); 
-
-  //Execute Post 
-  $result = curl_exec($ch);
-  //Close Connection 
-  curl_close($ch); 
-  echo $result; 
-
-  ///after printing function area end
-
   date_default_timezone_set("Asia/Colombo");
 
    // Get Print ID Data
@@ -298,38 +257,4 @@
      // setTimeout(window.close, 3000);
   });
   ///////////////////////////////////////////
-
-    window.onafterprint = function(e){
-        alert('Print');
-    };
-    // (function () {
-
-    //     // var beforePrint = function () {
-    //     //     alert('Functionality to run before printing.');
-    //     // };
-
-    //     //var afterPrint = function () {
-    //         //alert('Functionality to run after printing');
-    //     //};
-
-    //     if (window.matchMedia) {
-    //         var mediaQueryList = window.matchMedia('print');
-
-    //         mediaQueryList.addListener(function (mql) {
-    //             //alert($(mediaQueryList).html());
-    //             if (mql.matches) {
-    //                 //afterPrint();
-    //                 alert('Functionality to run after printing');
-    //             }
-    //         });
-    //     }
-
-    //     //window.onbeforeprint = beforePrint;
-    //     //window.onafterprint = afterPrint;
-
-    // }());
-
-
-
-
   </script>
