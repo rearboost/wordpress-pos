@@ -200,6 +200,8 @@ include('../include/config.php');
                                 echo ' <td><label class="badge badge-info">'."dispatch".'</label> </td>';
                               }else if($status=="reject"){
                                 echo ' <td><label class="badge badge-danger">'."reject".'</label> </td>';
+                              }else if($status=="finish"){
+                                echo ' <td><label class="badge badge-dark">'."finished".'</label> </td>';
                               }
                               
                               // echo '<td class="td-center"><button type="button" onclick="SendMsg('.$row["jobId"].')" class="btn btn-primary btn-fw" name="send">Send SMS</button></td>';
