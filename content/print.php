@@ -18,8 +18,19 @@
             $total  = $row['total'];
             $discount   = $row['discount'];
             $payment   = $row['payment'];
+
+            $credit_period   = $row['credit_period'];
+            if($credit_period==0){
+              $payment_method = "CASH";
+            }else{
+              $payment_method = "CREDIT";
+            }
+            $customer   = $row['customer'];
+            $billing_address   = $row['billing_address'];
+
           }
         }
+        
     }
 ?>
 
@@ -78,13 +89,13 @@
             <div class=" row">
               <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-5 col-form-label">PAYMENT METHOD</label>
               <div class="col-sm-7 row">
-              <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">: CSAH  </span>
+              <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">: <?php echo $payment_method; ?> </span>
               </div>
             </div>
             <div class=" row">
               <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-5 col-form-label">CUSTOMER</label>
               <div class="col-sm-7 row">
-              <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">: WORKING CUSTOMER   </span>
+              <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">: <?php echo $customer;  ?> </span>
               </div>
             </div>
            
@@ -144,7 +155,16 @@
           </tbody>
         </table>
    </div>
-   <br>
+  <div class="col-sm-12">
+   <b>
+      <p style="float: right;padding-right: 13px;padding-top: 7px;text-transform: capitalize;">
+        <?php
+            $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
+            echo $f->format($totalAMT);
+        ?>
+    </p>
+   </b>
+   </div>
 
   
    <div class="col-sm-12 row">
@@ -192,11 +212,11 @@
               </tr>
               <tr>
                 <td class="botton-table"><b>CASH PAY</b></td>
-                <td class="botton-table" style="text-align: right;"><?php echo number_format($payment,2,'.',','); ?></td>
+                <td class="botton-table" style="text-align: right;"><?php if($credit_period==0){ echo number_format($payment,2,'.',','); }else{ echo number_format(0,2,'.',',');}?></td>
               </tr>
               <tr>
                 <td class="botton-table"><b>CREDIT</b></td>
-                <td class="botton-table" style="text-align: right;"><?php echo number_format(0,2,'.',','); ?></td>
+                <td class="botton-table" style="text-align: right;"><?php if($credit_period!=0){ echo number_format(($totalAMT-$payment),2,'.',','); }else{ echo number_format(0,2,'.',',');} ?></td>
               </tr>
             </table>
        </div>

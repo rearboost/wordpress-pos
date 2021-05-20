@@ -118,9 +118,12 @@
             $total = $_POST['total'];
             $discount = $_POST['discount'];
             $payment = $_POST['payment'];
+            $credit_period = $_POST['credit_period'];
+            $customer = $_POST['customer'];
+            $billing_address = $_POST['billing_address'];
             $date = $_POST['date'];
 
-            $sql_invoice = "INSERT INTO  invoice (total,discount,payment,date) VALUES ('$total','$discount','$payment','$date')";
+            $sql_invoice = "INSERT INTO  invoice (total,discount,payment,credit_period,customer,billing_address,date) VALUES ('$total','$discount','$payment','$credit_period','$customer','$billing_address','$date')";
             mysqli_query($conn,$sql_invoice);
 
             $sql ="SELECT id FROM invoice ORDER BY id DESC LIMIT 1";
@@ -155,8 +158,6 @@
             }else{
                 echo  mysqli_error($conn);		
             }
-
-        
         }
        
     ?>

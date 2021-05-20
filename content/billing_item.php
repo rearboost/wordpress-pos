@@ -178,11 +178,20 @@ include('../include/config.php');
                                   }
 
                                 ?>
+                            
                                 <input type="hidden" id="inv_id" value="<?php echo $nextID ?>">
-                                <b><label class="col-sm-12 col-form-label">Invoice No - <?php echo sprintf('%05d', $nextID); ?></label></b>
-                                    <!-- <div class="col-sm-8">
-                                      <input type="text" class="form-control" name ="invoice_no"  value=""/>
-                                    </div> -->
+                                  <div class="col-sm-7">
+                                   <select class="form-control" id="credit_period" name="credit_period" required>
+                                        <option value = "0">Credit Period</option>
+                                        <option value = "7">7 Days</option>
+                                        <option value = "14">14 Days</option>
+                                        <option value = "21">21 Days</option>
+                                        <option value = "28">28 Days</option>
+                                    </select>
+
+                                  </div>
+                                  <b><label class="col-sm-12 col-form-label">Invoice No - <?php echo sprintf('%05d', $nextID); ?></label></b>
+
                                 </div>
                             </div>
                         </div><!-- end 3rd row-->
@@ -191,8 +200,11 @@ include('../include/config.php');
                             <div class="col-md-4">
                                 <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Discount</label>
-                                    <div class="col-sm-8">
+                                    <div class="col-sm-4">
                                       <input type="text" class="form-control" name ="discount" id="discount" onkeyup="myFunction()"  placeholder="0.00" />
+                                    </div>
+                                    <div class="col-sm-4">
+                                      <input type="text" class="form-control" name ="discount_percentage" id="discount_percentage" onkeyup="myDis()"  placeholder="%" />
                                     </div>
                                 </div>
                             </div>
@@ -233,11 +245,30 @@ include('../include/config.php');
                             </div>
                         </div><!-- end 5th row-->
 
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Customer</label>
+                                    <div class="col-sm-8">
+                                      <input type="text" class="form-control"  name="customer" id="customer" value="WORKING CUSTOMER"  placeholder="Customer Name"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Billing Address</label>
+                                    <div class="col-sm-8">
+                                       <textarea id="billing_address" name="billing_address" rows="3" cols="26"> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+
+                            </div>
+                        </div><!-- end 5th row-->
+
                         <!-- Trigger the modal with a button -->
                         <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#exampleModalCenter">Open Modal</button> -->
-
-
-                  
                     </div>
                   </div>
                 </div>
@@ -351,8 +382,65 @@ include('../include/config.php');
     var numberRegex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
 
     $(document).ready(function() {
+           tmpEmpty();
 
-        tmpEmpty();
+           $("#product_name").focus();
+       // $("#credit_period").css({display: "none"});
+
+          //Enter Key Events 
+          $("#product_name").keypress(function(e){
+              if (e.which == 13) 
+              {
+                  if($(this).val()=="+"){
+                    $('#product_name').val("")
+                    $("#discount").focus();
+                  }else{
+                    $("#quantity").focus();
+                  }
+              };
+          });
+
+          $("#quantity").keypress(function(e){
+              if (e.which == 13) 
+              {
+                 $("#warranty").focus();
+              };
+          });
+
+          $("#warranty").keypress(function(e){
+              if (e.which == 13) 
+              {
+                 $("#serial_no").focus();
+              };
+          });
+
+          $("#serial_no").keypress(function(e){
+              if (e.which == 13) 
+              {
+                 AddPro();
+              };
+          });
+
+          $("#discount").keypress(function(e){
+              if (e.which == 13) 
+              {
+                 $("#payment").focus();
+              };
+          });
+
+          $("#payment").keypress(function(e){
+              if (e.which == 13) 
+              {
+                 $("#customer").focus();
+              };
+          });
+
+          $("#customer").keypress(function(e){
+              if (e.which == 13) 
+              {
+                 $("#billing_address").focus();
+              };
+          });
     });
 
     //Discount On Change
@@ -375,9 +463,44 @@ include('../include/config.php');
               icon: "error",
               button: "Ok !",
               });
-              $('#discount').val('');
+              $('#discount').val(0);
+          }else{
+            $('#discount').val(0);
           }
+          myFunction();
         }
+    }
+
+    function myDis(){
+
+       var gross= $('#gross').val();
+       var discount_percentage= $('#discount_percentage').val();
+
+        if(numberRegex.test(discount_percentage)){
+
+          var discount = (Number(gross)*(Number(discount_percentage)/100)).toFixed(2);
+          $('#discount').val(discount);
+          myFunction();
+
+        }else{
+
+          if(discount_percentage!=''){
+              swal({
+              title: "Discount Percentage must be Number !",
+              text: "Validation",
+              icon: "error",
+              button: "Ok !",
+              });
+              $('#discount').val(0);
+              $('#discount_percentage').val(0);
+          }else{
+             $('#discount').val(0);
+             $('#discount_percentage').val(0);
+             
+          }
+          myFunction();
+        }
+
     }
 
     function paymentFun(){
@@ -389,6 +512,12 @@ include('../include/config.php');
 
           var due = (Number(payment) - Number(total)).toFixed(2)
           $('#due').val(due);
+
+          if(Number(payment)<Number(total)){
+              $("#credit_period").css({display: "inherit"});
+          }else{
+              $("#credit_period").css({display: "none"});
+          }
 
         }else{
 
@@ -402,7 +531,6 @@ include('../include/config.php');
               $('#payment').val('');
           }
         }
-
     }
 
     // Data add to the Temp POS table                      
@@ -436,10 +564,13 @@ include('../include/config.php');
 
                     $('#product_name').val("")
                     $('#quantity').val("")
+                    $('#warranty').val("")
+                    $('#serial_no').val("")
 
                     $( "#here" ).load(window.location.href + " #here" );
                     $("#gross").val(data);
                     $("#total").val(data);
+                    $("#product_name").focus();
                 }            
               } 
         });     
@@ -518,6 +649,9 @@ include('../include/config.php');
         var total= $('#total').val();
         var discount= $('#discount').val();
         var payment= $('#payment').val();
+        var credit_period= $('#credit_period').val();
+        var customer= $('#customer').val();
+        var billing_address= $('#billing_address').val();
         var date= $('#date').val();
 
         if(payment!='' && numberRegex.test(payment)){
@@ -525,7 +659,7 @@ include('../include/config.php');
             $.ajax({
                 type: 'post',
                 url: '../controller/billing_controller.php',
-                data: {save:save,total:total,discount:discount,payment:payment,date:date},
+                data: {save:save,total:total,discount:discount,payment:payment,date:date,credit_period:credit_period,billing_address:billing_address,customer:customer},
                 success: function (data) {
 
                     swal({
@@ -547,6 +681,9 @@ include('../include/config.php');
         var total= $('#total').val();
         var discount= $('#discount').val();
         var payment= $('#payment').val();
+        var credit_period= $('#credit_period').val();
+        var customer= $('#customer').val();
+        var billing_address= $('#billing_address').val();
         var date= $('#date').val();
         var inv_id= $('#inv_id').val();
 
@@ -555,7 +692,7 @@ include('../include/config.php');
             $.ajax({
                 type: 'post',
                 url: '../controller/billing_controller.php',
-                data: {save:save,total:total,discount:discount,payment:payment,date:date},
+                data: {save:save,total:total,discount:discount,payment:payment,date:date,credit_period:credit_period,billing_address:billing_address,customer:customer},
                 success: function (data) {
 
                     setTimeout(function(){window.open('print?id='+inv_id, '_blank'); }, 100);
