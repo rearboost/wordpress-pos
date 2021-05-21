@@ -54,8 +54,16 @@
             $get_contact = mysqli_query($conn, "SELECT * FROM customer WHERE id='$customer'");
             $cus_data = mysqli_fetch_assoc($get_contact);
 
-            $customer_name = $cus_data['name'];
-            $to = $cus_data['contact'];
+            if($customer=='1'){
+                $split_values = explode(',', $billing_address);
+                $customer_name = $split_values[0];
+                $to = $split_values[1];
+
+            }else{
+                $customer_name = $cus_data['name'];
+                $to = $cus_data['contact'];
+            }
+
             $advanced = number_format($advance,2,'.',',');
             $estimate_amt = number_format($service,2,'.',',');
 
@@ -65,7 +73,7 @@
             $Sender_id = "Shadcom"; //Your Sender ID 
             $Message_type = "2"; //1 for Short SMS, 2 for Long SMS 
             $Country_code = "94"; //Country Code 
-            $Number = $cus_data['contact']; //Mobile Number Without 0 
+            $Number = $to; //Mobile Number Without 0 
             $message = "Hi ".$customer_name.", We are Received Your Repair [Job Note Number - ".$job_no."].Estimated Amount Rs.".$estimate_amt." Advance Rs.".$advanced." Your Status-request Job Will Be Completed ".$delivery_date.".Thank You, SHAD COMPUTERS"; //Your Message 
 
             $data = array( "user_name" => $User_name, "api_key" => $Api_key, "gateway_type" => $Gateway_type, "sender_id" => $Sender_id , "message_type" => $Message_type , "country_code" => $Country_code, "number" => $Number, "message" => $message ); 

@@ -145,6 +145,99 @@ include('../include/config.php');
 
                         <br><br>
 
+                        
+                        <div class="row">
+                          <div class="col-md-8">
+                            <p>Payment Section</p>
+                          </div>
+                          <div class="col-md-4">
+                            <?php
+
+                                  $sql ="SELECT id FROM invoice ORDER BY id DESC LIMIT 1";
+                                  $result=mysqli_query($conn,$sql);
+                                  $row_get = mysqli_fetch_assoc($result);
+                                  $count =mysqli_num_rows($result);
+
+                                  if($count==0){
+                                    $nextID = 1;
+                                  }else{
+                                    $nextID =$row_get['id']+1;
+                                  }
+
+                                ?>
+                            
+                                <input type="hidden" id="inv_id" value="<?php echo $nextID ?>">
+
+                                <b><label class="col-sm-12 col-form-label">Invoice No - <?php echo sprintf('%05d', $nextID); ?></label></b>
+                          </div>
+                        </div>
+
+
+                        <div class="row" style="border:1px solid #ddd; margin-bottom: 10px; padding-top: 10px; border-radius: 20px;">
+                          <div class="col-md-3" >
+                              <div class="form-group">
+                                <label class="col-sm-12 col-form-label">Payment Type</label>
+                                <div class="col-sm-12">
+                                <select class="form-control" id="payment_type" name="payment_type">
+                                  <option value="credit">--Payment Type--</option>
+                                  <option value="cash">Cash</option>
+                                  <option value="cheque">Cheque</option>
+                                  <option value="card">Card</option>
+                                </select>
+                                </div>
+                              </div>
+                          </div>
+                          <!--credit section-->
+                          <div class="col-md-3 cheque_section" hidden>
+                            <div class="form-group">
+                              <label class="col-sm-8 col-form-label">Bank</label>
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" name ="bank" id="bank" placeholder="Bank name"/>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3 cheque_section" hidden>
+                            <div class="form-group">
+                              <label class="col-sm-10 col-form-label">Cheque Number</label>
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" name ="cheque_no" id="cheque_no" placeholder="Cheque No"/>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3 cheque_section" hidden>
+                            <div class="form-group">
+                              <label class="col-sm-8 col-form-label">Due Date</label>
+                                <div class="col-sm-12">
+                                  <input type="date" class="form-control" name ="due_date" id="due_date"/>
+                                </div>
+                            </div>
+                          </div>
+                          <!--card section-->
+                          <div class="col-md-4 card_section" hidden>
+                            <div class="form-group">
+                                <label class="col-sm-6 col-form-label">&nbsp;&nbsp;Card Type</label>
+                                <div class="row">
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-4">
+                                  <input type="radio" name ="card_type" id="card_type" value="visa"checked/>&nbsp;&nbsp;Visa
+                                </div>
+                                <div class="col-sm-5">
+                                  <input type="radio" name ="card_type" id="card_type" value="master"/>&nbsp;&nbsp;Master
+                                </div>
+                                <div class="col-sm-1"></div>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="col-md-5 card_section" hidden>
+                            <div class="form-group">
+                                <label class="col-sm-6 col-form-label">Card Number</label>
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" name ="card_no" id="card_no" placeholder="Card Number" />
+                                </div>
+                            </div>
+                          </div>
+                        </div><!-- end 3rd row-->
+
                         <div class="row">
                             <div class="col-md-4" >
                                 <div class="form-group row">
@@ -164,23 +257,8 @@ include('../include/config.php');
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group row">
-                                <?php
-
-                                  $sql ="SELECT id FROM invoice ORDER BY id DESC LIMIT 1";
-                                  $result=mysqli_query($conn,$sql);
-                                  $row_get = mysqli_fetch_assoc($result);
-                                  $count =mysqli_num_rows($result);
-
-                                  if($count==0){
-                                    $nextID = 1;
-                                  }else{
-                                    $nextID =$row_get['id']+1;
-                                  }
-
-                                ?>
-                            
-                                <input type="hidden" id="inv_id" value="<?php echo $nextID ?>">
-                                  <div class="col-sm-7">
+                                    <!-- <label class="col-sm-4 col-form-label">Credit Period</label> -->
+                                  <div class="col-sm-12">
                                    <select class="form-control" id="credit_period" name="credit_period" required>
                                         <option value = "0">Credit Period</option>
                                         <option value = "7">7 Days</option>
@@ -188,9 +266,7 @@ include('../include/config.php');
                                         <option value = "21">21 Days</option>
                                         <option value = "28">28 Days</option>
                                     </select>
-
                                   </div>
-                                  <b><label class="col-sm-12 col-form-label">Invoice No - <?php echo sprintf('%05d', $nextID); ?></label></b>
 
                                 </div>
                             </div>
@@ -217,8 +293,31 @@ include('../include/config.php');
                                 </div>
                             </div>
                             <div class="col-md-4">
-	                          	<button type="submit" onclick="saveForm()" class="btn btn-primary" style="width:59%">SAVE</button>
-	                          	<button type="button" onclick="cancelForm()" class="btn btn-primary" style="width:39%">NEW</button>
+                              <div class="form-group row">
+                                <!-- <label class="col-sm-6 col-form-label">Customer</label> -->
+                                    <div class="col-sm-12">
+                                      <!-- <input type="text" class="form-control"  name="customer" id="customer" value="WORKING CUSTOMER"  placeholder="Customer Name"/> -->
+                                      <select class="form-control" id="customer" name="customer">
+                                            <?php
+                                                $custom = "SELECT * FROM customer";
+                                                $result = mysqli_query($conn,$custom);
+                                                $numRows = mysqli_num_rows($result); 
+
+                                                echo "<option value=''>--Select Customer--</option>";
+                                                if($numRows > 0) {
+                                                while($row = mysqli_fetch_assoc($result)) {
+
+                                                        echo "<option value = ".$row['id'].">" . $row['name'] . "</option>";
+
+                                                }
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                              
+	                          	<!-- <button type="submit" onclick="saveForm()" class="btn btn-primary" style="width:59%">SAVE</button>
+	                          	<button type="button" onclick="cancelForm()" class="btn btn-primary" style="width:39%">NEW</button> -->
                             </div>
                         </div><!-- end 4th row-->
 
@@ -239,33 +338,22 @@ include('../include/config.php');
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-	                          	<button type="button"  onclick="printForm()" class="btn btn-primary" style="width:59%">PRINT</button>
-	                          	<button type="button" onclick="cancelForm()" class="btn btn-primary" style="width:39%">CLOSE</button>
+                            <div class="col-md-4 billing_address" hidden>
+                                <div class="form-group row">
+                                <!-- <label class="col-sm-6 col-form-label">Billing Address</label> -->
+                                  <div class="col-sm-12" >
+                                       <textarea class="form-control" name="billing_address" id="billing_address" rows="3" cols="26" placeholder="Ex:Mr.Rashmika,
+771234567,
+N0:01,Galle rd,Panadura"></textarea>
+                                  </div>
+                                </div>
                             </div>
                         </div><!-- end 5th row-->
 
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Customer</label>
-                                    <div class="col-sm-8">
-                                      <input type="text" class="form-control"  name="customer" id="customer" value="WORKING CUSTOMER"  placeholder="Customer Name"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Billing Address</label>
-                                    <div class="col-sm-8">
-                                       <textarea id="billing_address" name="billing_address" rows="3" cols="26"> </textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-
-                            </div>
-                        </div><!-- end 5th row-->
+                        
+                          <button type="button" onclick="cancelForm()" class="btn btn-primary  mr-2 fr">CLOSE</button>
+                          <button type="button"  onclick="printForm()" class="btn btn-primary  mr-2 fr">PRINT</button>
+                        
 
                         <!-- Trigger the modal with a button -->
                         <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#exampleModalCenter">Open Modal</button> -->
@@ -274,7 +362,7 @@ include('../include/config.php');
                 </div>
 
                 <div class="col-lg-3 grid-margin stretch-card">
-                  <div class="card" style="padding:0px;width: 100%;height: 650px;overflow-x: hidden;overflow-y: auto; text-align: center;">
+                  <div class="card" style="padding:0px;width: 100%;height: 800px;overflow-x: hidden;overflow-y: auto; text-align: center;">
                     <div class="card-body">
                       <input type="text" id="myInput" placeholder="Search by names.." title="Type in a name" style="width: 100%; font-size: 14px; border:1px solid #ddd; border-radius:5px; padding: 10px; margin-bottom: 12px;">
                     	<div class="card-scroll" style="">
@@ -441,6 +529,45 @@ include('../include/config.php');
                  $("#billing_address").focus();
               };
           });
+    });
+
+    $('#payment_type').on('change',function(){
+      var type = this.value;
+
+      if(type=='cash'){
+        $('.cheque_section').prop('hidden', true);
+        $('.card_section').prop('hidden', true);
+      }
+      else if(type=='cheque')
+      {
+        $('.cheque_section').prop('hidden', false);
+        $('.card_section').prop('hidden', true);
+
+        $('#bank').prop('required', true);
+        $('#cheque_no').prop('required', true);
+        $('#due_date').prop('required', true);
+
+      }
+      else if(type=='card')
+      {
+        $('.cheque_section').prop('hidden', true);
+        $('.card_section').prop('hidden', false);
+
+        $('#card_no').prop('required', true);
+      }
+
+
+    });
+
+    $('#customer').on('change',function(){
+      var customer = this.value;
+
+      if(customer=='1'){
+        $('.billing_address').prop('hidden', false);
+      }else{
+        $('.billing_address').prop('hidden', true);
+      }
+
     });
 
     //Discount On Change
@@ -642,41 +769,42 @@ include('../include/config.php');
 
     /////////////////////////////////////////////////// Form Submit Add  
 
-    function saveForm(){
+    // function saveForm(){
 
-        var save  ="save";
+    //     var save  ="save";
     
-        var total= $('#total').val();
-        var discount= $('#discount').val();
-        var payment= $('#payment').val();
-        var credit_period= $('#credit_period').val();
-        var customer= $('#customer').val();
-        var billing_address= $('#billing_address').val();
-        var date= $('#date').val();
+    //     var total= $('#total').val();
+    //     var discount= $('#discount').val();
+    //     var payment= $('#payment').val();
+    //     var credit_period= $('#credit_period').val();
+    //     var customer= $('#customer').val();
+    //     var billing_address= $('#billing_address').val();
+    //     var date= $('#date').val();
 
-        if(payment!='' && numberRegex.test(payment)){
+    //     if(payment!='' && numberRegex.test(payment)){
 
-            $.ajax({
-                type: 'post',
-                url: '../controller/billing_controller.php',
-                data: {save:save,total:total,discount:discount,payment:payment,date:date,credit_period:credit_period,billing_address:billing_address,customer:customer},
-                success: function (data) {
+    //         $.ajax({
+    //             type: 'post',
+    //             url: '../controller/billing_controller.php',
+    //             data: {save:save,total:total,discount:discount,payment:payment,date:date,credit_period:credit_period,billing_address:billing_address,customer:customer},
+    //             success: function (data) {
 
-                    swal({
-                    title: "Good job !",
-                    text: "Successfully Submited",
-                    icon: "success",
-                    button: "Ok !",
-                    });
-                    setTimeout(function(){ location.reload(); }, 2500);
-                } 
-            });  
-        }
-    }
+    //                 swal({
+    //                 title: "Good job !",
+    //                 text: "Successfully Submited",
+    //                 icon: "success",
+    //                 button: "Ok !",
+    //                 });
+    //                 setTimeout(function(){ location.reload(); }, 2500);
+    //             } 
+    //         });  
+    //     }
+    // }
 
      function printForm(){
 
         var save  ="save";
+
     
         var total= $('#total').val();
         var discount= $('#discount').val();
@@ -687,12 +815,22 @@ include('../include/config.php');
         var date= $('#date').val();
         var inv_id= $('#inv_id').val();
 
+        //payment section
+        var payment_type= $('#payment_type').val();
+        var bank        = $('#bank').val();
+        var cheque_no   = $('#cheque_no').val();
+        var due_date    = $('#due_date').val();
+        var card_type   = $('#card_type').val();
+        var card_no     = $('#card_no').val();
+
+        ///////
+
         if(payment!='' && numberRegex.test(payment)){
 
             $.ajax({
                 type: 'post',
                 url: '../controller/billing_controller.php',
-                data: {save:save,total:total,discount:discount,payment:payment,date:date,credit_period:credit_period,billing_address:billing_address,customer:customer},
+                data: {save:save,total:total,discount:discount,payment:payment,date:date,credit_period:credit_period,billing_address:billing_address,customer:customer,payment_type:payment_type,bank:bank,cheque_no:cheque_no,due_date:due_date,card_type:card_type,card_no:card_no},
                 success: function (data) {
 
                     setTimeout(function(){window.open('print?id='+inv_id, '_blank'); }, 100);

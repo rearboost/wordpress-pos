@@ -8,8 +8,10 @@
             $id             = $_POST['view_id'];
             $customer       = $_POST['customer'];
             $accessory      = $_POST['accessory'];
+            $billing_address= $_POST['billing_address'];
             $brand          = $_POST['brand'];
             $model          = $_POST['model'];
+            $serial_no      = $_POST['serial_no'];
             $request_date   = $_POST['request_date'];
             $delivery_date  = $_POST['delivery_date'];
             $job_desc       = $_POST['job_desc'];
@@ -22,7 +24,7 @@
             $cash_payment   = $_POST['cash_payment'];
             $credit_payment = $_POST['credit_payment'];
 
-            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE accessory='$accessory' AND brand='$brand' AND model='$model' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND advance='$advance' AND user_desc='$user_desc' AND service_cost='$service_cost' AND discount='$discount' AND gross_amount='$amount' AND payable_amt='$total_amount' AND cash_payment='$cash_payment' AND credit_payment='$credit_payment' AND customerId='$customer'");
+            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE billing_address='$billing_address' AND accessory='$accessory' AND brand='$brand' AND model='$model' AND serial_no='$serial_no' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND advance='$advance' AND user_desc='$user_desc' AND service_cost='$service_cost' AND discount='$discount' AND gross_amount='$amount' AND payable_amt='$total_amount' AND cash_payment='$cash_payment' AND credit_payment='$credit_payment' AND customerId='$customer'");
 		    $count = mysqli_num_rows($check);
 
             if($count==0){
@@ -32,7 +34,8 @@
                 }
 
                 $edit = "UPDATE jobs 
-                                    SET service_cost='$service_cost',
+                                    SET billing_address='$billing_address',
+                                    service_cost='$service_cost',
                                     discount='$discount',
                                     gross_amount='$amount',
                                     payable_amt='$total_amount',
@@ -77,14 +80,23 @@
              }
 
              /// SMS Send
-              $sql_query = mysqli_query($conn,"SELECT C.name as name,C.contact as contact,J.jobNo as jobNo,J.payable_amt as payable_amt FROM customer C INNER JOIN jobs J ON C.id = J.customerId WHERE jobId='$addF_id' ");
+              $sql_query = mysqli_query($conn,"SELECT J.customerId as customerId,J.billing_address as billing_address,C.name as name,C.contact as contact,J.jobNo as jobNo,J.payable_amt as payable_amt FROM customer C INNER JOIN jobs J ON C.id = J.customerId WHERE jobId='$addF_id' ");
 
               $data = mysqli_fetch_assoc($sql_query);
 
-              $customer_name = $data['name'];
+              $customerId = $data['customerId'];
               $amount = $data['payable_amt'];
               $jobNo = $data['jobNo'];
 
+              if($customerId=='1'){
+                $billing_address = $data['billing_address'];
+                $split_values = explode(',', $billing_address);
+                $customer_name = $split_values[0];
+                $to = $split_values[1];
+              }else{
+                $customer_name = $data['name'];
+                $to = $data['contact'];
+              }
 
               $User_name ="Shadcomputers"; //Your Username 
               $Api_key = "5bbb49d5c63f487727f0"; //Your API Key 
@@ -92,7 +104,7 @@
               $Sender_id = "Shadcom"; //Your Sender ID 
               $Message_type = "2"; //1 for Short SMS, 2 for Long SMS 
               $Country_code = "94"; //Country Code 
-              $Number = $data['contact']; //Mobile Number Without 0 
+              $Number = $to; //Mobile Number Without 0 
               $message = "Hi ".$customer_name.", Thank You For Your Purchase, We Received Your Payment Rs.".$amount." For Invoice-".$jobNo." .Thank You, SHAD COMPUTERS"; //Your Message 
 
               $data = array( "user_name" => $User_name, "api_key" => $Api_key, "gateway_type" => $Gateway_type, "sender_id" => $Sender_id , "message_type" => $Message_type , "country_code" => $Country_code, "number" => $Number, "message" => $message ); 

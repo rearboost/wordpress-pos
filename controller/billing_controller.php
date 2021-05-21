@@ -123,7 +123,20 @@
             $billing_address = $_POST['billing_address'];
             $date = $_POST['date'];
 
-            $sql_invoice = "INSERT INTO  invoice (total,discount,payment,credit_period,customer,billing_address,date) VALUES ('$total','$discount','$payment','$credit_period','$customer','$billing_address','$date')";
+            $payment_type = $_POST['payment_type'];
+            $bank = $_POST['bank'];
+            $cheque_no = $_POST['cheque_no'];
+            $due_date = $_POST['due_date'];
+            $card_type = $_POST['card_type'];
+            $card_no = $_POST['card_no'];
+
+            if($payment_type=='cash' || $payment_type=='credit' || $payment_type=='cheque'){
+                $card_type = '';
+            }else{
+                $card_type = $_POST['card_type'];
+            }
+
+            $sql_invoice = "INSERT INTO  invoice (total,discount,payment,credit_period,customer,billing_address,date,payment_type,bank,cheque_no,cheque_dueDate,card_type,card_no) VALUES ('$total','$discount','$payment','$credit_period','$customer','$billing_address','$date','$payment_type','$bank','$cheque_no','$due_date','$card_type','$card_no')";
             mysqli_query($conn,$sql_invoice);
 
             $sql ="SELECT id FROM invoice ORDER BY id DESC LIMIT 1";

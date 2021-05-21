@@ -9,7 +9,7 @@
 
         $print_id = $_GET['id'];
 
-        $sql=mysqli_query($conn,"SELECT * FROM invoice  WHERE id='$print_id'");  
+        $sql=mysqli_query($conn,"SELECT * FROM invoice WHERE id='$print_id'");  
         $numRows = mysqli_num_rows($sql); 
         if($numRows > 0) {
           while($row = mysqli_fetch_assoc($sql)) {
@@ -20,13 +20,32 @@
             $payment   = $row['payment'];
 
             $credit_period   = $row['credit_period'];
-            if($credit_period==0){
-              $payment_method = "CASH";
+
+            $payment_type   = $row['payment_type'];
+            if($payment_type=='card'){
+              $payment_method = $row['payment_type'] .'('. $row['card_type'] .')';
             }else{
-              $payment_method = "CREDIT";
+              $payment_method = $row['payment_type'];
             }
-            $customer   = $row['customer'];
+
+            // if($credit_period==0){
+            //   $payment_method = "CASH";
+            // }else{
+            //   $payment_method = "CREDIT";
+            // }
             $billing_address   = $row['billing_address'];
+
+            $customerID   = $row['customer'];
+
+            if($customerID=='1'){
+              $split_values = explode(',', $billing_address);
+              $customer=$split_values[0];
+            }else{
+              $cust_query = mysqli_query($conn,"SELECT * FROM customer WHERE id='$customerID' ");
+              $cust_data = mysqli_fetch_assoc($cust_query);
+
+              $customer = $cust_data['name'];
+            }
 
           }
         }
@@ -159,8 +178,8 @@
    <b>
       <p style="float: right;padding-right: 13px;padding-top: 7px;text-transform: capitalize;">
         <?php
-            $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-            echo $f->format($totalAMT);
+            //$f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
+            //echo $f->format($totalAMT);
         ?>
     </p>
    </b>
@@ -227,7 +246,7 @@
 
   ///////////////////////////////////////  Print  
   $(document).ready(function(){
-    //  setTimeout(function(){ window.print(); }, 2000);
+    setTimeout(function(){ window.print(); }, 2000);
      // setTimeout(window.close, 3000);
   });
   ///////////////////////////////////////////

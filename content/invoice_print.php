@@ -88,18 +88,16 @@
             <div class=" row">
               <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-5 col-form-label">PAYMENT METHOD</label>
               <div class="col-sm-7 row">
-              <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">: CSAH  </span>
+              <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">: CASH  </span>
               </div>
             </div>
               <?php
                   $client = mysqli_query($conn, "SELECT * FROM customer WHERE id='$customerId'");
                   $client_data = mysqli_fetch_assoc($client);
                   $client_name = $client_data['name'];
-                  if($client_name="Guest"){
+                  if($customerId=='1'){
                     $split_values = explode(',', $billing_address);
                     $name = $split_values[0];
-                    $name1 = $split_values[1];
-                    $name2 = $split_values[2];
                   }else{
                     $name = $client_name;
                   }

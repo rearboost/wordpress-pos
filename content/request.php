@@ -128,10 +128,11 @@
                         <div class="row">
                           <div class="col-md-6">
                               <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Billing Address</label>
+                                <label class="col-sm-3 col-form-label">Billing Address * Guest Customer purpose only</label>
                                 <div class="col-sm-9">
-                                  <textarea class="form-control" name="billing_address" rows="3" placeholder="Guest customers only.. 
-(Ex: Mr.Rashmika,771234567,N0:01,Galle rd,Panadura)"><?php if(isset($_GET['view_id'])){ echo $billing_address;} ?></textarea>
+                                  <textarea class="form-control billing_address" name="billing_address" rows="3" placeholder="Ex: Mr.Rashmika,
+771234567,
+N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_address;} ?></textarea>
                                 </div>
                               </div>
                           </div>
@@ -332,6 +333,16 @@
   <script>
     $(document).ready( function () {
       $('#myTable').DataTable();
+    });
+
+    $('#customer').on('change',function(){
+      var customer = this.value;
+
+      if(customer=='1'){
+        $('.billing_address').prop('readonly', false);
+      }else{
+        $('.billing_address').prop('readonly', true);
+      }
     });
   
     /////////////////////////////////////////////////// Form Submit Add  

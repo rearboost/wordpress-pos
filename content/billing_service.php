@@ -113,7 +113,7 @@
                                                 while($row = mysqli_fetch_assoc($result)) {
                                                     if(isset($_GET['view_id'])){
 
-                                                    if($buyerName != $row['name']){
+                                                    if($customerName != $row['name']){
                                                         echo "<option value = ".$row['id'].">" . $row['name'] . "</option>";
                                                     }
 
@@ -139,9 +139,11 @@
                         <div class="row">
                           <div class="col-md-6">
                               <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Billing Address</label>
+                                <label class="col-sm-3 col-form-label">Billing Address * Guest Customer purpose only</label>
                                 <div class="col-sm-9">
-                                  <textarea class="form-control" name="billing_address" rows="3" placeholder="Guest customers only.." readonly><?php if(isset($_GET['view_id'])){ echo $billing_address;} ?></textarea>
+                                  <textarea class="form-control" name="billing_address" rows="3" placeholder="Ex: Mr.Rashmika,
+771234567,
+N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_address;} ?></textarea>
                                 </div>
                               </div>
                           </div>
