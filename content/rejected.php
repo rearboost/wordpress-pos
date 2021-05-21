@@ -204,7 +204,7 @@
                       </thead>
                       <tbody>
                         <?php
-                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE J.status='reject'");
+                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE J.status='reject' ORDER BY jobId DESC");
                           
                           $numRows = mysqli_num_rows($sql); 
                     

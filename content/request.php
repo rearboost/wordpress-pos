@@ -16,9 +16,11 @@
 
             $id  = $row['id'];
             $customerName  = $row['name'];
+            $billing_address   = $row['billing_address'];
             $accessory   = $row['accessory'];
             $brand   = $row['brand'];
             $model   = $row['model'];
+            $serial_no   = $row['serial_no'];
             $request_date = $row['request_date'];
             $delivery_date  = $row['delivery_date'];
             $job_desc   = $row['job_desc'];
@@ -108,11 +110,41 @@
                                 <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Accessory</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name ="accessory" value="<?php if(isset($_GET['view_id'])){ echo $accessory;} ?>" placeholder="Accessorry name" required/>
+                                        <select  class="form-control" name="accessory"required>
+                                      <?php
+                                      if(isset($_GET['view_id'])){
+                                        echo "<option value = ".$accessory.">" . $accessory . "</option>";
+                                      }
+                                      ?>
+                                      <option value="None">-- Select Accessory --</option>
+                                      <option value="Mobile Phone">Mobile Phone</option>
+                                      <option value="Laptop">Laptop</option>
+                                      <option value="Desktop">Desktop</option>
+                                    </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Billing Address</label>
+                                <div class="col-sm-9">
+                                  <textarea class="form-control" name="billing_address" rows="3" placeholder="Guest customers only.. 
+(Ex: Mr.Rashmika,771234567,N0:01,Galle rd,Panadura)"><?php if(isset($_GET['view_id'])){ echo $billing_address;} ?></textarea>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">IMEI/Serial #</label>
+                                <div class="col-sm-9">
+                                <input type="text" class="form-control" name="serial_no" placeholder="Serial #" value="<?php if(isset($_GET['view_id'])){ echo $serial_no;} ?>" required="">
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+
                         <div class="row">
                         <div class="col-md-6">
                             <div class="form-group row">
@@ -136,7 +168,7 @@
                             <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Request Date </label>
                             <div class="col-sm-9">
-                                <input type="Date" class="form-control" name ="request_date" value="<?php if(isset($_GET['view_id'])){ echo $request_date;} ?>" required/>
+                                <input type="Date" class="form-control" name ="request_date" value="<?php if(isset($_GET['view_id'])){ echo $request_date; }else{ echo date("Y-m-d"); } ?>" required/>
                             </div>
                             </div>
                         </div>
@@ -460,7 +492,7 @@
                 </div>
                 <div class="form-group">
                 <label for="exampleInputName1">Contact</label>
-                <input type="text" class="form-control" name="contact" placeholder="+94 00-0000-000" required>
+                <input type="text" class="form-control" name="contact" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "9" minlength="9"placeholder="Ex: 771234567" required>
                 </div>
                 <div class="form-group">
                 <label for="exampleInputEmail3">Email</label>

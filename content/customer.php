@@ -67,7 +67,7 @@
 
                           <div class="form-group">
                           <label for="exampleInputContact">Contact</label>
-                              <input type="number" class="form-control" name="contact" value="<?php if(isset($_GET['edit_id'])){ echo $edit_contact;} ?>" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "9" placeholder="Ex: 771234567" required>
+                              <input type="number" class="form-control" name="contact" value="<?php if(isset($_GET['edit_id'])){ echo $edit_contact;} ?>" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "9"  minlength="9" placeholder="Ex: 771234567" required>
                           </div>
 
                           <div class="form-group">

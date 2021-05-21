@@ -150,7 +150,7 @@ include('../include/config.php');
                     <h4 class="card-title">All Jobs</h4>
                     
                     <div class="table-responsive">          
-                    <table id="example" class="table table-bordered">
+                    <table id="myTable" class="table table-bordered">
                       <thead>
                         <tr>
                           <th> # </th>
@@ -166,7 +166,7 @@ include('../include/config.php');
                       </thead>
                       <tbody>
                         <?php
-                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId");
+                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId ORDER BY jobId DESC");
                           
                           $numRows = mysqli_num_rows($sql); 
                     
@@ -241,7 +241,10 @@ include('../include/config.php');
 </html>
 
 <script>
-  function SendMsg(id){
-      window.location.href = "home.php?msg_id=" + id;
-  }
+  // function SendMsg(id){
+  //     window.location.href = "home.php?msg_id=" + id;
+  // }
+  $(document).ready( function () {
+      $('#myTable').DataTable();
+  });
 </script>

@@ -17,8 +17,10 @@
 
             $jobId          = $row['jobId'];
             $jobNo          = $row['jobNo'];
+            $billing_address= $row['billing_address'];
             $customerId     = $row['customerId'];
             $accessory      = $row['accessory'];
+            $serial_no      = $row['serial_no'];
             $service_cost   = $row['service_cost'];
 
             $advance        = $row['advance'];
@@ -92,11 +94,20 @@
               <?php
                   $client = mysqli_query($conn, "SELECT * FROM customer WHERE id='$customerId'");
                   $client_data = mysqli_fetch_assoc($client);
+                  $client_name = $client_data['name'];
+                  if($client_name="Guest"){
+                    $split_values = explode(',', $billing_address);
+                    $name = $split_values[0];
+                    $name1 = $split_values[1];
+                    $name2 = $split_values[2];
+                  }else{
+                    $name = $client_name;
+                  }
               ?>
             <div class=" row">
               <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-5 col-form-label">CUSTOMER</label>
               <div class="col-sm-7 row">
-              <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">: <?php echo $client_data['name']; ?></span>
+              <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">: <?php echo $name; ?></span>
               </div>
             </div>
            
@@ -129,7 +140,7 @@
             $qty = 1;
             echo '<tr>';
             echo '<td>'. 'Service cost of '. $accessory .'</td>';
-            echo '<td>'. '' .'</td>';
+            echo '<td>'. $serial_no .'</td>';
             echo '<td style="text-align:center;">'. $qty .'</td>';
             echo '<td style="text-align:right;">'. number_format($service_cost,2,'.',',') .'</td>';
             echo '<td style="text-align:right;">'. number_format($qty*$service_cost,2,'.',',')  .'</td>';
@@ -157,7 +168,7 @@
             $qty = 1;
             echo '<tr>';
             echo '<td>'. 'Service cost of '. $accessory .'</td>';
-            echo '<td>'. '' .'</td>';
+            echo '<td>'. $serial_no .'</td>';
             echo '<td style="text-align:center;">'. $qty .'</td>';
             echo '<td style="text-align:right;">'. number_format($service_cost,2,'.',',') .'</td>';
             echo '<td style="text-align:right;">'. number_format($qty*$service_cost,2,'.',',')  .'</td>';

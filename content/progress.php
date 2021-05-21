@@ -19,6 +19,7 @@
             $accessory   = $row['accessory'];
             $brand   = $row['brand'];
             $model   = $row['model'];
+            $serial_no   = $row['serial_no'];
             $request_date = $row['request_date'];
             $delivery_date  = $row['delivery_date'];
             $job_desc   = $row['job_desc'];
@@ -183,9 +184,9 @@
                         <?php if (isset($_GET['view_id'])): ?>
                         <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group">
-                            <label class="col-sm-6 col-form-label">Update Job Progress (%)</label>
-                                <div class="col-sm-9">
+                            <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Update Job Progress</label>
+                                <div class="col-sm-8">
                                     <select  class="form-control" name="progress" id="progress" required>
                                       <?php
                                       if(isset($_GET['view_id'])){
@@ -207,6 +208,14 @@
                                 </div>
                             </div>
                         </div>
+                          <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">IMEI/Serial #</label>
+                                <div class="col-sm-9">
+                                <input type="text" class="form-control" name="serial_no" placeholder="Serial #" value="<?php if(isset($_GET['view_id'])){ echo $serial_no;} ?>" readonly>
+                                </div>
+                            </div>
+                          </div>
                         </div>
                         <?php else: ?>
                         <?php endif ?>

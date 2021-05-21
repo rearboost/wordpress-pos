@@ -76,6 +76,7 @@
                 }
              }
 
+             /// SMS Send
               $sql_query = mysqli_query($conn,"SELECT C.name as name,C.contact as contact,J.jobNo as jobNo,J.payable_amt as payable_amt FROM customer C INNER JOIN jobs J ON C.id = J.customerId WHERE jobId='$addF_id' ");
 
               $data = mysqli_fetch_assoc($sql_query);
@@ -84,15 +85,18 @@
               $amount = $data['payable_amt'];
               $jobNo = $data['jobNo'];
 
+
               $User_name ="Shadcomputers"; //Your Username 
               $Api_key = "5bbb49d5c63f487727f0"; //Your API Key 
-              $Gateway_type = "1"; //Define Economy Gateway 
+              $Gateway_type = "2"; //Define Premium Gateway 
+              $Sender_id = "Shadcom"; //Your Sender ID 
+              $Message_type = "2"; //1 for Short SMS, 2 for Long SMS 
               $Country_code = "94"; //Country Code 
               $Number = $data['contact']; //Mobile Number Without 0 
+              $message = "Hi ".$customer_name.", Thank You For Your Purchase, We Received Your Payment Rs.".$amount." For Invoice-".$jobNo." .Thank You, SHAD COMPUTERS"; //Your Message 
 
-              $message = "Hi ".$customer_name.", Thank You For Your Purchase, We Received Your Payment Rs.".$amount." For Invoice-".$jobNo." .Thank You, SHAD COMPUTERS"; //Message 
+              $data = array( "user_name" => $User_name, "api_key" => $Api_key, "gateway_type" => $Gateway_type, "sender_id" => $Sender_id , "message_type" => $Message_type , "country_code" => $Country_code, "number" => $Number, "message" => $message ); 
 
-              $data = array( "user_name" => $User_name, "api_key" => $Api_key, "gateway_type" => $Gateway_type, "country_code" => $Country_code, "number" => $Number, "message" => $message ); 
               $data_string = json_encode($data); 
 
               $ch = curl_init('https://my.ipromo.lk/api/postsendsms/'); 
@@ -101,10 +105,9 @@
               curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
               curl_setopt($ch, CURLOPT_HTTPHEADER, array( 'Content-Type: application/json', 'Content-Length: ' . strlen($data_string)) ); 
               curl_setopt($ch, CURLOPT_TIMEOUT, 5); 
-              curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); 
-
+              curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
               //Execute Post 
-              $result = curl_exec($ch);
+              $result = curl_exec($ch); 
               //Close Connection 
               curl_close($ch); 
               echo $result; 

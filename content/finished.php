@@ -16,9 +16,11 @@
 
             $id  = $row['id'];
             $customerName  = $row['name'];
+            $billing_address  = $row['billing_address'];
             $accessory   = $row['accessory'];
             $brand   = $row['brand'];
             $model   = $row['model'];
+            $serial_no   = $row['serial_no'];
             $request_date = $row['request_date'];
             $delivery_date  = $row['delivery_date'];
             $job_desc   = $row['job_desc'];
@@ -120,6 +122,25 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-md-6">
+                              <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Billing Address</label>
+                                <div class="col-sm-9">
+                                  <textarea class="form-control" name="billing_address" rows="3" placeholder="Guest customers only.." readonly><?php if(isset($_GET['view_id'])){ echo $billing_address;} ?></textarea>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">IMEI/Serial #</label>
+                                <div class="col-sm-9">
+                                <input type="text" class="form-control" name="serial_no" placeholder="Serial #" value="<?php if(isset($_GET['view_id'])){ echo $serial_no;} ?>" readonly>
+                                </div>
+                            </div>
+                          </div>
                         </div>
 
                         <div class="row">
@@ -289,7 +310,7 @@
                       </thead>
                       <tbody>
                         <?php
-                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE J.status='finish'");
+                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE J.status='finish' ORDER BY jobId DESC");
                           
                           $numRows = mysqli_num_rows($sql); 
                     
