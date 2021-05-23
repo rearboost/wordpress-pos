@@ -173,7 +173,7 @@ include('../include/config.php');
                         </div>
 
 
-                        <div class="row" style="border:1px solid #ddd; margin-bottom: 10px; padding-top: 10px; border-radius: 20px;">
+                        <div class="row" style="border:1px solid #ddd; margin-bottom: 10px; padding-top: 10px; border-radius: 20px; margin: 0px 0px 20px 0px;">
                           <div class="col-md-3" >
                               <div class="form-group">
                                 <label class="col-sm-12 col-form-label">Payment Type</label>
