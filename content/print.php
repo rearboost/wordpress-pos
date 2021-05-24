@@ -131,6 +131,7 @@
               <th scope="col">Warranty</th>
               <th scope="col">Qty</th>
               <th scope="col">Unit Price</th>
+              <th scope="col">Discount</th>
               <th scope="col">Amount</th>
             </tr>
           </thead>
@@ -148,6 +149,7 @@
                   $product  = $row_get['product'];
                   $qty  = $row_get['qty'];
                   $price   = $row_get['price'];
+                  $discount   = $row_get['discount'];
                   $amount   = $row_get['amount'];
                   $warranty   = $row_get['warranty'];
                   $serial_no   = $row_get['serial_no'];
@@ -161,6 +163,7 @@
                       <td>'.$warranty.' days</td>
                       <td>'.$qty.'</td>
                       <td>'.$price.'</td>
+                      <td>'.$discount.'</td>
                       <td>'.$amount.'</td>
                   </tr>
                   ';
@@ -179,7 +182,7 @@
       <p style="float: right;padding-right: 13px;padding-top: 7px;text-transform: capitalize;">
         <?php
             $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-            echo $f->format($totalAMT);
+            echo $f->format($totalAMT)." Rupees";
         ?>
     </p>
    </b>

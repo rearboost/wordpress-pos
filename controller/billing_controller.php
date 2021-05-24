@@ -10,7 +10,7 @@
             $warranty = $_POST['warranty'];
             $serial_no = $_POST['serial_no'];
 
-            $get_price = "SELECT B.max_price AS price , B.stock_quantity AS stock 
+            $get_price = "SELECT B.max_price AS price , B.stock_quantity AS stock , A.ID AS post_id 
                             FROM wp_posts A 
                             INNER JOIN wp_wc_product_meta_lookup B
                             ON A.ID = B.product_id WHERE A.post_title = '$product_name'";
@@ -19,11 +19,25 @@
             $check = mysqli_num_rows($result_price);
 
             if(!empty($check)){
+
                 $row = mysqli_fetch_assoc($result_price);
                 $price  = $row['price'];
                 $stock  = $row['stock']-1;
+                $post_id  = $row['post_id'];
+
+                $meta_key = "_regular_price";
+                $get_discount = "SELECT * FROM wpss_postmeta WHERE post_id='$post_id' AND meta_key ='$meta_key'";
+                $result_discount = mysqli_query($conn,$get_discount);
+                $check_count = mysqli_num_rows($result_discount);
+                if($check_count>0){
+                    $discount  = $result_discount['meta_value'];
+                }else{
+                    $discount  = "0.00";
+                }
+                
             }else{
-                $get_price2 = "SELECT max_price AS price , stock_qty AS stock 
+
+                $get_price2 = "SELECT max_price AS price , stock_qty AS stock , discount
                             FROM dashboard_items  
                             WHERE item = '$product_name'";
 
@@ -31,6 +45,7 @@
                 $row2 = mysqli_fetch_assoc($result_price2);
                 $price  = $row2['price'];
                 $stock  = $row2['stock']-1;
+                $discount  = $row2['discount'];
             }
 
             $sql ="SELECT * FROM temp_pos WHERE product= '$product_name'";
@@ -42,12 +57,13 @@
             $stockEmptyCode = 0;
 
             $amount = $quantity * $price;
+            $discount = $discount * $quantity;
 
             if($stock>0){
 
                 if($count==0){
                 
-                    $sql_temp = "INSERT INTO  temp_pos (product,warranty,serial_no,qty,price,amount,stock_quantity) VALUES ('$product_name','$warranty','$serial_no','$quantity','$price','$amount','$stock')";
+                    $sql_temp = "INSERT INTO  temp_pos (product,warranty,serial_no,qty,price,discount,amount,stock_quantity) VALUES ('$product_name','$warranty','$serial_no','$quantity','$price','$discount','$amount','$stock')";
                     $result_temp = mysqli_query($conn,$sql_temp);
                 
                 }else{
@@ -55,7 +71,7 @@
                     if($stock_quantity>0){
 
                         $sql_temp = "UPDATE temp_pos
-                        SET qty = qty + $quantity, amount = amount + $amount , stock_quantity = stock_quantity - $quantity
+                        SET qty = qty + $quantity, amount = amount + $amount , discount= discount + $discount ,stock_quantity = stock_quantity - $quantity
                         WHERE product= '$product_name'";
                         $result_temp = mysqli_query($conn,$sql_temp);
                     }else{
@@ -155,11 +171,12 @@
                     $product=$row['product'];
                     $qty=$row['qty'];
                     $price=$row['price'];
+                    $discount=$row['discount'];
                     $amount=$row['amount'];
                     $warranty=$row['warranty'];
                     $serial_no=$row['serial_no'];
 
-                    $sql_invoice_items = "INSERT INTO invoice_items (invoice_id,product,warranty,serial_no,qty,price,amount) VALUES ('$invoice_id','$product','$warranty','$serial_no','$qty','$price','$amount')";
+                    $sql_invoice_items = "INSERT INTO invoice_items (invoice_id,product,warranty,serial_no,qty,price,discount,amount) VALUES ('$invoice_id','$product','$warranty','$serial_no','$qty','$price','$discount','$amount')";
                     mysqli_query($conn,$sql_invoice_items);
                 }
             }

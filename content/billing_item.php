@@ -103,6 +103,7 @@ include('../include/config.php');
                                     <th>Product</th>
                                     <th>QTY</th>
                                     <th>Price</th>
+                                    <th>Discount</th>
                                     <th>Amount</th>
                                     <th>DELETE</th>  
                                   </tr>
@@ -122,12 +123,14 @@ include('../include/config.php');
                                           $product = $row['product'];
                                           $qty  = $row['qty'];
                                           $price   = $row['price'];
+                                          $discount   = $row['discount'];
                                           $amount   = $row['amount'];
                                           $id   = $row['id'];
                                           echo ' <tr>';
                                           echo ' <td>'.$product.' </td>';
                                           echo ' <td>'.$qty.' </td>';
                                           echo ' <td>'.$price.' </td>';
+                                          echo ' <td>'.$discount.' </td>';
                                           echo ' <td>'.$amount.' </td>';
                                           echo '<td class="td-center"><button class="btn-edit" id="DeleteButton" onclick="removeForm('.$id.')">Delete</button></td>';
                                           echo ' </tr>';

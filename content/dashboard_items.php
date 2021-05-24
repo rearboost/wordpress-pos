@@ -18,6 +18,7 @@
             $item         = $row['item'];
             $min_price    = $row['min_price'];
             $max_price    = $row['max_price'];
+            $discount    = $row['discount'];
             $stock_qty    = $row['stock_qty'];
             $stock_status = $row['stock_status'];
 
@@ -82,8 +83,7 @@
                                 <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Stock</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="stock_qty" id="stock_qty" placeholder="0" readonly required/>
-                                        <input type="hidden" id="stock_qty_hidden" value="<?php if(isset($_GET['view_id'])){ echo $stock_qty;} ?>" >
+                                        <input type="text" class="form-control" name="stock_qty" id="stock_qty" value="<?php if(isset($_GET['view_id'])){ echo $stock_qty;} ?>" placeholder="0" readonly/>
                                     </div>
                                 </div>
                             </div>
@@ -108,35 +108,48 @@
                         </div>
                         </div>
                         <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Stock In</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" name="stock_in" id="stock_in" onkeyup="TotalStock()" placeholder="0" required/>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Stock Status</label>
-                            <div class="col-sm-9">
-                                <select class="form-control" id="stock_status" name="stock_status" required="">
-                                  <?php
+                          <div class="col-md-6">
+                              <div class="form-group row">
+                              <label class="col-sm-3 col-form-label">Discount</label>
+                              <div class="col-sm-9">
+                                  <input type="text" class="form-control" name="discount" id="discount" placeholder="0" value="<?php if(isset($_GET['view_id'])){ echo $discount;} ?>"/>
+                              </div>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-group row">
+                              <label class="col-sm-3 col-form-label">Stock In</label>
+                              <div class="col-sm-9">
+                                  <input type="text" class="form-control" name="stock_in" id="stock_in" onkeyup="TotalStock()" value="0" placeholder="0" required/>
+                              </div>
+                              </div>
+                          </div>                        
+                      </div>
 
-                                      if(isset($_GET['view_id'])){
-                                      echo "<option value = ".$stock_status.">" . $stock_status . "</option>";
-                                      }
-                                      echo "<option value=''>--Select Status--</option>";
-                                      ?>
-                                      <option value="instock">instock</option>
-                                      <option value="outofstock">outofstock</option>
-                                      <option value="onbackorder">onbackorder</option>
-                                      
-                              </select>
-                            </div>
-                            </div>
+                       <div class="row">
+
+                        <div class="col-md-6">
+                              <div class="form-group row">
+                              <label class="col-sm-3 col-form-label">Stock Status</label>
+                              <div class="col-sm-9">
+                                  <select class="form-control" id="stock_status" name="stock_status" required="">
+                                    <?php
+
+                                        if(isset($_GET['view_id'])){
+                                        echo "<option value = ".$stock_status.">" . $stock_status . "</option>";
+                                        }
+                                        echo "<option value=''>--Select Status--</option>";
+                                        ?>
+                                        <option value="instock">instock</option>
+                                        <option value="outofstock">outofstock</option>
+                                        <option value="onbackorder">onbackorder</option>
+                                        
+                                </select>
+                              </div>
+                              </div>
+                          </div>
                         </div>
-                        </div>
+                    
 
                        <?php if (isset($_GET['view_id'])): ?>
                           <input type="hidden" class="form-control" name="view_id" id="view_id" value="<?php if(isset($_GET['view_id'])){ echo $view_id;} ?>" />
@@ -169,6 +182,7 @@
                           <th>Stock</th>
                           <th>Min Price </th>
                           <th>Max Price</th>
+                          <th>Discount</th>
                           <th>Status</th>
                           <th>Edit</th>
                           <th>Delete</th>
@@ -187,6 +201,7 @@
                             $item         = $row['item'];
                             $min_price    = $row['min_price'];   
                             $max_price    = $row['max_price'];
+                            $discount     = $row['discount'];
                             $stock_qty    = $row['stock_qty'];
                             $stock_status = $row['stock_status'];
 
@@ -196,6 +211,7 @@
                               echo ' <td>'.$stock_qty.' </td>';
                               echo ' <td>'.$min_price.' </td>';
                               echo ' <td>'.$max_price.' </td>';
+                              echo ' <td>'.$discount.' </td>';
                               echo ' <td>'.$stock_status.' </td>';
 
                               echo '<td class="td-center"><button type="button" onclick="editForm('.$row["item_id"].')" class="btn btn-info btn-fw">Edit</button></td>';
@@ -244,14 +260,14 @@
 
     function TotalStock(){
 
-        var stock= $('#stock_qty_hidden').val();
+        // var stock= $('#stock_qty_hidden').val();
         //alert(stock)
         var stock_in= $('#stock_in').val();
 
         if(numberRegex.test(stock_in)){
 
-          var total = (Number(stock)+Number(stock_in))
-          $('#stock_qty').val(total);
+        //  var total = (Number(stock)+Number(stock_in))
+          $('#stock_in').val(stock_in);
 
         }else{
 
@@ -263,7 +279,7 @@
               button: "Ok !",
               });
               $('#stock_in').val('');
-              $('#stock_qty').val('');
+              // $('#stock_qty').val('');
           }
         }
     }
@@ -299,7 +315,7 @@
                           icon: "success",
                           button: "Ok !",
                           });
-                          setTimeout(function(){ location.reload(); }, 2500);
+                          setTimeout(function(){ cancelForm(); }, 1500);
                     }
                 }
               });

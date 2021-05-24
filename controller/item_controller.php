@@ -7,9 +7,10 @@
         if(isset($_POST['add'])){
 
             $item          = $_POST['item'];
-            $stock_qty     = $_POST['stock_qty'];
+            $stock_in     = $_POST['stock_in'];
             $min_price     = $_POST['min_price'];
             $max_price     = $_POST['max_price'];
+            $discount      = $_POST['discount'];
             $stock_status  = $_POST['stock_status'];
 
             $check= mysqli_query($conn, "SELECT * FROM dashboard_items WHERE item='$item' AND stock_qty='$stock_qty' AND min_price='$min_price' AND max_price='$max_price' AND stock_status='$stock_status'");
@@ -17,7 +18,7 @@
 
             if($count==0){
 
-                $insert = "INSERT INTO dashboard_items (    item,min_price,max_price,stock_qty,stock_status) VALUES ('$item','$min_price','$max_price',$stock_qty,'$stock_status')";
+                $insert = "INSERT INTO dashboard_items (item,min_price,max_price,discount,stock_qty,stock_status) VALUES ('$item','$min_price','$max_price','$discount',$stock_in,'$stock_status')";
                 $result = mysqli_query($conn,$insert);
                 if($result){
                     echo  1;
@@ -34,9 +35,10 @@
 
             $id            = $_POST['view_id'];
             $item          = $_POST['item'];
-            $stock_qty     = $_POST['stock_qty'];
+            $stock_in     = $_POST['stock_in'];
             $min_price     = $_POST['min_price'];
             $max_price     = $_POST['max_price'];
+            $discount      = $_POST['discount'];
             $stock_status  = $_POST['stock_status'];
 
             $check= mysqli_query($conn, "SELECT * FROM dashboard_items WHERE item='$item' AND stock_qty='$stock_qty' AND min_price='$min_price' AND max_price='$max_price' AND stock_status='$stock_status'");
@@ -46,9 +48,10 @@
 
                 $edit = "UPDATE dashboard_items 
                                     SET item   ='$item',
-                                        stock_qty  ='$stock_qty',
+                                        stock_qty  = stock_qty + '$stock_in',
                                         min_price  ='$min_price',
                                         max_price  ='$max_price',
+                                        discount ='$discount',  
                                         stock_status= '$stock_status'
                                     WHERE item_id=$id";
 
