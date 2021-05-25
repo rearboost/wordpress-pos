@@ -178,8 +178,8 @@
    <b>
       <p style="float: right;padding-right: 13px;padding-top: 7px;text-transform: capitalize;">
         <?php
-            //$f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-            //echo $f->format($totalAMT);
+            $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
+            echo $f->format($totalAMT);
         ?>
     </p>
    </b>

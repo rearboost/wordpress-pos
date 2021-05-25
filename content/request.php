@@ -205,6 +205,14 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                                 </div>
                             </div>
                         </div>
+
+                        <?php
+                        $sql_no = mysqli_query($conn, "SELECT jobId FROM jobs ORDER BY jobId DESC LIMIT 1");
+                        $get_no = mysqli_fetch_assoc($sql_no);
+                        $next_id = $get_no['jobId']+1;
+                        ?>
+
+                        <input type="hidden" name="job_id" id="job_id" value="<?php echo $next_id;?>">
                         </div>
                         <?php if (isset($_GET['view_id'])): ?>
                         <div class="row">
@@ -353,6 +361,8 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
 
           e.preventDefault();
 
+          var job_id= $('#job_id').val();
+
           $.ajax({
             type: 'post',
             url: '../controller/request_controller.php',
@@ -379,6 +389,7 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                       button: "Ok !",
                       });
                       setTimeout(function(){ location.reload(); }, 2500);
+                          setTimeout(function(){window.open('job_receipt?id='+job_id, '_blank'); }, 100);
                 }
             }
           });

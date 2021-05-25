@@ -342,19 +342,30 @@ include('../include/config.php');
                                 <div class="form-group row">
                                 <!-- <label class="col-sm-6 col-form-label">Billing Address</label> -->
                                   <div class="col-sm-12" >
-                                       <textarea class="form-control" name="billing_address" id="billing_address" rows="3" cols="26" placeholder="Ex:Mr.Rashmika,
+                                    <textarea class="form-control" name="billing_address" id="billing_address" rows="3" cols="26" placeholder="Ex:Mr.Rashmika,
 771234567,
 N0:01,Galle rd,Panadura"></textarea>
+                          
+
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 remain_credit" hidden>
+                              <?php
+                              $sql_credit = mysqli_query($conn, "SELECT * FROM jobs")
+                              ?>
+                                <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Credit</label>
+                                  <div class="col-sm-8" >
+                                    <input type="text" class="form-control" name="remain_credit" id="remain_credit">
                                   </div>
                                 </div>
                             </div>
                         </div><!-- end 5th row-->
 
+                        <button type="button" onclick="cancelForm()" class="btn btn-primary  mr-2 fr">CLOSE</button>
+                        <button type="button"  onclick="printForm()" class="btn btn-primary  mr-2 fr">PRINT</button>
                         
-                          <button type="button" onclick="cancelForm()" class="btn btn-primary  mr-2 fr">CLOSE</button>
-                          <button type="button"  onclick="printForm()" class="btn btn-primary  mr-2 fr">PRINT</button>
-                        
-
                         <!-- Trigger the modal with a button -->
                         <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#exampleModalCenter">Open Modal</button> -->
                     </div>
@@ -564,9 +575,31 @@ N0:01,Galle rd,Panadura"></textarea>
 
       if(customer=='1'){
         $('.billing_address').prop('hidden', false);
+        $('.remain_credit').prop('hidden', true);
       }else{
         $('.billing_address').prop('hidden', true);
+        $('.remain_credit').prop('hidden', false);
       }
+
+      $.ajax({
+
+            type: 'post',
+            url: '../functions/get_credit.php',
+            data: {customer_id:customer},
+            success:function(response) {
+              
+              var obj = JSON.parse(response);
+
+              var total     =  obj.total
+              var payment   =  obj.payment
+              
+              var credit = (Number(total) - Number(payment));
+
+              $('#remain_credit').val(credit.toFixed(2));
+                    
+                            
+              } 
+        });
 
     });
 
