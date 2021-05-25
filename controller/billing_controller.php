@@ -30,7 +30,7 @@
                 $result_discount = mysqli_query($conn,$get_discount);
                 $check_count = mysqli_num_rows($result_discount);
                 if($check_count>0){
-                    $discount  = $result_discount['meta_value'];
+                    $discount  = $result_discount['meta_value']-$price;
                 }else{
                     $discount  = "0.00";
                 }
