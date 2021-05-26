@@ -74,7 +74,7 @@
             $Message_type = "2"; //1 for Short SMS, 2 for Long SMS 
             $Country_code = "94"; //Country Code 
             $Number = $to; //Mobile Number Without 0 
-            $message = "Hi ".$customer_name.", We are Received Your Repair [Job Note Number - ".$job_no."].Estimated Amount Rs.".$estimate_amt." Advance Rs.".$advanced." Your Status-request Job Will Be Completed ".$delivery_date.".Thank You, SHAD COMPUTERS"; //Your Message 
+            $message = "Hi ".$customer_name.",We are Received Your Repair[Job Note #-".$job_no."].Estimated Amount Rs.".$estimate_amt." Advance Rs.".$advanced." Your Status-request Job Will Be Completed ".$delivery_date.".Thank You,SHAD COMPUTERS"; //Your Message 
 
             $data = array( "user_name" => $User_name, "api_key" => $Api_key, "gateway_type" => $Gateway_type, "sender_id" => $Sender_id , "message_type" => $Message_type , "country_code" => $Country_code, "number" => $Number, "message" => $message ); 
 
@@ -92,7 +92,10 @@
             //Close Connection 
             curl_close($ch); 
             echo $result; 
+            
+            ///SMS section end
         }
+
 
         //  Update Function 
         if(isset($_POST['req_update'])){
@@ -133,7 +136,7 @@
 
                 $result = mysqli_query($conn,$edit);
                 if($result){
-                    echo  1;
+                    echo  2;
                 }else{
                     echo  mysqli_error($conn);		
                 }

@@ -371,7 +371,8 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                     <table id="myTable" class="table table-bordered">
                       <thead>
                         <tr>
-                          <th> # </th>
+                          <th style="display:none;"> # </th>
+                          <th> #</th>
                           <th>Customer</th>
                           <th>Order</th>
                           <th>Accessory </th>
@@ -384,7 +385,7 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                       </thead>
                       <tbody>
                         <?php
-                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE J.status='dispatch'");
+                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE J.status='dispatch'  ORDER BY jobId DESC");
                           
                           $numRows = mysqli_num_rows($sql); 
                     
@@ -392,6 +393,7 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                             $i = 1;
                             while($row = mysqli_fetch_assoc($sql)) {
 
+                            $jobId    = $row['jobId'];
                             $name    = $row['name'];
                             $order    = $row['jobNo'];   
                             $accessory   = $row['accessory'];
@@ -403,7 +405,8 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                             $payable_amt = $row['payable_amt'];
 
                               echo ' <tr>';
-                              echo ' <td>'.$i.' </td>';
+                              echo ' <td style="display:none;">'.$i.' </td>';
+                              echo ' <td>'.$jobId.' </td>';
                               echo ' <td>'.$name.' </td>';
                               echo ' <td>'.$order.' </td>';
                               echo ' <td>'.$accessory.' </td>';

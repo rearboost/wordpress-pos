@@ -77,21 +77,21 @@
               </div>
             </div>
             <div class=" row">
+              <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-5 col-form-label">DELIVERY DATE</label>
+              <div class="col-sm-7 row">
+              <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">: <?php echo $delivery_date;?>  </span>
+              </div>
+            </div>
+            <div class=" row">
               <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-5 col-form-label">USER  </label>
               <div class="col-sm-7 row">
                 <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">: <?php echo $_SESSION['username']; ?> </span>
               </div>
             </div>
             <div class=" row">
-              <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-5 col-form-label">INVOICE NO </label>
+              <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-5 col-form-label">JOB ORDER # </label>
               <div class="col-sm-7 row">
               <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">:  <?php echo $jobNo; ?> </span>
-              </div>
-            </div>
-            <div class=" row">
-              <label for="staticEmail"  style="font-size: 12px; margin-bottom: -7px;" class="col-sm-5 col-form-label">PAYMENT METHOD</label>
-              <div class="col-sm-7 row">
-              <span class="col-form-label" style="font-size: 13px; margin-bottom: -7px;">: CASH  </span>
               </div>
             </div>
               <?php
@@ -121,6 +121,7 @@
       <table class="table table-bordered">
           <thead>
             <tr>
+              <th scope="col">Item</th>
               <th scope="col">Description</th>
               <th scope="col">Serial #</th>
               <th scope="col">Qty</th>
@@ -134,7 +135,8 @@
           //if($service_cost>0){
             $qty = 1;
             echo '<tr>';
-            echo '<td>'. 'Service cost of '. $accessory; if(!empty($job_desc)){ echo'<br>('.$job_desc.')';}'</td>';
+            echo '<td>'. $accessory . '</td>';
+            echo '<td>'. $job_desc . '</td>';
             echo '<td>'. $serial_no .'</td>';
             echo '<td style="text-align:center;">'. $qty .'</td>';
             echo '<td style="text-align:right;">'. number_format($service_cost,2,'.',',') .'</td>';
@@ -155,15 +157,11 @@
        <!------------------- Item and warranty Conditions Area -->
        <div class="col-sm-9">
            <ul style="font-size: 13px;">
-              <li>Please submit the orginal invoice for warranty claims.</li>
-              <li>No warranty on key board , mouse cartridge and other no warranty items.</li>
-              <li>Warranty covers only manufcatures defects, damages or due to other <br><b> </b> casues as negkigence, misuse , improper opertion, power fluctuation , lightening or <br> natural disaster , sabotage or Accident etc. are NOT included under this warranty.</li>
-              <li>1 Year warranty less than 14 working day. ( -350 days/2 year-700/3 year- 1050 days ).</li>
-              <li>Goods sold once not returnable.</li><!-- 
+              
               <li>Phones that do not arrive within 10 days of being handed over for repair are not responsible.</li>
               <li>Check the phone after the repair, the advance paid for the repair will not be refunded for any reason.</li> 
               <li>Submission of this bill is mandatory to obtain the phone provided for repairs.</li> 
-              <li>Please note that anyone who does not have this bill will not be given a warranty and the phone provided for repair under any circumstances.</li> --> 
+              <li>Please note that anyone who does not have this bill will not be given a warranty and the phone provided for repair under any circumstances.</li>
            
            </ul>
            <div class="col-sm-12 row">
@@ -181,12 +179,7 @@
        </div>
        <!-- Bill Final details  -->
         <div class="col-sm-3">
-            <label class="col-form-label" style="font-size: 12px;"><b>&nbsp;DELIVERY DATE:&nbsp; <?php echo $delivery_date; ?></b></label>
             <table class="table table-bordered">
-             <!-- <tr>
-                <td  class="botton-table"><b>AMOUNT</b></td>
-                <td  class="botton-table" style="text-align: right;"><?php// echo number_format($gross_amount,2,'.',','); ?></td>
-              </tr> -->
               <tr>
                 <td class="botton-table"><b>ADVANCED</b></td>
                 <td class="botton-table" style="text-align: right;"><?php echo number_format($advance,2,'.',','); ?></td>
@@ -195,18 +188,6 @@
                 <td class="botton-table"><b>REST</b></td>
                 <td class="botton-table" style="text-align: right;"><?php echo number_format(($service_cost-$advance),2,'.',','); ?></td>
               </tr>
-              <!-- <tr>
-                <td class="botton-table"><b>DISCOUNT</b></td>
-                <td class="botton-table" style="text-align: right;"><?php// echo number_format($discount,2,'.',','); ?></td>
-              </tr> -->
-              <!-- <tr>
-                <td class="botton-table"><b>CASH PAY</b></td>
-                <td class="botton-table" style="text-align: right;"><?php //echo number_format($cash,2,'.',','); ?></td>
-              </tr>
-              <tr>
-                <td class="botton-table"><b>CREDIT</b></td>
-                <td class="botton-table" style="text-align: right;"><?php //echo number_format($credit,2,'.',','); ?></td>
-              </tr> -->
             </table>
        </div>
    </div>

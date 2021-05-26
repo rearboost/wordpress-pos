@@ -57,7 +57,8 @@ include('../include/config.php');
                     <table class="table">
                       <thead>
                         <tr>
-                          <th> # </th>
+                          <th style="display:none;"> # </th>
+                          <th> #</th>
                           <th> Customer </th>
                           <th> Order </th>
                           <th> Job </th>
@@ -67,7 +68,7 @@ include('../include/config.php');
                       </thead>
                       <tbody>
                       <?php
-                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE J.status='technician'");
+                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE J.status='technician' ORDER BY jobId DESC");
                           
                           $numRows = mysqli_num_rows($sql); 
                     
@@ -75,6 +76,7 @@ include('../include/config.php');
                             $i = 1;
                             while($row = mysqli_fetch_assoc($sql)) {
 
+                            $jobId    = $row['jobId'];  
                             $name    = $row['name'];   
                             $order    = $row['jobNo'];   
                             $accessory   = $row['accessory'];
@@ -83,7 +85,8 @@ include('../include/config.php');
                             //$day = $delivery_date->format('Y-m-d');
 
                               echo ' <tr>';
-                              echo ' <td>'.$i.' </td>';
+                              echo ' <td style="display:none;">'.$i.' </td>';
+                              echo ' <td>'.$jobId.' </td>';
                               echo ' <td>'.$name.' </td>';
                               echo ' <td>'.$order.' </td>';
                               echo ' <td>'.$accessory.' </td>';
@@ -153,7 +156,8 @@ include('../include/config.php');
                     <table id="myTable" class="table table-bordered">
                       <thead>
                         <tr>
-                          <th> # </th>
+                          <th style="display:none;"> # </th>
+                          <th> #</th>
                           <th>Customer</th>
                           <th>Order</th>
                           <th>Accessory </th>
@@ -174,6 +178,7 @@ include('../include/config.php');
                             $i = 1;
                             while($row = mysqli_fetch_assoc($sql)) {
 
+                            $jobId    = $row['jobId'];   
                             $name    = $row['name'];   
                             $order    = $row['jobNo'];   
                             $accessory   = $row['accessory'];
@@ -183,7 +188,8 @@ include('../include/config.php');
                             $status = $row['status'];
 
                               echo ' <tr>';
-                              echo ' <td>'.$i.' </td>';
+                              echo ' <td style="display:none;">'.$i.' </td>';
+                              echo ' <td>'.$jobId.' </td>';
                               echo ' <td>'.$name.' </td>';
                               echo ' <td>'.$order.' </td>';
                               echo ' <td>'.$accessory.' </td>';
@@ -191,17 +197,17 @@ include('../include/config.php');
                               echo ' <td>'.$request_date.' </td>';
                               echo ' <td>'.$delivery_date.' </td>';
                               if($status=="request"){
-                                echo ' <td><label class="badge badge-success">'."request".'</label> </td>';
+                                echo ' <td><label class="badge badge-success" style="font-size:14px;">'."request".'</label> </td>';
                               }else if($status=="technician"){
-                                echo ' <td><label class="badge badge-warning">'."in progress".'</label> </td>';
+                                echo ' <td><label class="badge badge-warning" style="font-size:14px;">'."in progress".'</label> </td>';
                               }else if($status=="complete"){
-                                echo ' <td><label class="badge badge-primary">'."complete".'</label> </td>';
+                                echo ' <td><label class="badge badge-primary" style="font-size:14px;">'."complete".'</label> </td>';
                               }else if($status=="dispatch"){
-                                echo ' <td><label class="badge badge-info">'."dispatch".'</label> </td>';
+                                echo ' <td><label class="badge badge-info" style="font-size:14px;">'."dispatch".'</label> </td>';
                               }else if($status=="reject"){
-                                echo ' <td><label class="badge badge-danger">'."reject".'</label> </td>';
+                                echo ' <td><label class="badge badge-danger" style="font-size:14px;">'."reject".'</label> </td>';
                               }else if($status=="finish"){
-                                echo ' <td><label class="badge badge-dark">'."finished".'</label> </td>';
+                                echo ' <td><label class="badge badge-dark" style="font-size:14px;">'."finished".'</label> </td>';
                               }
                               
                               // echo '<td class="td-center"><button type="button" onclick="SendMsg('.$row["jobId"].')" class="btn btn-primary btn-fw" name="send">Send SMS</button></td>';

@@ -206,15 +206,10 @@
        <!------------------- Item and warranty Conditions Area -->
        <div class="col-sm-9">
            <ul style="font-size: 13px;">
-              <li>Please submit the orginal invoice for warranty claims.</li>
-              <li>No warranty on key board , mouse cartridge and other no warranty items.</li>
-              <li>Warranty covers only manufcatures defects, damages or due to other <br><b> </b> casues as negkigence, misuse , improper opertion, power fluctuation , lightening or <br> natural disaster , sabotage or Accident etc. are NOT included under this warranty.</li>
-              <li>1 Year warranty less than 14 working day. ( -350 days/2 year-700/3 year- 1050 days ).</li>
-              <li>Goods sold once not returnable.</li><!-- 
               <li>Phones that do not arrive within 10 days of being handed over for repair are not responsible.</li>
               <li>Check the phone after the repair, the advance paid for the repair will not be refunded for any reason.</li> 
               <li>Submission of this bill is mandatory to obtain the phone provided for repairs.</li> 
-              <li>Please note that anyone who does not have this bill will not be given a warranty and the phone provided for repair under any circumstances.</li> --> 
+              <li>Please note that anyone who does not have this bill will not be given a warranty and the phone provided for repair under any circumstances.</li>
            
            </ul>
            <div class="col-sm-12 row">

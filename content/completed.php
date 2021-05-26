@@ -279,7 +279,8 @@
                     <table  id="myTable" class="table table-bordered">
                       <thead>
                         <tr>
-                          <th> # </th>
+                          <th style="display:none;"> # </th>
+                          <th> #</th>
                           <th>Customer</th>
                           <th>Order</th>
                           <th>Accessory </th>
@@ -292,7 +293,7 @@
                       </thead>
                       <tbody>
                         <?php
-                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE J.status='complete'");
+                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE J.status='complete' ORDER BY jobId DESC");
                           
                           $numRows = mysqli_num_rows($sql); 
                     
@@ -300,6 +301,7 @@
                             $i = 1;
                             while($row = mysqli_fetch_assoc($sql)) {
 
+                            $jobId    = $row['jobId'];
                             $name    = $row['name'];
                             $order    = $row['jobNo'];   
                             $accessory   = $row['accessory'];
@@ -315,7 +317,8 @@
                             $acessories_cost = $cost_data['acessories_cost'];
 
                               echo ' <tr>';
-                              echo ' <td>'.$i.' </td>';
+                              echo ' <td style="display:none;">'.$i.' </td>';
+                              echo ' <td>'.$jobId.' </td>';
                               echo ' <td>'.$name.' </td>';
                               echo ' <td>'.$order.' </td>';
                               echo ' <td>'.$accessory.' </td>';

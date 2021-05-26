@@ -235,11 +235,11 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
 
                        <?php if (isset($_GET['view_id'])): ?>
                           <input type="hidden" class="form-control" name="view_id" value="<?php if(isset($_GET['view_id'])){ echo $view_id;} ?>" />
-                          <input type="hidden" class="form-control" name="req_update" value="req_update" />
+                          <input type="hidden" class="form-control" name="req_update" id="req_update" value="req_update" />
                           <button type="submit" class="btn btn-info btn-fw">Update</button>
                           <button type="button" onclick="cancelForm()" class="btn btn-primary btn-fw">Cancel</button>
                       <?php else: ?>
-                          <input type="hidden" class="form-control" name="req_add" value="req_add" />
+                          <input type="hidden" class="form-control" name="req_add" id="req_add" value="req_add" />
                           <button type="submit" class="btn btn-success mr-2 fr">Request</button>
                       <?php endif ?>
                   
@@ -259,7 +259,8 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                     <table id="myTable" class="table table-bordered">
                       <thead>
                         <tr>
-                          <th> # </th>
+                          <th style="display:none;"> # </th>
+                          <th> #</th>
                           <th>Customer</th>
                           <th>Order</th>
                           <th>Accessory </th>
@@ -275,7 +276,7 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                       </thead>
                       <tbody>
                         <?php
-                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE J.status='request'");
+                          $sql=mysqli_query($conn,"SELECT * FROM customer C INNER JOIN jobs J ON C.id=J.customerId WHERE J.status='request' ORDER BY jobId DESC");
                           
                           $numRows = mysqli_num_rows($sql); 
                     
@@ -283,6 +284,7 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                             $i = 1;
                             while($row = mysqli_fetch_assoc($sql)) {
 
+                            $jobId    = $row['jobId'];
                             $order    = $row['jobNo'];   
                             $name    = $row['name'];   
                             $accessory   = $row['accessory'];
@@ -294,7 +296,8 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                             $advance = $row['advance'];
 
                               echo ' <tr>';
-                              echo ' <td>'.$i.' </td>';
+                              echo ' <td style="display:none;">'.$i.' </td>';
+                              echo ' <td>'.$jobId.' </td>';
                               echo ' <td>'.$name.' </td>';
                               echo ' <td>'.$order.' </td>';
                               echo ' <td>'.$accessory.' </td>';
@@ -363,7 +366,7 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
 
           var job_id= $('#job_id').val();
 
-          $.ajax({
+            $.ajax({
             type: 'post',
             url: '../controller/request_controller.php',
             data: $('#requestAdd').serialize(),
@@ -380,7 +383,7 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                       button: "Ok !",
                     });
 
-                }else{
+                }else if(data==1){
 
                     swal({
                       title: "Good job !",
@@ -389,7 +392,15 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                       button: "Ok !",
                       });
                       setTimeout(function(){ location.reload(); }, 2500);
-                          setTimeout(function(){window.open('job_receipt?id='+job_id, '_blank'); }, 100);
+                      setTimeout(function(){window.open('job_receipt?id='+job_id, '_blank'); }, 100);
+                }else{
+                    swal({
+                        title: "Good job !",
+                        text: "Successfully Submited",
+                        icon: "success",
+                        button: "Ok !",
+                        });
+                        setTimeout(function(){ location.reload(); }, 2500);
                 }
             }
           });

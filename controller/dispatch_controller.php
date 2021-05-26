@@ -124,6 +124,8 @@
               curl_close($ch); 
               echo $result; 
 
+              //SMS section end
+
         }
 
     ?>
