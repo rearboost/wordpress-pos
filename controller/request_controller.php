@@ -56,12 +56,18 @@
 
             if($customer=='1'){
                 $split_values = explode(',', $billing_address);
-                $customer_name = $split_values[0];
+                $customer_name1 = $split_values[0];
                 $to = $split_values[1];
 
+                $split_name = explode(' ', $customer_name1);
+                $customer_name = $split_name[0];
+
             }else{
-                $customer_name = $cus_data['name'];
+                $customer_name1 = $cus_data['name'];
                 $to = $cus_data['contact'];
+                
+                $split_name = explode(' ', $customer_name1);
+                $customer_name = $split_name[0];
             }
 
             $advanced = number_format($advance,2,'.',',');
@@ -74,7 +80,7 @@
             $Message_type = "2"; //1 for Short SMS, 2 for Long SMS 
             $Country_code = "94"; //Country Code 
             $Number = $to; //Mobile Number Without 0 
-            $message = "Hi ".$customer_name.",We are Received Your Repair[Job Note #-".$job_no."].Estimated Amount Rs.".$estimate_amt." Advance Rs.".$advanced." Your Status-request Job Will Be Completed ".$delivery_date.".Thank You,SHAD COMPUTERS"; //Your Message 
+            $message = "Hi ".$customer_name.",We are Received Your Repair[Job #-".$job_no."].Estimated Amount Rs.".$estimate_amt." Advance Rs.".$advanced." Will Be Completed ".$delivery_date.".Thank You,SHAD COMPUTERS"; //Your Message
 
             $data = array( "user_name" => $User_name, "api_key" => $Api_key, "gateway_type" => $Gateway_type, "sender_id" => $Sender_id , "message_type" => $Message_type , "country_code" => $Country_code, "number" => $Number, "message" => $message ); 
 

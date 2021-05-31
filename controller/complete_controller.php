@@ -85,11 +85,17 @@
               if($customerId=='1'){
                 $billing_address = $data['billing_address'];
                 $split_values = explode(',', $billing_address);
-                $customer_name = $split_values[0];
+                $customer_name1 = $split_values[0];
                 $to = $split_values[1];
+
+                $split_name = explode(' ', $customer_name1);
+                $customer_name = $split_name[0];
               }else{
-                $customer_name = $data['name'];
+                $customer_name1 = $data['name'];
                 $to = $data['contact'];
+                
+                $split_name = explode(' ', $customer_name1);
+                $customer_name = $split_name[0];
               }
 
               $User_name ="Shadcomputers"; //Your Username 
