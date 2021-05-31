@@ -91,7 +91,7 @@
             $result = curl_exec($ch); 
             //Close Connection 
             curl_close($ch); 
-            echo $result; 
+            //echo $result; 
             
             ///SMS section end
         }
@@ -114,7 +114,7 @@
             $service        = $_POST['service'];
             $status         = $_POST['status'];
 
-            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE jobNo='$job_no' AND billing_address='$billing_address' AND accessory='$accessory' AND brand='$brand' AND model='$model' AND serial_no='$serial_no' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND advance='$advance' AND service_cost='$service' AND customerId='$customer'");
+            $check= mysqli_query($conn, "SELECT * FROM jobs WHERE jobId='$id' AND billing_address='$billing_address' AND accessory='$accessory' AND brand='$brand' AND model='$model' AND serial_no='$serial_no' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND advance='$advance' AND service_cost='$service' AND customerId='$customer'");
 		    $count = mysqli_num_rows($check);
 
             if($count==0){

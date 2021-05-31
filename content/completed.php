@@ -302,7 +302,6 @@
                             while($row = mysqli_fetch_assoc($sql)) {
 
                             $jobId    = $row['jobId'];
-                            $name    = $row['name'];
                             $order    = $row['jobNo'];   
                             $accessory   = $row['accessory'];
                             $request_date = $row['request_date'];
@@ -311,6 +310,16 @@
                             $user_desc = $row['user_desc'];
                             $service_cost = $row['service_cost'];
                             $jobId = $row['jobId'];
+                            $billing_address  = $row['billing_address'];   
+                            $customer    = $row['id']; 
+
+                            if($customer=='1'){
+                                $split_values = explode(',', $billing_address);
+                                $name = $split_values[0];
+
+                            }else{
+                                $name = $row['name'];
+                            }
 
                             $cost =mysqli_query($conn, "SELECT SUM(qty*price) as acessories_cost FROM parts WHERE jobID='$jobId'");
                             $cost_data = mysqli_fetch_assoc($cost);

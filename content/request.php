@@ -285,15 +285,24 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                             while($row = mysqli_fetch_assoc($sql)) {
 
                             $jobId    = $row['jobId'];
-                            $order    = $row['jobNo'];   
-                            $name    = $row['name'];   
+                            $order    = $row['jobNo'];  
                             $accessory   = $row['accessory'];
                             $brand   = $row['brand'];
                             $model   = $row['model'];
                             $request_date = $row['request_date'];
                             $delivery_date  = $row['delivery_date'];
                             $job_desc   = $row['job_desc'];
-                            $advance = $row['advance'];
+                            $advance = $row['advance'];   
+                            $billing_address  = $row['billing_address'];   
+                            $customer    = $row['id']; 
+
+                            if($customer=='1'){
+                                $split_values = explode(',', $billing_address);
+                                $name = $split_values[0];
+
+                            }else{
+                                $name = $row['name'];
+                            }
 
                               echo ' <tr>';
                               echo ' <td style="display:none;">'.$i.' </td>';
@@ -308,7 +317,8 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                               echo ' <td>'.$job_desc.' </td>';
                               echo ' <td>'.$advance.' </td>';
                               echo '<td class="td-center"><button type="button" onclick="editForm('.$row["jobId"].')" class="btn btn-info btn-fw">Edit</button></td>';
-                              echo '<td class="td-center"><button type="button" onclick="confirmation(event,'.$row["jobId"].')" class="btn btn-secondary btn-fw">Delete</button></td>';
+                              echo '<td class="td-center"><button type="button" onclick="printForm('.$row["jobId"].')" class="btn btn-secondary btn-fw">PRINT</button></td>';
+                              // echo '<td class="td-center"><button type="button" onclick="confirmation(event,'.$row["jobId"].')" class="btn btn-secondary btn-fw">Delete</button></td>';
                               echo ' </tr>';
                               $i++;
                             }
@@ -461,6 +471,12 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
           });
         });
       });
+
+      function printForm(id){
+        setTimeout(function(){window.open('job_receipt?id='+id, '_blank'); }, 100);
+
+        setTimeout(function(){ location.reload(); }, 2500);
+      }
 
 
     ///////////// delete jobs ///////////////////////////

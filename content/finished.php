@@ -320,7 +320,6 @@
                             while($row = mysqli_fetch_assoc($sql)) {
 
                             $jobId    = $row['jobId'];
-                            $name    = $row['name'];
                             $order    = $row['jobNo'];   
                             $accessory   = $row['accessory'];
                             $request_date = $row['request_date'];
@@ -328,6 +327,16 @@
                             $job_desc   = $row['job_desc'];
                             $user_desc = $row['user_desc'];
                             $service_cost = $row['service_cost'];
+                            $billing_address  = $row['billing_address'];   
+                            $customer    = $row['id']; 
+
+                            if($customer=='1'){
+                                $split_values = explode(',', $billing_address);
+                                $name = $split_values[0];
+
+                            }else{
+                                $name = $row['name'];
+                            }
 
                               echo ' <tr>';
                               echo ' <td style="display:none;">'.$i.' </td>';

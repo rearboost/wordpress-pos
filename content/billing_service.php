@@ -394,7 +394,6 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                             while($row = mysqli_fetch_assoc($sql)) {
 
                             $jobId    = $row['jobId'];
-                            $name    = $row['name'];
                             $order    = $row['jobNo'];   
                             $accessory   = $row['accessory'];
                             $request_date = $row['request_date'];
@@ -403,6 +402,16 @@ N0:01,Galle rd,Panadura"><?php if(isset($_GET['view_id'])){ echo $billing_addres
                             $user_desc = $row['user_desc'];
                             $service_cost = $row['service_cost'];
                             $payable_amt = $row['payable_amt'];
+                            $billing_address  = $row['billing_address'];   
+                            $customer    = $row['id']; 
+
+                            if($customer=='1'){
+                                $split_values = explode(',', $billing_address);
+                                $name = $split_values[0];
+
+                            }else{
+                                $name = $row['name'];
+                            }
 
                               echo ' <tr>';
                               echo ' <td style="display:none;">'.$i.' </td>';

@@ -71,8 +71,8 @@
             else
             {
                 mysqli_stmt_bind_param($stmt,"ss",$newstatus,$addF_id);
-                $result =  mysqli_stmt_execute($stmt);
-                if($result){
+                $output =  mysqli_stmt_execute($stmt);
+                if($output){
                   echo 1;
                 }else{
                   echo 0;
@@ -106,6 +106,7 @@
               $Country_code = "94"; //Country Code 
               $Number = $to; //Mobile Number Without 0 
               $message = "Hi ".$customer_name.", Thank You For Your Purchase, We Received Your Payment Rs.".$amount." For Invoice-".$jobNo." .Thank You, SHAD COMPUTERS"; //Your Message 
+              
 
               $data = array( "user_name" => $User_name, "api_key" => $Api_key, "gateway_type" => $Gateway_type, "sender_id" => $Sender_id , "message_type" => $Message_type , "country_code" => $Country_code, "number" => $Number, "message" => $message ); 
 
@@ -122,7 +123,7 @@
               $result = curl_exec($ch); 
               //Close Connection 
               curl_close($ch); 
-              echo $result; 
+              //echo $result; 
 
               //SMS section end
 
