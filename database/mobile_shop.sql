@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: May 24, 2021 at 01:56 PM
+-- Generation Time: Jun 05, 2021 at 02:34 PM
 -- Server version: 5.6.38
 -- PHP Version: 7.2.1
 
@@ -132,34 +132,35 @@ CREATE TABLE `invoice_items` (
   `qty` varchar(300) NOT NULL,
   `price` decimal(10,2) NOT NULL,
   `discount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `amount` decimal(10,2) NOT NULL
+  `amount` decimal(10,2) NOT NULL,
+  `warranty_claim_time` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `invoice_items`
 --
 
-INSERT INTO `invoice_items` (`id`, `invoice_id`, `product`, `warranty`, `serial_no`, `qty`, `price`, `discount`, `amount`) VALUES
-(1, 1, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00'),
-(2, 2, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00'),
-(3, 3, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00'),
-(4, 4, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00'),
-(5, 5, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00'),
-(6, 6, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00'),
-(7, 7, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00'),
-(8, 8, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00'),
-(9, 9, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00'),
-(10, 10, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00'),
-(11, 11, 'Dell WM126 Wireless Optical Mouse', '0', '0', '3', '1750.00', '0.00', '5250.00'),
-(12, 12, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00'),
-(13, 13, 'Dell WM126 Wireless Optical Mouse', '360', '342RR', '2', '1750.00', '0.00', '3500.00'),
-(14, 14, 'AAA', '2 yrs', '1234', '1', '1300.00', '0.00', '1300.00'),
-(15, 15, 'Dell WM126 Wireless Optical Mouse', '45', 'EEE34343', '2', '1750.00', '0.00', '3500.00'),
-(16, 16, 'Dell WM126 Wireless Optical Mouse', '6 months', 'Wm1234', '1', '1750.00', '0.00', '1750.00'),
-(17, 17, 'Dell WM126 Wireless Optical Mouse', '1 yr', 'Wm123', '1', '1750.00', '0.00', '1750.00'),
-(18, 18, 'AAA', '6months', 'WM45789', '2', '1300.00', '0.00', '2600.00'),
-(19, 19, 'AAA', '6 month', 'AA09890', '1', '1300.00', '0.00', '1300.00'),
-(20, 20, 'BBBB', '360 ', '465EEE', '5', '15.00', '25.00', '75.00');
+INSERT INTO `invoice_items` (`id`, `invoice_id`, `product`, `warranty`, `serial_no`, `qty`, `price`, `discount`, `amount`, `warranty_claim_time`) VALUES
+(1, 1, 'Dell WM126 Wireless Optical Mouse', '30', '0', '1', '1750.00', '0.00', '1750.00', 2),
+(2, 2, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00', 0),
+(3, 3, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00', 0),
+(4, 4, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00', 0),
+(5, 5, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00', 0),
+(6, 6, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00', 0),
+(7, 7, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00', 0),
+(8, 8, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00', 0),
+(9, 9, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00', 0),
+(10, 10, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00', 0),
+(11, 11, 'Dell WM126 Wireless Optical Mouse', '0', '0', '3', '1750.00', '0.00', '5250.00', 0),
+(12, 12, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00', 0),
+(13, 13, 'Dell WM126 Wireless Optical Mouse', '360', '342RR', '2', '1750.00', '0.00', '3500.00', 0),
+(14, 14, 'AAA', '2 yrs', '1234', '1', '1300.00', '0.00', '1300.00', 0),
+(15, 15, 'Dell WM126 Wireless Optical Mouse', '45', 'EEE34343', '2', '1750.00', '0.00', '3500.00', 0),
+(16, 16, 'Dell WM126 Wireless Optical Mouse', '6 months', 'Wm1234', '1', '1750.00', '0.00', '1750.00', 0),
+(17, 17, 'Dell WM126 Wireless Optical Mouse', '1 yr', 'Wm123', '1', '1750.00', '0.00', '1750.00', 0),
+(18, 18, 'AAA', '6months', 'WM45789', '2', '1300.00', '0.00', '2600.00', 0),
+(19, 19, 'AAA', '6 month', 'AA09890', '1', '1300.00', '0.00', '1300.00', 0),
+(20, 20, 'BBBB', '360 ', '465EEE', '5', '15.00', '25.00', '75.00', 0);
 
 -- --------------------------------------------------------
 
@@ -313,6 +314,29 @@ INSERT INTO `user_role` (`id`, `role`) VALUES
 (1, 'Admin'),
 (2, 'Technician'),
 (3, 'Cashier');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `warranty`
+--
+
+CREATE TABLE `warranty` (
+  `id` int(11) NOT NULL,
+  `invoice_id` int(11) NOT NULL,
+  `invoice_items_id` int(11) NOT NULL,
+  `action` varchar(100) NOT NULL,
+  `warranty_note` varchar(1000) NOT NULL,
+  `date` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `warranty`
+--
+
+INSERT INTO `warranty` (`id`, `invoice_id`, `invoice_items_id`, `action`, `warranty_note`, `date`) VALUES
+(1, 1, 1, 'Fixed and Return', 'Check Th Not ', '2021-06-05'),
+(2, 1, 1, 'Return Money', 'THis Check ', '2021-06-05');
 
 -- --------------------------------------------------------
 
@@ -7123,6 +7147,12 @@ ALTER TABLE `user_role`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `warranty`
+--
+ALTER TABLE `warranty`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `wpss_postmeta`
 --
 ALTER TABLE `wpss_postmeta`
@@ -7231,7 +7261,7 @@ ALTER TABLE `temp`
 -- AUTO_INCREMENT for table `temp_pos`
 --
 ALTER TABLE `temp_pos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -7244,6 +7274,12 @@ ALTER TABLE `user`
 --
 ALTER TABLE `user_role`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `warranty`
+--
+ALTER TABLE `warranty`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `wpss_postmeta`

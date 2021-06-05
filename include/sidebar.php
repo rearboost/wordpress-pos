@@ -147,6 +147,27 @@
             <?php else: ?>
             <?php endif ?>
 
+            <?php if ($_SESSION['user_role']==1): ?>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#ui-claim" aria-expanded="false" aria-controls="ui-style">
+                <i class="menu-icon typcn typcn-coffee"></i>
+                <span class="menu-title">Warranty Claim</span>
+                <i class="menu-arrow"></i>
+              </a>
+              <div class="collapse" id="ui-claim">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item">
+                    <a class="nav-link" href="claim.php">Claim</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="warranty.php">Warranty Claim List</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <?php else: ?>
+            <?php endif ?>
 
             <?php if ($_SESSION['user_role']==1): ?>
 
