@@ -45,6 +45,7 @@
                     <table class="table table-bordered" id="myTable">
                       <thead>
                         <tr>
+                          <th style="display:none;"> # </th>
                           <th> # </th>
                           <th>Invoice No </th>
                           <th>Bill Total</th>
@@ -68,8 +69,10 @@
                               $total = number_format($row['total'],2,'.',',');
                               $date = $row['date'];  
                               $payment   =  number_format($row['payment'],2,'.',',');
+
                               echo ' <tr>';
-                              echo ' <td>'.$i.' </td>';
+                              echo ' <td style="display:none;">'.$i.' </td>';
+                              echo ' <td>'.$id.' </td>';
                               echo ' <td>'.$showid.' </td>';
                               echo ' <td>'.$total.' </td>';
                               echo ' <td>'.$payment.' </td>';

@@ -58,6 +58,7 @@
 
             $amount = $quantity * $price;
             $discount = $discount * $quantity;
+            $amount = $amount-$discount;
 
             if($stock>0){
 

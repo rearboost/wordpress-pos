@@ -16,8 +16,10 @@
 
             $invoice_id  = $row['id'];
             $total  = $row['total'];
-            $discount   = $row['discount'];
+            $totdiscount   = $row['discount'];
             $payment   = $row['payment'];
+            
+            $totamount = $total+$totdiscount;
 
             $credit_period   = $row['credit_period'];
 
@@ -162,9 +164,9 @@
                   echo '
                       <td>'.$warranty.' days</td>
                       <td>'.$qty.'</td>
-                      <td>'.$price.'</td>
-                      <td>'.$discount.'</td>
-                      <td>'.$amount.'</td>
+                      <td style="text-align: right;">'.$price.'</td>
+                      <td style="text-align: right;">'.$discount.'</td>
+                      <td style="text-align: right;">'.$amount.'</td>
                   </tr>
                   ';
 
@@ -182,7 +184,7 @@
       <p style="float: right;padding-right: 13px;padding-top: 7px;text-transform: capitalize;">
         <?php
             $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-            echo $f->format($totalAMT)." Rupees";
+            echo $f->format($totamount)." Rupees";
         ?>
     </p>
    </b>
@@ -218,7 +220,7 @@
             <table class="table table-bordered">
              <tr>
                 <td  class="botton-table"><b>AMOUNT</b></td>
-                <td  class="botton-table" style="text-align: right;"><?php echo number_format($totalAMT,2,'.',','); ?></td>
+                <td  class="botton-table" style="text-align: right;"><?php echo number_format($totamount,2,'.',','); ?></td>
               </tr>
               <tr>
                 <td class="botton-table"><b>ADVANCED</b></td>
@@ -226,7 +228,7 @@
               </tr>
               <tr>
                 <td class="botton-table"><b>DISCOUNT</b></td>
-                <td class="botton-table" style="text-align: right;"><?php echo number_format($discount,2,'.',','); ?></td>
+                <td class="botton-table" style="text-align: right;"><?php echo number_format($totdiscount,2,'.',','); ?></td>
               </tr>
               <tr>
                 <td class="botton-table"><b>CASH PAY</b></td>
