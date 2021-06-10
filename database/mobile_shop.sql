@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 08, 2021 at 06:21 PM
+-- Generation Time: Jun 10, 2021 at 05:42 PM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 5.5.30
 
@@ -6762,10 +6762,10 @@ INSERT INTO `wpss_postmeta` (`meta_id`, `post_id`, `meta_key`, `meta_value`) VAL
 -- --------------------------------------------------------
 
 --
--- Table structure for table `wp_posts`
+-- Table structure for table `wpss_posts`
 --
 
-CREATE TABLE `wp_posts` (
+CREATE TABLE `wpss_posts` (
   `ID` bigint(20) UNSIGNED NOT NULL,
   `post_author` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
   `post_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -6792,10 +6792,10 @@ CREATE TABLE `wp_posts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 --
--- Dumping data for table `wp_posts`
+-- Dumping data for table `wpss_posts`
 --
 
-INSERT INTO `wp_posts` (`ID`, `post_author`, `post_date`, `post_date_gmt`, `post_content`, `post_title`, `post_excerpt`, `post_status`, `comment_status`, `ping_status`, `post_password`, `post_name`, `to_ping`, `pinged`, `post_modified`, `post_modified_gmt`, `post_content_filtered`, `post_parent`, `guid`, `menu_order`, `post_type`, `post_mime_type`, `comment_count`) VALUES
+INSERT INTO `wpss_posts` (`ID`, `post_author`, `post_date`, `post_date_gmt`, `post_content`, `post_title`, `post_excerpt`, `post_status`, `comment_status`, `ping_status`, `post_password`, `post_name`, `to_ping`, `pinged`, `post_modified`, `post_modified_gmt`, `post_content_filtered`, `post_parent`, `guid`, `menu_order`, `post_type`, `post_mime_type`, `comment_count`) VALUES
 (1, 1, '2019-07-29 03:42:45', '2019-07-29 03:42:45', '<!-- wp:paragraph -->\n<p>Aliquam ut tortor sed erat tempor egestas eget non augue. Suspendisse ultrices lacus ac risus molestie, vel tincidunt sapien scelerisque. Fusce id ipsum odio. Aliquam maximus purus ipsum, ac cursus velit ultricies a. Etiam posuere scelerisque tortor, et luctus libero laoreet a. Donec porttitor ex id augue facilisis, non tincidunt diam commodo. Suspendisse malesuada felis quis ante hendrerit, sed vehicula dui molestie. Sed in lacus eros. Ut et purus viverra, pretium nisl ultricies, bibendum metus. Nullam nec sagittis dui. Maecenas cursus efficitur est, eu consectetur sem bibendum in. Proin sit amet dui eu nisl molestie sollicitudin. Duis ullamcorper fringilla fringilla. Nunc augue ex, mollis nec nibh ac, accumsan consectetur dui. Maecenas ut justo lacus.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Nunc ullamcorper sapien vel nibh aliquam auctor. Mauris vitae sapien mauris. Etiam non mauris justo. Donec quis viverra velit. Vestibulum efficitur, neque pretium semper vestibulum, ipsum dolor lobortis purus, nec dapibus sem augue et ex. Praesent malesuada nulla ligula, at molestie est mollis vitae. Nulla rutrum quam ut sollicitudin semper. Vestibulum feugiat condimentum ligula.</p>\n<!-- /wp:paragraph -->', 'Aliquam ut tortor sed erat tempor egestas eget non augue.', '', 'publish', 'open', 'open', '', 'hello-world', '', '', '2019-07-29 03:42:45', '2019-07-29 03:42:45', '', 0, 'https://demo.themefarmer.com/newstore/?p=1', 0, 'post', '', 1),
 (2, 1, '2020-12-12 09:51:33', '2020-12-12 09:51:33', '<!-- wp:paragraph -->\n<p>This is an example page. It''s different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:quote -->\n<blockquote class="wp-block-quote"><p>Hi there! I''m a bike messenger by day, aspiring actor by night, and this is my website. I live in Los Angeles, have a great dog named Jack, and I like pi&#241;a coladas. (And gettin'' caught in the rain.)</p></blockquote>\n<!-- /wp:quote -->\n\n<!-- wp:paragraph -->\n<p>...or something like this:</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:quote -->\n<blockquote class="wp-block-quote"><p>The XYZ Doohickey Company was founded in 1971, and has been providing quality doohickeys to the public ever since. Located in Gotham City, XYZ employs over 2,000 people and does all kinds of awesome things for the Gotham community.</p></blockquote>\n<!-- /wp:quote -->\n\n<!-- wp:paragraph -->\n<p>As a new WordPress user, you should go to <a href="https://shadcomputers.lk/wp-admin/">your dashboard</a> to delete this page and create new pages for your content. Have fun!</p>\n<!-- /wp:paragraph -->', 'Sample Page', '', 'publish', 'closed', 'open', '', 'sample-page', '', '', '2020-12-12 09:51:33', '2020-12-12 09:51:33', '', 0, 'https://shadcomputers.lk/?page_id=2', 0, 'page', '', 0),
 (7, 1, '2019-07-30 05:34:47', '2019-07-30 05:34:47', '[tfwc_tool_wishilst]', 'Wishlist', '', 'publish', 'closed', 'closed', '', 'wishlist-2', '', '', '2019-07-30 05:34:47', '2019-07-30 05:34:47', '', 0, 'https://demo.themefarmer.com/newstore/wishlist/', 0, 'page', '', 0),
@@ -6825,10 +6825,10 @@ INSERT INTO `wp_posts` (`ID`, `post_author`, `post_date`, `post_date_gmt`, `post
 -- --------------------------------------------------------
 
 --
--- Table structure for table `wp_termmeta`
+-- Table structure for table `wpss_termmeta`
 --
 
-CREATE TABLE `wp_termmeta` (
+CREATE TABLE `wpss_termmeta` (
   `meta_id` bigint(20) UNSIGNED NOT NULL,
   `term_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
@@ -6836,10 +6836,10 @@ CREATE TABLE `wp_termmeta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 --
--- Dumping data for table `wp_termmeta`
+-- Dumping data for table `wpss_termmeta`
 --
 
-INSERT INTO `wp_termmeta` (`meta_id`, `term_id`, `meta_key`, `meta_value`) VALUES
+INSERT INTO `wpss_termmeta` (`meta_id`, `term_id`, `meta_key`, `meta_value`) VALUES
 (1, 15, 'product_count_product_cat', '54'),
 (2, 16, 'order', '0'),
 (3, 16, 'display_type', ''),
@@ -6869,10 +6869,10 @@ INSERT INTO `wp_termmeta` (`meta_id`, `term_id`, `meta_key`, `meta_value`) VALUE
 -- --------------------------------------------------------
 
 --
--- Table structure for table `wp_terms`
+-- Table structure for table `wpss_terms`
 --
 
-CREATE TABLE `wp_terms` (
+CREATE TABLE `wpss_terms` (
   `term_id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(200) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
   `slug` varchar(200) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
@@ -6880,10 +6880,10 @@ CREATE TABLE `wp_terms` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 --
--- Dumping data for table `wp_terms`
+-- Dumping data for table `wpss_terms`
 --
 
-INSERT INTO `wp_terms` (`term_id`, `name`, `slug`, `term_group`) VALUES
+INSERT INTO `wpss_terms` (`term_id`, `name`, `slug`, `term_group`) VALUES
 (1, 'Uncategorized', 'uncategorized', 0),
 (2, 'simple', 'simple', 0),
 (3, 'grouped', 'grouped', 0),
@@ -6913,20 +6913,20 @@ INSERT INTO `wp_terms` (`term_id`, `name`, `slug`, `term_group`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `wp_term_relationships`
+-- Table structure for table `wpss_term_relationships`
 --
 
-CREATE TABLE `wp_term_relationships` (
+CREATE TABLE `wpss_term_relationships` (
   `object_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
   `term_taxonomy_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
   `term_order` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 --
--- Dumping data for table `wp_term_relationships`
+-- Dumping data for table `wpss_term_relationships`
 --
 
-INSERT INTO `wp_term_relationships` (`object_id`, `term_taxonomy_id`, `term_order`) VALUES
+INSERT INTO `wpss_term_relationships` (`object_id`, `term_taxonomy_id`, `term_order`) VALUES
 (1, 1, 0),
 (21, 2, 0),
 (21, 15, 0),
@@ -6956,19 +6956,19 @@ INSERT INTO `wp_term_relationships` (`object_id`, `term_taxonomy_id`, `term_orde
 -- --------------------------------------------------------
 
 --
--- Table structure for table `wp_wc_category_lookup`
+-- Table structure for table `wpss_wc_category_lookup`
 --
 
-CREATE TABLE `wp_wc_category_lookup` (
+CREATE TABLE `wpss_wc_category_lookup` (
   `category_tree_id` bigint(20) UNSIGNED NOT NULL,
   `category_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 --
--- Dumping data for table `wp_wc_category_lookup`
+-- Dumping data for table `wpss_wc_category_lookup`
 --
 
-INSERT INTO `wp_wc_category_lookup` (`category_tree_id`, `category_id`) VALUES
+INSERT INTO `wpss_wc_category_lookup` (`category_tree_id`, `category_id`) VALUES
 (15, 15),
 (16, 16),
 (16, 21),
@@ -6998,10 +6998,10 @@ INSERT INTO `wp_wc_category_lookup` (`category_tree_id`, `category_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `wp_wc_product_meta_lookup`
+-- Table structure for table `wpss_wc_product_meta_lookup`
 --
 
-CREATE TABLE `wp_wc_product_meta_lookup` (
+CREATE TABLE `wpss_wc_product_meta_lookup` (
   `product_id` bigint(20) NOT NULL,
   `sku` varchar(100) COLLATE utf8mb4_unicode_520_ci DEFAULT '',
   `virtual` tinyint(1) DEFAULT '0',
@@ -7019,10 +7019,10 @@ CREATE TABLE `wp_wc_product_meta_lookup` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 --
--- Dumping data for table `wp_wc_product_meta_lookup`
+-- Dumping data for table `wpss_wc_product_meta_lookup`
 --
 
-INSERT INTO `wp_wc_product_meta_lookup` (`product_id`, `sku`, `virtual`, `downloadable`, `min_price`, `max_price`, `onsale`, `stock_quantity`, `stock_status`, `rating_count`, `average_rating`, `total_sales`, `tax_status`, `tax_class`) VALUES
+INSERT INTO `wpss_wc_product_meta_lookup` (`product_id`, `sku`, `virtual`, `downloadable`, `min_price`, `max_price`, `onsale`, `stock_quantity`, `stock_status`, `rating_count`, `average_rating`, `total_sales`, `tax_status`, `tax_class`) VALUES
 (21, '', 0, 0, '1750.0000', '1750.0000', 1, 5, 'instock', 0, '0.00', 1, 'taxable', ''),
 (34, '', 0, 0, '1990.0000', '1990.0000', 1, NULL, 'instock', 0, '0.00', 0, 'taxable', ''),
 (104, '5', 0, 0, '2400.0000', '2400.0000', 1, 0, 'onbackorder', 0, '0.00', 0, 'taxable', ''),
@@ -7171,9 +7171,9 @@ ALTER TABLE `wpss_postmeta`
   ADD KEY `meta_key` (`meta_key`(191));
 
 --
--- Indexes for table `wp_posts`
+-- Indexes for table `wpss_posts`
 --
-ALTER TABLE `wp_posts`
+ALTER TABLE `wpss_posts`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `post_name` (`post_name`(191)),
   ADD KEY `type_status_date` (`post_type`,`post_status`,`post_date`,`ID`),
@@ -7181,38 +7181,38 @@ ALTER TABLE `wp_posts`
   ADD KEY `post_author` (`post_author`);
 
 --
--- Indexes for table `wp_termmeta`
+-- Indexes for table `wpss_termmeta`
 --
-ALTER TABLE `wp_termmeta`
+ALTER TABLE `wpss_termmeta`
   ADD PRIMARY KEY (`meta_id`),
   ADD KEY `term_id` (`term_id`),
   ADD KEY `meta_key` (`meta_key`(191));
 
 --
--- Indexes for table `wp_terms`
+-- Indexes for table `wpss_terms`
 --
-ALTER TABLE `wp_terms`
+ALTER TABLE `wpss_terms`
   ADD PRIMARY KEY (`term_id`),
   ADD KEY `slug` (`slug`(191)),
   ADD KEY `name` (`name`(191));
 
 --
--- Indexes for table `wp_term_relationships`
+-- Indexes for table `wpss_term_relationships`
 --
-ALTER TABLE `wp_term_relationships`
+ALTER TABLE `wpss_term_relationships`
   ADD PRIMARY KEY (`object_id`,`term_taxonomy_id`),
   ADD KEY `term_taxonomy_id` (`term_taxonomy_id`);
 
 --
--- Indexes for table `wp_wc_category_lookup`
+-- Indexes for table `wpss_wc_category_lookup`
 --
-ALTER TABLE `wp_wc_category_lookup`
+ALTER TABLE `wpss_wc_category_lookup`
   ADD PRIMARY KEY (`category_tree_id`,`category_id`);
 
 --
--- Indexes for table `wp_wc_product_meta_lookup`
+-- Indexes for table `wpss_wc_product_meta_lookup`
 --
-ALTER TABLE `wp_wc_product_meta_lookup`
+ALTER TABLE `wpss_wc_product_meta_lookup`
   ADD PRIMARY KEY (`product_id`),
   ADD KEY `virtual` (`virtual`),
   ADD KEY `downloadable` (`downloadable`),
@@ -7286,19 +7286,19 @@ ALTER TABLE `warranty`
 ALTER TABLE `wpss_postmeta`
   MODIFY `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6807;
 --
--- AUTO_INCREMENT for table `wp_posts`
+-- AUTO_INCREMENT for table `wpss_posts`
 --
-ALTER TABLE `wp_posts`
+ALTER TABLE `wpss_posts`
   MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 --
--- AUTO_INCREMENT for table `wp_termmeta`
+-- AUTO_INCREMENT for table `wpss_termmeta`
 --
-ALTER TABLE `wp_termmeta`
+ALTER TABLE `wpss_termmeta`
   MODIFY `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
--- AUTO_INCREMENT for table `wp_terms`
+-- AUTO_INCREMENT for table `wpss_terms`
 --
-ALTER TABLE `wp_terms`
+ALTER TABLE `wpss_terms`
   MODIFY `term_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

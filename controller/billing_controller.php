@@ -11,8 +11,8 @@
             $serial_no = $_POST['serial_no'];
 
             $get_price = "SELECT B.max_price AS price , B.stock_quantity AS stock , A.ID AS post_id 
-                            FROM wp_posts A 
-                            INNER JOIN wp_wc_product_meta_lookup B
+                            FROM wpss_posts A 
+                            INNER JOIN wpss_wc_product_meta_lookup B
                             ON A.ID = B.product_id WHERE A.post_title = '$product_name'";
 
             $result_price = mysqli_query($conn,$get_price);

@@ -53,7 +53,7 @@ include('../include/config.php');
                       </thead>
                       <tbody>
                         <?php
-                          $sql=mysqli_query($conn,"SELECT * FROM wp_posts A INNER JOIN wp_wc_product_meta_lookup B ON A.ID=B.product_id");
+                          $sql=mysqli_query($conn,"SELECT * FROM wpss_posts A INNER JOIN wpss_wc_product_meta_lookup B ON A.ID=B.product_id");
                           
                           $numRows = mysqli_num_rows($sql); 
                     

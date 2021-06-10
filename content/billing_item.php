@@ -51,7 +51,7 @@ include('../include/config.php');
                                       <input list="brow" class="form-control" id="product_name" required>
                                       <datalist id="brow">
                                         <?php
-                                            $product = "SELECT A.ID as id, A.post_title as post_title FROM wp_posts A INNER JOIN wp_wc_product_meta_lookup B ON A.ID=B.product_id";
+                                            $product = "SELECT A.ID as id, A.post_title as post_title FROM wpss_posts A INNER JOIN wpss_wc_product_meta_lookup B ON A.ID=B.product_id";
                                             $result = mysqli_query($conn,$product);
                                             $numRows = mysqli_num_rows($result); 
                             
@@ -381,7 +381,7 @@ N0:01,Galle rd,Panadura"></textarea>
                       <input type="text" id="myInput" placeholder="Search by names.." title="Type in a name" style="width: 100%; font-size: 14px; border:1px solid #ddd; border-radius:5px; padding: 10px; margin-bottom: 12px;">
                     	<div class="card-scroll" style="">
                     		<?php
-                    		$items= mysqli_query($conn,"SELECT * FROM wp_posts A INNER JOIN wp_wc_product_meta_lookup B ON A.ID=B.product_id");
+                    		$items= mysqli_query($conn,"SELECT * FROM wpss_posts A INNER JOIN wpss_wc_product_meta_lookup B ON A.ID=B.product_id");
                     		$numRows = mysqli_num_rows($items); 
                     
                           	if($numRows > 0) {

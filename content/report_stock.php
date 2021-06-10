@@ -47,7 +47,7 @@
                                         <select class="form-control" name="status" id="status" required>
                                             <option value="" Selected>--Select Status--</option>
                                             <?php
-                                                $status = "SELECT DISTINCT(stock_status) FROM wp_wc_product_meta_lookup";
+                                                $status = "SELECT DISTINCT(stock_status) FROM wpss_wc_product_meta_lookup";
                                                 $result = mysqli_query($conn,$status);
                                                 $numRows = mysqli_num_rows($result); 
                                 
@@ -88,7 +88,7 @@
 
                           $status = $_GET['view_id'];
 
-                          $sql=mysqli_query($conn,"SELECT * FROM wp_posts A RIGHT JOIN wp_wc_product_meta_lookup B ON A.ID=B.product_id WHERE B.stock_status='$status'"); 
+                          $sql=mysqli_query($conn,"SELECT * FROM wpss_posts A RIGHT JOIN wpss_wc_product_meta_lookup B ON A.ID=B.product_id WHERE B.stock_status='$status'"); 
                     
                         ?>
 
