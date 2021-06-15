@@ -46,8 +46,8 @@ include('../include/config.php');
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group row">
-                                   <label class="col-sm-1 col-form-label">Product</label>
-                                    <div class="col-sm-3">
+                                   <label class="col-sm-2 col-form-label">Product</label>
+                                    <div class="col-sm-4">
                                       <input list="brow" class="form-control" id="product_name" required>
                                       <datalist id="brow">
                                         <?php
@@ -73,16 +73,22 @@ include('../include/config.php');
                                         ?>
                                       </datalist>  
                                     </div>
-                                    <label class="col-sm-0.5 col-form-label">QTY</label>
-                                    <div class="col-sm-1">
+                                    <label class="col-sm-1 col-form-label">QTY</label>
+                                    <div class="col-sm-2">
                                         <input type="text" class="form-control" id="quantity" name="quantity" required>
                                     </div>
                                     <label class="col-sm-0.5 col-form-label">Warranty</label>
                                     <div class="col-sm-2">
                                         <input type="text" class="form-control" id="warranty" name="warranty" placeholder="Warranty Days" required>
                                     </div>
-                                    <label class="col-sm-0.5 col-form-label">Serial No</label>
-                                    <div class="col-sm-2">
+                                </div>
+                            </div>
+                        </div>  <!--end first row-->  
+                        <div class="row">
+                            <div class="col-md-12"> 
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Serial No</label>
+                                    <div class="col-sm-3">
                                         <input type="text" class="form-control" id="serial_no" name="serial_no" placeholder="Serial Number" required>
                                     </div>
                                     <div class="col-sm-1 size">
@@ -90,7 +96,7 @@ include('../include/config.php');
                                     </div>
                                 </div>
                             </div>
-                        </div>  <!--end first row-->             
+                        </div>  <!--end 2nd row-->             
                         </form>
 
                         <div class="row">

@@ -22,7 +22,7 @@
 
                 $row = mysqli_fetch_assoc($result_price);
                 $price  = $row['price'];
-                $stock  = $row['stock']-1;
+                $stock  = $row['stock']-$quantity;
                 $post_id  = $row['post_id'];
 
                 $meta_key = "_regular_price";
@@ -44,7 +44,7 @@
                 $result_price2 = mysqli_query($conn,$get_price2);
                 $row2 = mysqli_fetch_assoc($result_price2);
                 $price  = $row2['price'];
-                $stock  = $row2['stock']-1;
+                $stock  = $row2['stock']-$quantity;
                 $discount  = $row2['discount'];
             }
 
@@ -176,6 +176,50 @@
                     $amount=$row['amount'];
                     $warranty=$row['warranty'];
                     $serial_no=$row['serial_no'];
+
+                    $getQTY = mysqli_query($conn, "SELECT * FROM dashboard_items WHERE item='$product' ");
+                    $qtyCount = mysqli_num_rows($getQTY);
+
+                    if($qtyCount>0){
+                        $qtyValues = mysqli_fetch_assoc($getQTY);
+                        $U_stock = $qtyValues['stock_qty'];
+                        $UP_stock = $U_stock-$qty;
+
+                        if($UP_stock==0){
+                            $UP_status = 'outofstock';
+                        }else{
+                            $UP_status = 'instock';
+                        }
+
+                        $updateStock = mysqli_query($conn, "UPDATE dashboard_items
+                                                            SET stock_qty = $UP_stock,
+                                                                stock_status='$UP_status'
+                                                            WHERE item ='$product' ");
+
+                    }else{
+                        $otherQty = mysqli_query($conn,"SELECT B.stock_quantity AS stock,
+                            A.ID AS post_id
+                            FROM wpss_posts A 
+                            INNER JOIN wpss_wc_product_meta_lookup B
+                            ON A.ID = B.product_id WHERE A.post_title = '$product'");
+                        $getVAL = mysqli_fetch_assoc($otherQty);
+
+                        $UP_ID = $getVAL['post_id'];
+                        $U_stock = $getVAL['stock'];
+                        
+                        $UP_stock = $U_stock-$qty;
+
+                        if($UP_stock==0){
+                            $UP_status = 'outofstock';
+                        }else{
+                            $UP_status = 'instock';
+                        }
+
+                        $updateStock = mysqli_query($conn, "UPDATE wpss_wc_product_meta_lookup
+                                                            SET stock_quantity = $UP_stock,
+                                                                stock_status='$UP_status'
+                                                            WHERE product_id ='$UP_ID' ");
+                    }
 
                     $sql_invoice_items = "INSERT INTO invoice_items (invoice_id,product,warranty,serial_no,qty,price,discount,amount) VALUES ('$invoice_id','$product','$warranty','$serial_no','$qty','$price','$discount','$amount')";
                     mysqli_query($conn,$sql_invoice_items);

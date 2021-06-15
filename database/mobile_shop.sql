@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 10, 2021 at 05:42 PM
+-- Generation Time: Jun 15, 2021 at 08:09 PM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 5.5.30
 
@@ -71,8 +71,8 @@ CREATE TABLE `dashboard_items` (
 --
 
 INSERT INTO `dashboard_items` (`item_id`, `item`, `min_price`, `max_price`, `discount`, `stock_qty`, `stock_status`) VALUES
-(2, 'AAAA', 10.00, 15.00, '2.00', 20, 'instock'),
-(3, 'BBBB', 10.00, 15.00, '5.00', 30, 'instock');
+(2, 'AAAA', 10.00, 15.00, '2.00', 15, 'instock'),
+(3, 'BBBB', 10.00, 15.00, '5.00', 28, 'instock');
 
 -- --------------------------------------------------------
 
@@ -122,7 +122,9 @@ INSERT INTO `invoice` (`id`, `total`, `discount`, `payment`, `credit_period`, `c
 (18, '2600.00', '0.00', '2600.00', '0', '3', '', '2021-05-21', '', 'BOC', 'NV09764', '2021-05-30', 'visa', ''),
 (19, '1300.00', '0.00', '1300.00', '0', '5', '', '2021-05-21', 'cheque', 'commercial', 'BN147852', '2021-05-22', '', ''),
 (20, '75.00', '0.00', '5000.00', '0', '1', '', '2021-05-24', 'credit', '', '', '', '', ''),
-(21, '3362.05', '176.95', '3400.00', '0', '2', '', '2021-06-08', 'cash', '', '', '', '', '');
+(21, '3362.05', '176.95', '3400.00', '0', '2', '', '2021-06-08', 'cash', '', '', '', '', ''),
+(22, '1800.00', '45.00', '1800.00', '0', '2', '', '2021-06-15', 'cash', '', '', '', '', ''),
+(23, '7000.00', '0.00', '7000.00', '0', '5', '', '2021-06-15', 'cash', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -160,7 +162,7 @@ INSERT INTO `invoice_items` (`id`, `invoice_id`, `product`, `warranty`, `serial_
 (10, 10, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00', 0),
 (11, 11, 'Dell WM126 Wireless Optical Mouse', '0', '0', '3', '1750.00', '0.00', '5250.00', 0),
 (12, 12, 'Dell WM126 Wireless Optical Mouse', '0', '0', '1', '1750.00', '0.00', '1750.00', 0),
-(13, 13, 'Dell WM126 Wireless Optical Mouse', '360', '342RR', '2', '1750.00', '0.00', '3500.00', 1),
+(13, 13, 'Dell WM126 Wireless Optical Mouse', '360', '342RR', '2', '1750.00', '0.00', '3500.00', 0),
 (14, 14, 'AAA', '2 yrs', '1234', '1', '1300.00', '0.00', '1300.00', 0),
 (15, 15, 'Dell WM126 Wireless Optical Mouse', '45', 'EEE34343', '2', '1750.00', '0.00', '3500.00', 0),
 (16, 16, 'Dell WM126 Wireless Optical Mouse', '6 months', 'Wm1234', '1', '1750.00', '0.00', '1750.00', 0),
@@ -169,7 +171,11 @@ INSERT INTO `invoice_items` (`id`, `invoice_id`, `product`, `warranty`, `serial_
 (19, 19, 'AAA', '6 month', 'AA09890', '1', '1300.00', '0.00', '1300.00', 0),
 (20, 20, 'BBBB', '360 ', '465EEE', '5', '15.00', '25.00', '75.00', 0),
 (21, 21, 'Dell WM126 Wireless Optical Mouse', '6months', '78945', '2', '1750.00', '0.00', '3500.00', 0),
-(22, 21, 'AAAA', '1year', '1478522', '3', '15.00', '6.00', '39.00', 0);
+(22, 21, 'AAAA', '1year', '1478522', '3', '15.00', '6.00', '39.00', 0),
+(23, 22, 'Dell WM126 Wireless Optical Mouse', '365', '123456', '1', '1750.00', '0.00', '1750.00', 0),
+(24, 22, 'AAAA', '100', '147852', '5', '15.00', '10.00', '65.00', 0),
+(25, 22, 'BBBB', '100', '123654', '3', '15.00', '15.00', '30.00', 2),
+(26, 23, 'Dell WM126 Wireless Optical Mouse', '360', '123456', '4', '1750.00', '0.00', '7000.00', 3);
 
 -- --------------------------------------------------------
 
@@ -336,17 +342,23 @@ CREATE TABLE `warranty` (
   `invoice_items_id` int(11) NOT NULL,
   `action` varchar(100) NOT NULL,
   `warranty_note` varchar(1000) NOT NULL,
-  `date` varchar(100) NOT NULL
+  `date` varchar(100) NOT NULL,
+  `remain_return` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `warranty`
 --
 
-INSERT INTO `warranty` (`id`, `invoice_id`, `invoice_items_id`, `action`, `warranty_note`, `date`) VALUES
-(1, 1, 1, 'Fixed and Return', 'Check Th Not ', '2021-06-05'),
-(2, 1, 1, 'Return Money', 'THis Check ', '2021-06-05'),
-(3, 13, 13, 'Return Money', 'Not working properly', '2021-06-07');
+INSERT INTO `warranty` (`id`, `invoice_id`, `invoice_items_id`, `action`, `warranty_note`, `date`, `remain_return`) VALUES
+(1, 1, 1, 'Fixed and Return', 'Check Th Not ', '2021-06-05', 0),
+(2, 1, 1, 'Return Money', 'THis Check ', '2021-06-05', 0),
+(3, 13, 13, 'Return Money', 'Not working properly', '2021-06-07', 0),
+(7, 23, 26, 'Return Money', 'aaa', '2021-06-15', 3),
+(9, 23, 26, 'Fixed and Return', 'aaa2', '2021-06-15', 3),
+(10, 23, 26, 'Return Money', 'aa3', '2021-06-15', 1),
+(11, 22, 25, 'Fixed and Return', 'bbb1', '2021-06-15', 3),
+(12, 22, 25, 'Return Money', 'bbb2', '2021-06-15', 2);
 
 -- --------------------------------------------------------
 
@@ -7023,7 +7035,7 @@ CREATE TABLE `wpss_wc_product_meta_lookup` (
 --
 
 INSERT INTO `wpss_wc_product_meta_lookup` (`product_id`, `sku`, `virtual`, `downloadable`, `min_price`, `max_price`, `onsale`, `stock_quantity`, `stock_status`, `rating_count`, `average_rating`, `total_sales`, `tax_status`, `tax_class`) VALUES
-(21, '', 0, 0, '1750.0000', '1750.0000', 1, 5, 'instock', 0, '0.00', 1, 'taxable', ''),
+(21, '', 0, 0, '1750.0000', '1750.0000', 1, 3, 'outofstock', 0, '0.00', 1, 'taxable', ''),
 (34, '', 0, 0, '1990.0000', '1990.0000', 1, NULL, 'instock', 0, '0.00', 0, 'taxable', ''),
 (104, '5', 0, 0, '2400.0000', '2400.0000', 1, 0, 'onbackorder', 0, '0.00', 0, 'taxable', ''),
 (106, '', 0, 0, '85900.0000', '85900.0000', 1, NULL, 'instock', 0, '0.00', 0, 'taxable', ''),
@@ -7239,12 +7251,12 @@ ALTER TABLE `dashboard_items`
 -- AUTO_INCREMENT for table `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `invoice_items`
 --
 ALTER TABLE `invoice_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `jobs`
 --
@@ -7279,7 +7291,7 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `warranty`
 --
 ALTER TABLE `warranty`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `wpss_postmeta`
 --

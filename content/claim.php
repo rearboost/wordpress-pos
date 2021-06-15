@@ -15,6 +15,7 @@
         $numRows = mysqli_num_rows($sql); 
         if($numRows > 0) {
           while($row = mysqli_fetch_assoc($sql)) {
+            $id  = $row['id'];
             $invoice_id  = $row['invoice_id'];
             $product   = $row['product'];
             $warranty = $row['warranty'];
@@ -23,6 +24,15 @@
             $date = $row['date'];
             $warranty_claim_time =  $row['warranty_claim_time'];
             
+          }
+          $sql2= mysqli_query($conn, "SELECT * FROM warranty WHERE invoice_id='$invoice_id' AND invoice_items_id=$id ORDER BY id DESC LIMIT 1");
+          $R_count = mysqli_num_rows($sql2);
+
+          if($R_count>0){
+              $row1 = mysqli_fetch_assoc($sql2);
+              $remain_return = $row1['remain_return'];
+          }else{
+              $remain_return = $qty;
           }
         }
     }
@@ -96,7 +106,7 @@
                                 <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Quantity </label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" value="<?php if(isset($_GET['view_id'])){ echo $qty;} ?>" readonly/>
+                                    <input type="text" class="form-control" value="<?php if(isset($_GET['view_id'])){ echo $qty;} ?>" id="qty" name="qty" readonly/>
                                 </div>
                                 </div>
                             </div>
@@ -134,16 +144,22 @@
                                         </div>
                                         <div class="form-radio">
                                         <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Return Money">Return Money</label>
+                                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios3" value="Return Money">Return Money</label>
                                         </div>
                                     </div>
                                 </div>
                                 </div>
                             </div>
                             <div class="col-md-8">
+                                <div class="form-group row hideSection" hidden>
+                                <label class="col-sm-3 col-form-label">Return Quantity </label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" value="<?php if(isset($_GET['view_id'])){ echo $remain_return;} ?>" id="claim_qty" name="claim_qty" />
+                                </div>
+                                </div>
                                 <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Warranty Reason Note</label>
-                                    <div class="col-sm-10">
+                                <label class="col-sm-3 col-form-label">Warranty Reason Note</label>
+                                    <div class="col-sm-9">
                                         <textarea class="form-control" name="warranty_note" rows="4" placeholder="Warranty Reason Note .." required></textarea>
                                     </div>
                                 </div>
@@ -264,6 +280,19 @@
     });
   
     /////////////////////////////////////////////////// Form Submit Add  
+
+    $('#optionsRadios1').on('click',function(){     
+        $('#claim_qty').prop('readonly', true);
+    });
+
+    $('#optionsRadios2').on('click',function(){     
+        $('#claim_qty').prop('readonly', true);
+    });
+
+    $('#optionsRadios3').on('click',function(){     
+        $('.hideSection').prop('hidden', false);
+        $('#claim_qty').prop('readonly', false);
+    });
 
     $(function () {
 
