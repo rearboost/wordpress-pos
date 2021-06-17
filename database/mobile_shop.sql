@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 15, 2021 at 08:09 PM
+-- Generation Time: Jun 18, 2021 at 01:52 AM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 5.5.30
 
@@ -71,8 +71,61 @@ CREATE TABLE `dashboard_items` (
 --
 
 INSERT INTO `dashboard_items` (`item_id`, `item`, `min_price`, `max_price`, `discount`, `stock_qty`, `stock_status`) VALUES
-(2, 'AAAA', 10.00, 15.00, '2.00', 15, 'instock'),
-(3, 'BBBB', 10.00, 15.00, '5.00', 28, 'instock');
+(2, 'AAAA', 10.00, 15.00, '2.00', 40, 'instock'),
+(3, 'BBBB', 10.00, 15.00, '5.00', 83, 'instock');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `grn`
+--
+
+CREATE TABLE `grn` (
+  `id` int(11) NOT NULL,
+  `inv_id` varchar(250) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `discount` decimal(10,2) NOT NULL,
+  `payment` decimal(10,2) NOT NULL,
+  `credit_period` varchar(100) NOT NULL,
+  `supplier` varchar(250) NOT NULL,
+  `date` varchar(100) NOT NULL,
+  `creditEnddate` varchar(100) NOT NULL,
+  `payment_type` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `grn`
+--
+
+INSERT INTO `grn` (`id`, `inv_id`, `total`, `discount`, `payment`, `credit_period`, `supplier`, `date`, `creditEnddate`, `payment_type`) VALUES
+(1, 'BP00102', '24875.00', '0.00', '15000.00', '21', '1', '2021-06-18', '2021-07-09', 'cash'),
+(2, 'BP00123', '5300.00', '35.00', '5300.00', '0', '1', '2021-06-18', '', 'cash');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `grn_items`
+--
+
+CREATE TABLE `grn_items` (
+  `id` int(11) NOT NULL,
+  `grn_id` int(11) NOT NULL,
+  `product` varchar(300) NOT NULL,
+  `warranty` varchar(250) NOT NULL DEFAULT '0',
+  `qty` varchar(300) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `discount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `amount` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `grn_items`
+--
+
+INSERT INTO `grn_items` (`id`, `grn_id`, `product`, `warranty`, `qty`, `price`, `discount`, `amount`) VALUES
+(1, 1, 'Dell WM126 Wireless Optical Mouse', '360', '75', '350.00', '1875.00', '24375.00'),
+(2, 1, 'AAAA', '14', '25', '20.00', '0.00', '500.00'),
+(3, 2, 'BBBB', '120', '55', '100.00', '165.00', '5335.00');
 
 -- --------------------------------------------------------
 
@@ -256,6 +309,60 @@ INSERT INTO `parts` (`id`, `jobID`, `qty`, `parts`, `price`, `imei`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `summary`
+--
+
+CREATE TABLE `summary` (
+  `id` int(11) NOT NULL,
+  `year` varchar(500) NOT NULL,
+  `month` varchar(500) NOT NULL,
+  `income` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `outgoing` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `createDate` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `summary`
+--
+
+INSERT INTO `summary` (`id`, `year`, `month`, `income`, `outgoing`, `createDate`) VALUES
+(1, '2021', '06', '0.00', '20300.00', '2021-06-18'),
+(2, '2021', '01', '0.00', '0.00', '2021-06-18'),
+(3, '2021', '02', '0.00', '0.00', '2021-06-18'),
+(4, '2021', '03', '0.00', '0.00', '2021-06-18'),
+(5, '2021', '04', '0.00', '0.00', '2021-06-18'),
+(6, '2021', '05', '0.00', '0.00', '2021-06-18'),
+(7, '2021', '07', '0.00', '0.00', '2021-06-18'),
+(8, '2021', '08', '0.00', '0.00', '2021-06-18'),
+(9, '2021', '09', '0.00', '0.00', '2021-06-18'),
+(10, '2021', '10', '0.00', '0.00', '2021-06-18'),
+(11, '2021', '11', '0.00', '0.00', '2021-06-18'),
+(12, '2021', '12', '0.00', '0.00', '2021-06-18');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `supplier`
+--
+
+CREATE TABLE `supplier` (
+  `id` int(11) NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `address` varchar(250) NOT NULL,
+  `contact` int(10) NOT NULL,
+  `email` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `supplier`
+--
+
+INSERT INTO `supplier` (`id`, `name`, `address`, `contact`, `email`) VALUES
+(1, 'K.A Ananda Edirisuriya', 'No.43/D/4, 3rd Lane,  Galwarusa,  Korathota,  Kaduwela.', 117894528, 'ananda88@gmail.com');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `temp`
 --
 
@@ -267,6 +374,22 @@ CREATE TABLE `temp` (
   `price` double(10,2) NOT NULL,
   `imei` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `temp_grn`
+--
+
+CREATE TABLE `temp_grn` (
+  `id` int(11) NOT NULL,
+  `product` varchar(500) NOT NULL,
+  `warranty` varchar(250) NOT NULL DEFAULT '0',
+  `qty` varchar(500) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `discount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `amount` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -7035,7 +7158,7 @@ CREATE TABLE `wpss_wc_product_meta_lookup` (
 --
 
 INSERT INTO `wpss_wc_product_meta_lookup` (`product_id`, `sku`, `virtual`, `downloadable`, `min_price`, `max_price`, `onsale`, `stock_quantity`, `stock_status`, `rating_count`, `average_rating`, `total_sales`, `tax_status`, `tax_class`) VALUES
-(21, '', 0, 0, '1750.0000', '1750.0000', 1, 3, 'outofstock', 0, '0.00', 1, 'taxable', ''),
+(21, '', 0, 0, '1750.0000', '1750.0000', 1, 78, 'instock', 0, '0.00', 1, 'taxable', ''),
 (34, '', 0, 0, '1990.0000', '1990.0000', 1, NULL, 'instock', 0, '0.00', 0, 'taxable', ''),
 (104, '5', 0, 0, '2400.0000', '2400.0000', 1, 0, 'onbackorder', 0, '0.00', 0, 'taxable', ''),
 (106, '', 0, 0, '85900.0000', '85900.0000', 1, NULL, 'instock', 0, '0.00', 0, 'taxable', ''),
@@ -7121,6 +7244,18 @@ ALTER TABLE `dashboard_items`
   ADD PRIMARY KEY (`item_id`);
 
 --
+-- Indexes for table `grn`
+--
+ALTER TABLE `grn`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `grn_items`
+--
+ALTER TABLE `grn_items`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `invoice`
 --
 ALTER TABLE `invoice`
@@ -7145,9 +7280,27 @@ ALTER TABLE `parts`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `summary`
+--
+ALTER TABLE `summary`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `supplier`
+--
+ALTER TABLE `supplier`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `temp`
 --
 ALTER TABLE `temp`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `temp_grn`
+--
+ALTER TABLE `temp_grn`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -7248,6 +7401,16 @@ ALTER TABLE `customer`
 ALTER TABLE `dashboard_items`
   MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
+-- AUTO_INCREMENT for table `grn`
+--
+ALTER TABLE `grn`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `grn_items`
+--
+ALTER TABLE `grn_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
 -- AUTO_INCREMENT for table `invoice`
 --
 ALTER TABLE `invoice`
@@ -7268,9 +7431,24 @@ ALTER TABLE `jobs`
 ALTER TABLE `parts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
+-- AUTO_INCREMENT for table `summary`
+--
+ALTER TABLE `summary`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT for table `supplier`
+--
+ALTER TABLE `supplier`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT for table `temp`
 --
 ALTER TABLE `temp`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `temp_grn`
+--
+ALTER TABLE `temp_grn`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `temp_pos`

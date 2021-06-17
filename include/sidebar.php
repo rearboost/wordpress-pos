@@ -50,7 +50,18 @@
               <li class="nav-item">
                 <a class="nav-link" href="customer.php">
                   <i class="menu-icon typcn typcn-shopping-bag"></i>
-                  <span class="menu-title">Customer</span>
+                  <span class="menu-title">Customers</span>
+                </a>
+              </li>
+            <?php else: ?>
+            <?php endif ?>
+
+
+             <?php if ($_SESSION['user_role']==1): ?>
+              <li class="nav-item">
+                <a class="nav-link" href="suppliers.php">
+                  <i class="menu-icon typcn typcn-shopping-bag"></i>
+                  <span class="menu-title">Suppliers</span>
                 </a>
               </li>
             <?php else: ?>
@@ -99,12 +110,37 @@
             <?php else: ?>
             <?php endif ?>
 
+
+
             <?php if ($_SESSION['user_role']==1): ?>
             <li class="nav-item">
               <a class="nav-link" href="dashboard_items.php">
                 <i class="menu-icon typcn typcn-shopping-bag"></i>
                 <span class="menu-title">Dashboard Items</span>
               </a>
+            </li>
+
+            <?php else: ?>
+            <?php endif ?>
+
+            <?php if ($_SESSION['user_role']==1): ?>
+
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#ui-style" aria-expanded="false" aria-controls="ui-style">
+                <i class="menu-icon typcn typcn-coffee"></i>
+                <span class="menu-title" style="color: chartreuse;">GRN</span>
+                <i class="menu-arrow"></i>
+              </a>
+              <div class="collapse" id="ui-style">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item">
+                    <a class="nav-link" href="grn.php">Add GRN</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="grn_bill_history.php">GRN Bill History</a>
+                  </li>
+                </ul>
+              </div>
             </li>
 
             <?php else: ?>
@@ -180,7 +216,10 @@
               <div class="collapse" id="ui-item">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item">
-                    <a class="nav-link" href="report_profit.php">Profit Report</a>
+                    <a class="nav-link" href="report_profit.php">Service Income Report</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="report_jobs.php">Monthly Profit Report</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="report_stock.php">Stock Report</a>

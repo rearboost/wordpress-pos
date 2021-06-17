@@ -27,7 +27,7 @@
                   <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
                     <ul class="quick-links">
                       <li><a href="#"> | REPORT</a></li>
-                      <li><a href="#"> | PROFIT REPORT</a></li>
+                      <li><a href="#"> | SERVICE INCOME REPORT</a></li>
                     </ul>
                   </div>
                 </div>
@@ -37,7 +37,7 @@
             <div class="col-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
-                    <h4 class="card-title">Profit report</h4>
+                    <h4 class="card-title">Service Income report</h4>
                     <!-- <p class="card-description"> Horizontal form layout </p> -->
                     <form>
                         <div class="row">

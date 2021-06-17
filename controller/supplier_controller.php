@@ -1,4 +1,3 @@
-
 <?php
     // Database Connection
     require '../include/config.php';
@@ -11,12 +10,12 @@
         $contact   = $_POST['contact'];
         $email     = $_POST['email'];
 
-        $check= mysqli_query($conn, "SELECT * FROM customer WHERE name='$name' AND address='$address' AND contact='$contact' AND email='$email'");
+        $check= mysqli_query($conn, "SELECT * FROM supplier WHERE name='$name' AND address='$address' AND contact='$contact' AND email='$email'");
 	    $count = mysqli_num_rows($check);
 
         if($count==0){
 
-            $insert = "INSERT INTO customer (name,address,contact,email) VALUES ('$name','$address','$contact','$email')";
+            $insert = "INSERT INTO supplier (name,address,contact,email) VALUES ('$name','$address','$contact','$email')";
             $result = mysqli_query($conn,$insert);
             if($result){
                 echo  1;
@@ -37,12 +36,12 @@
         $contact = $_POST['contact'];
         $email   = $_POST['email'];
 
-        $check= mysqli_query($conn, "SELECT * FROM customer WHERE name='$name' AND address='$address' AND contact='$contact' AND email='$email'");
+        $check= mysqli_query($conn, "SELECT * FROM supplier WHERE name='$name' AND address='$address' AND contact='$contact' AND email='$email'");
 	    $count = mysqli_num_rows($check);
 
         if($count==0){
 
-            $edit = "UPDATE customer 
+            $edit = "UPDATE supplier 
                                 SET name   ='$name',
                                     address  ='$address',
                                     contact  ='$contact',
@@ -65,7 +64,7 @@
     if(isset($_POST['removeID'])){
 
         $id       = $_POST['removeID'];
-        $query ="DELETE FROM customer WHERE id='$id'";
+        $query ="DELETE FROM supplier WHERE id='$id'";
         $result = mysqli_query($conn,$query);
         if($result){
             echo  1;
@@ -73,7 +72,5 @@
             echo  mysqli_error($conn);		
         }
     }
-
-
 
 ?>

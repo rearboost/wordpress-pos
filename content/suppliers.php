@@ -8,7 +8,7 @@
     if(isset($_GET['edit_id'])){
 
         $edit_id = $_GET['edit_id'];
-        $sql=mysqli_query($conn,"SELECT * FROM customer WHERE id='$edit_id'");  
+        $sql=mysqli_query($conn,"SELECT * FROM supplier WHERE id='$edit_id'");  
         $numRows = mysqli_num_rows($sql); 
         if($numRows > 0) {
           while($row = mysqli_fetch_assoc($sql)) {
@@ -43,7 +43,7 @@
                   <h4 class="page-title">Dashboard</h4>
                   <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">
                     <ul class="quick-links">
-                      <li><a href="#"> | CUSTOMER</a></li>
+                      <li><a href="#"> | SUPPLIERS</a></li>
                     </ul>
                   </div>
                 </div>
@@ -53,8 +53,8 @@
            <div class="col-12 stretch-card">
                 <div class="card">
                     <div class="card-body">
-                    <h4 class="card-title">Customer Info</h4>
-                        <form class="forms-sample" id="customerForm">
+                    <h4 class="card-title">Supplier Info</h4>
+                        <form class="forms-sample" id="supplierForm">
                           <div class="form-group">
                           <label for="exampleInputName">Name</label>
                               <input type="text" class="form-control" value="<?php if(isset($_GET['edit_id'])){ echo $edit_name;} ?>" name="name" placeholder="customer name here.." required>
@@ -67,12 +67,12 @@
 
                           <div class="form-group">
                           <label for="exampleInputContact">Contact</label>
-                              <input type="number" class="form-control" name="contact" value="<?php if(isset($_GET['edit_id'])){ echo $edit_contact;} ?>" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "9"  minlength="9" placeholder="Ex: 771234567" required>
+                              <input type="number" class="form-control" name="contact" value="<?php if(isset($_GET['edit_id'])){ echo $edit_contact;} ?>" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength="10" placeholder="Ex: 0771234567" required>
                           </div>
 
                           <div class="form-group">
                           <label for="exampleInputEmail">Email</label>
-                              <input type="email" class="form-control" value="<?php if(isset($_GET['edit_id'])){ echo $edit_email;} ?>" name="email" placeholder="sample@gmail.com" required>
+                              <input type="email" class="form-control" value="<?php if(isset($_GET['edit_id'])){ echo $edit_email;} ?>" name="email" placeholder="sample@gmail.com">
                           </div>
 
                            <?php if (isset($_GET['edit_id'])): ?>
@@ -95,25 +95,25 @@
               <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Customer Data</h4>
+                    <h4 class="card-title">Suppliers Data</h4>
                      
                     <div class="table-responsive">         
                     <table class="table table-bordered" id="myTable">
                       <thead>
                         <tr>
                           <th> # </th>
-                          <th>Customer name </th>
+                          <th>Supplier name </th>
                           <th>Address </th>
                           <th>Contact </th>
                           <th>Email </th>
+                          <th>Credit</th>
                           <th>Edit</th>
-                          <!-- <th>SMS</th> -->
                           <th>Delete</th>
                         </tr>
                       </thead>
                       <tbody>
                         <?php
-                          $sql=mysqli_query($conn,"SELECT * FROM customer");
+                          $sql=mysqli_query($conn,"SELECT * FROM supplier");
                           
                           $numRows = mysqli_num_rows($sql); 
                     
@@ -121,10 +121,19 @@
                             $i = 1;
                             while($row = mysqli_fetch_assoc($sql)) {
 
+                              $id      = $row['id'];
                               $name    = $row['name'];
                               $address = $row['address'];
                               $contact = $row['contact'];
                               $email   = $row['email'];
+
+                              $getCredit = mysqli_query($conn, "SELECT SUM(total) as total, SUM(payment) as payment FROM grn WHERE supplier='$id' AND credit_period<>0 GROUP BY supplier");
+                              $creditRow = mysqli_fetch_assoc($getCredit);
+
+                              $totalVal   = $creditRow['total'];
+                              $paymentVal = $creditRow['payment'];
+
+                              $credit = $totalVal-$paymentVal;
 
                               echo ' <tr>';
                               echo ' <td>'.$i.' </td>';
@@ -132,6 +141,7 @@
                               echo ' <td>'.$address.' </td>';
                               echo ' <td>'.$contact.' </td>';
                               echo ' <td>'.$email.' </td>';
+                              echo ' <td>'.number_format($credit,2,'.',',').' </td>';
                               echo '<td class="td-center"><button type="button" onclick="editForm('.$row["id"].')" class="btn btn-info btn-fw">Edit</button></td>';
 
                               echo '<td class="td-center"><button type="button" onclick="confirmation(event,'.$row["id"].')" class="btn btn-secondary btn-fw">Delete</button></td>';
@@ -176,14 +186,14 @@
 
     $(function () {
 
-        $('#customerForm').on('submit', function (e) {
+        $('#supplierForm').on('submit', function (e) {
 
           e.preventDefault();
 
           $.ajax({
             type: 'post',
-            url: '../controller/customer_controller.php',
-            data: $('#customerForm').serialize(),
+            url: '../controller/supplier_controller.php',
+            data: $('#supplierForm').serialize(),
             success: function (data) {
 
                   if(data==0){
@@ -229,7 +239,7 @@
     function myFunDelete(id){
 
       $.ajax({
-            url:"../controller/customer_controller.php",
+            url:"../controller/supplier_controller.php",
             method:"POST",
             data:{removeID:id},
             success:function(data){
@@ -240,18 +250,18 @@
                 button: "Ok !",
                 });
                 setTimeout(function(){ location.reload(); }, 2500);
-                window.location.href = "customer.php";
+                window.location.href = "suppliers.php";
             }
       });
     }
 
     function editForm(id){
-        window.location.href = "customer.php?edit_id=" + id;
+        window.location.href = "suppliers.php?edit_id=" + id;
     }
 
     function cancelForm(){
-        window.location.href = "customer.php";
+        window.location.href = "suppliers.php";
     }
 
-  </script>
 
+  </script>
