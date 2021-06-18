@@ -25,7 +25,7 @@
             $credit_payment = $_POST['credit_payment'];
 
             $check= mysqli_query($conn, "SELECT * FROM jobs WHERE billing_address='$billing_address' AND accessory='$accessory' AND brand='$brand' AND model='$model' AND serial_no='$serial_no' AND request_date='$request_date' AND delivery_date='$delivery_date' AND job_desc='$job_desc' AND advance='$advance' AND user_desc='$user_desc' AND service_cost='$service_cost' AND discount='$discount' AND gross_amount='$amount' AND payable_amt='$total_amount' AND cash_payment='$cash_payment' AND credit_payment='$credit_payment' AND customerId='$customer'");
-		    $count = mysqli_num_rows($check);
+		        $count = mysqli_num_rows($check);
 
             if($count==0){
 
@@ -52,6 +52,68 @@
 
             }else{
                 echo 0;
+            }
+
+            // summary update
+
+            $year =  date("Y");
+            $month = date("m");
+            $createDate = date("Y-m-d");
+
+            ///////////////summarry query starts///////////
+
+            $querySummary = "SELECT id ,income FROM summary WHERE year='$year' AND month='$month' ";
+            $resultSummary = mysqli_query($conn ,$querySummary);
+
+            $countSummary =mysqli_num_rows($resultSummary);
+
+            if($countSummary>0){
+
+                while($rowSummary = mysqli_fetch_array($resultSummary)){
+
+                    $oldincome = $rowSummary['income'];
+                    $id = $rowSummary['id'];
+                }
+
+                $newincome = ($oldincome +$total_amount);
+
+                $queryRow ="UPDATE summary SET income='$newincome' WHERE id='$id' ";
+                $rowRow =mysqli_query($conn,$queryRow);
+
+            }else{
+
+                $query ="INSERT INTO  summary (year,month,income,createDate)  VALUES (?,?,?,?)";
+
+                $stmt =mysqli_stmt_init($conn);
+                if(!mysqli_stmt_prepare($stmt,$query))
+                {
+                    echo "SQL Error";
+                }
+                else
+                {
+                    mysqli_stmt_bind_param($stmt,"ssss",$year,$month,$total_amount,$createDate);
+                    $result =  mysqli_stmt_execute($stmt);
+                }
+
+                for ($x = 1; $x < 13; $x++) {
+              
+                    if($month !=str_pad($x, 2, "0", STR_PAD_LEFT)){
+
+                      $queryDefult ="INSERT INTO  summary (year,month,createDate)  VALUES (?,?,?)";
+
+                      $stmt =mysqli_stmt_init($conn);
+                      if(!mysqli_stmt_prepare($stmt,$queryDefult))
+                      {
+                          echo "SQL Error";
+                      }
+                      else
+                      {
+                          mysqli_stmt_bind_param($stmt,"sss",$year,str_pad($x, 2, "0", STR_PAD_LEFT),$createDate);
+                          $result =  mysqli_stmt_execute($stmt);
+                      }
+
+                    }
+                }
             }
         }
 

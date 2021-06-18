@@ -156,6 +156,69 @@
             $sql_invoice = "INSERT INTO  invoice (total,discount,payment,credit_period,customer,billing_address,date,payment_type,bank,cheque_no,cheque_dueDate,card_type,card_no) VALUES ('$total','$discount','$payment','$credit_period','$customer','$billing_address','$date','$payment_type','$bank','$cheque_no','$due_date','$card_type','$card_no')";
             mysqli_query($conn,$sql_invoice);
 
+
+            // summary update
+
+            $year =  date("Y");
+            $month = date("m");
+            $createDate = date("Y-m-d");
+
+            ///////////////summarry query starts///////////
+
+            $querySummary = "SELECT id ,income FROM summary WHERE year='$year' AND month='$month' ";
+            $resultSummary = mysqli_query($conn ,$querySummary);
+
+            $countSummary =mysqli_num_rows($resultSummary);
+
+            if($countSummary>0){
+
+                while($rowSummary = mysqli_fetch_array($resultSummary)){
+
+                    $oldincome = $rowSummary['income'];
+                    $id = $rowSummary['id'];
+                }
+
+                $newincome = ($oldincome +$total);
+
+                $queryRow ="UPDATE summary SET income='$newincome' WHERE id='$id' ";
+                $rowRow =mysqli_query($conn,$queryRow);
+
+            }else{
+
+                $query ="INSERT INTO  summary (year,month,income,createDate)  VALUES (?,?,?,?)";
+
+                $stmt =mysqli_stmt_init($conn);
+                if(!mysqli_stmt_prepare($stmt,$query))
+                {
+                    echo "SQL Error";
+                }
+                else
+                {
+                    mysqli_stmt_bind_param($stmt,"ssss",$year,$month,$total,$createDate);
+                    $result =  mysqli_stmt_execute($stmt);
+                }
+
+                for ($x = 1; $x < 13; $x++) {
+              
+                    if($month !=str_pad($x, 2, "0", STR_PAD_LEFT)){
+
+                      $queryDefult ="INSERT INTO  summary (year,month,createDate)  VALUES (?,?,?)";
+
+                      $stmt =mysqli_stmt_init($conn);
+                      if(!mysqli_stmt_prepare($stmt,$queryDefult))
+                      {
+                          echo "SQL Error";
+                      }
+                      else
+                      {
+                          mysqli_stmt_bind_param($stmt,"sss",$year,str_pad($x, 2, "0", STR_PAD_LEFT),$createDate);
+                          $result =  mysqli_stmt_execute($stmt);
+                      }
+
+                    }
+                }
+            }
+
             $sql ="SELECT id FROM invoice ORDER BY id DESC LIMIT 1";
             $result=mysqli_query($conn,$sql);
             $row_get = mysqli_fetch_assoc($result);

@@ -219,7 +219,7 @@
                     <a class="nav-link" href="report_profit.php">Service Income Report</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="report_jobs.php">Monthly Profit Report</a>
+                    <a class="nav-link" href="monthly_report.php">Monthly Profit Report</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="report_stock.php">Stock Report</a>
